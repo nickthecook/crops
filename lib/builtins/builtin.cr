@@ -13,8 +13,8 @@ module Builtins
       "no description"
     end
 
-    private def run
-      raise NotImplementedError
+    def run
+      raise NotImplementedError.new("Builtins must implement 'run'.")
     end
   end
 end
