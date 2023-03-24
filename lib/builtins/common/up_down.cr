@@ -15,7 +15,7 @@ module Builtins
 
 				return true unless fail_on_error?
 
-				deps_to_meet.all?(&:success?)
+				deps_to_meet.all? { |dep| dep.success? }
 			end
 
 			private def meet_dependencies

@@ -1,0 +1,8 @@
+dependencies:
+  gem:
+    - rerun
+actions:
+  run: crystal ops.cr
+  run-watch:
+    command: rerun -qbx -p '**/*.cr' ops run
+    alias: rw

@@ -23,6 +23,10 @@ class Ops
   @config : Hash(String, YAML::Any) | Nil
   @runner : Runner | Nil
 
+  def self.project_name : String
+    Dir.current.split("/").last
+  end
+
   def initialize(argv, config_file = nil)
     @action_name = argv[0]
     @args = argv[1..-1]
@@ -61,8 +65,6 @@ class Ops
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
   # rubocop:enable Metrics/MethodLength
-
-  # private
 
   private def syntax_valid?
     return true unless @action_name.nil?
