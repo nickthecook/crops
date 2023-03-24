@@ -14,24 +14,14 @@ class OpsYml
 
   def config : Hash(String, YAML::Any)
     @config ||= if config_file_exists?
-      contents = parsed_config_contents
-
-      raise OpsYmlError.new("File must contain a Hash at the top level.") unless contents.is_a?(Hash(String, YAML::Any))
-
-      contents
+      contents = hash_with_string_keys(parsed_config_contents)
     else
       {} of String => YAML::Any
     end
   end
 
   def options : Hash(String, YAML::Any)
-    @options ||= begin
-      options = config["options"]
-
-      raise OpsYmlError.new("'options' must be a Hash with String keys.") unless options.is_a?(Hash(String, YAML::Any))
-
-      options || {} of String => YAML::Any
-    end
+    @options ||= config_section("options")
   end
 
   def actions : Hash(String, YAML::Any)
@@ -77,6 +67,30 @@ class OpsYml
 
   def absolute_path
     File.expand_path(@config_file)
+  end
+
+  private def config_section(name : String) : Hash(String, YAML::Any)
+    return {} of String => YAML::Any if (config = @config).nil?
+
+    hash_with_string_keys(config[name])
+  rescue KeyError
+    {} of String => YAML::Any
+  end
+
+  private def hash_with_string_keys(any : YAML::Any) : Hash(String, YAML::Any)
+    hash = any.as_h?
+    raise OpsYmlError.new("Expected hash, got #{any}") unless hash
+
+    keys_to_string(hash)
+  end
+
+  private def keys_to_string(hash : Hash(YAML::Any, YAML::Any)) : Hash(String, YAML::Any)
+    hash.transform_keys do |k|
+      k = k.as_s?
+      raise OpsYmlError.new("Hash keys must be String.") unless k
+
+      k
+    end
   end
 
   private def parsed_config_contents : YAML::Any
