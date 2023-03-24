@@ -46,12 +46,11 @@ class Ops
     runner.run
   rescue e : Runner::UnknownActionError
     Output.error(e.to_s)
-    Output.out(RECOMMEND_HELP_TEXT) unless print_did_you_mean
     exit(UNKNOWN_ACTION_EXIT_CODE)
   rescue e : Runner::ActionConfigError
     Output.error("Error(s) running action '#{@action_name}': #{e}")
     exit(ACTION_CONFIG_ERROR_EXIT_CODE)
-  rescue e : Builtin::ArgumentError
+  rescue e : Builtins::Builtin::ArgumentError
     Output.error("Error running builtin '#{@action_name}': #{e}")
     exit(BUILTIN_SYNTAX_ERROR_EXIT_CODE)
   rescue e : AppConfig::ParsingError
@@ -60,7 +59,7 @@ class Ops
   rescue e : Runner::NotAllowedInEnvError
     Output.error("Error running action #{@action_name}: #{e}")
     exit(ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE)
-  rescue e : OpsYmlError
+  rescue e : OpsYml::OpsYmlError
     Output.error("Error loading #{@config_file}: #{e}")
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
@@ -72,12 +71,6 @@ class Ops
     Output.error("Usage: ops <action>")
     Output.out(RECOMMEND_HELP_TEXT)
     false
-  end
-
-  private def print_did_you_mean
-    Output.out("Did you mean '#{runner.suggestions.join(", ")}'?") if runner.suggestions.any?
-
-    runner.suggestions.any?
   end
 
   private def min_version_met?

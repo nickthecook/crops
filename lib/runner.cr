@@ -3,45 +3,46 @@ require "app_config"
 require "action_list"
 require "secrets"
 require "builtins"
+require "hook_handler"
 
 module Builtins
 end
 
 class Runner
-  class UnknownActionError < Exception; end
-  class ActionConfigError < Exception; end
-  class NotAllowedInEnvError < Exception; end
+  class UnknownActionError < RuntimeError; end
+  class UnknownForwardError < RuntimeError; end
+  class ActionConfigError < RuntimeError; end
+  class NotAllowedInEnvError < RuntimeError; end
 
   @action_name : String
   @args : Array(String)
   @ops_yml : OpsYml
-  @forward : Forward | Nil
   @action_list : ActionList | Nil
   @builtin : Builtins::Builtin | Nil
+  @action : Action
 
   def initialize(action_name, args, ops_yml)
     @action_name = action_name
     @args = args
     @ops_yml = ops_yml
+    @action = action
   end
 
   def run
-    return forward.not_nil!.run if forward
+    l_forward = forward
+    return l_forward.run if l_forward
 
     do_before_all
 
-    return builtin.run if builtin
+    l_builtin = builtin
+    return l_builtin.run if l_builtin
 
-    raise UnknownActionError, "Unknown action: #{@action_name}" unless action
-    raise ActionConfigError, action.config_errors.join("; ") unless action.config_valid?
+    
+    raise ActionConfigError.new(@action.config_errors.join("; ")) unless @action.config_valid?
 
     do_before_action
 
     run_action
-  end
-
-  def suggestions
-    @suggestions ||= ActionSuggester.new(action_list.names + action_list.aliases + builtin_names).check(@action_name)
   end
 
   private def do_before_all
@@ -51,7 +52,7 @@ class Runner
   end
 
   private def do_before_action
-    return if ENV["OPS_RUNNING"] || action.skip_hooks?("before")
+    return if ENV["OPS_RUNNING"] || @action.skip_hooks?("before")
 
     # this prevents before hooks from running in ops executed by ops
     ENV["OPS_RUNNING"] = "1"
@@ -59,7 +60,7 @@ class Runner
   end
 
   private def hook_handler
-    @hook_handler ||= HookHandler.new(@ops_yml.config)
+    HookHandler.new(@ops_yml.config)
   end
 
   private def builtin
@@ -76,7 +77,7 @@ class Runner
 
   private def run_action
     unless action.allowed_in_env?(Environment.environment)
-      raise NotAllowedInEnvError, "Action not allowed in #{Environment.environment} environment."
+      raise NotAllowedInEnvError.new("Action not allowed in #{Environment.environment} environment.")
     end
 
     unless action.execute_in_env?(Environment.environment)
@@ -88,9 +89,14 @@ class Runner
     action.run
   end
 
-  private def action
-    return action_list.get(@action_name) if action_list.get(@action_name)
-    return action_list.get_by_alias(@action_name) if action_list.get_by_alias(@action_name)
+  private def action : Action
+    action_by_name = action_list.get(@action_name)
+    return action_by_name if action_by_name
+
+    action_by_alias = action_list.get_by_alias(@action_name)
+    return action_by_alias if action_by_alias
+
+    raise UnknownActionError.new("Unknown action: #{@action_name}")
   end
 
   private def action_list

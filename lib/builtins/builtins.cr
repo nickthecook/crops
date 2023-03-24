@@ -1,6 +1,4 @@
 require "builtins/builtin"
-require "builtins/background"
-require "builtins/background_log"
 require "builtins/down"
 require "builtins/env"
 require "builtins/envdiff"
@@ -12,8 +10,6 @@ require "builtins/version"
 
 module Builtins
   BUILTINS = {
-    "background" => Background,
-    "background_log" => BackgroundLog,
     "down" => Down,
     "env" => Env,
     "envdiff" => Envdiff,

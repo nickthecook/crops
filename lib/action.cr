@@ -1,8 +1,10 @@
 class Action
+  class ActionConfigError < RuntimeError; end
   getter :name
 
   @alias : String?
   @aliases : Array(String)?
+  @config_errors : Array(String)?
 
   def initialize(name : String, config : Hash(String, String | Array(String)) | String, args : Array(String))
     @name = name
@@ -13,13 +15,7 @@ class Action
   end
 
   def run
-    Output.error(Profiler.summary) if Profiler.summary
-
-    if perform_shell_expansion?
-      Kernel.exec(to_s)
-    else
-      Kernel.exec(*to_a)
-    end
+    Process.exec(command: to_s, shell: perform_shell_expansion?)
   end
 
   def to_s
@@ -67,13 +63,13 @@ class Action
   end
 
   def execute_in_env?(env)
-    !skip_in_envs.include?(env)
+    !skip_in_envs.includes?(env)
   end
 
   def allowed_in_env?(env)
-    return false if not_in_envs.include?(env)
+    return false if not_in_envs.includes?(env)
 
-    return false if in_envs.any? && !in_envs.include?(env)
+    return false if in_envs.any? && !in_envs.includes?(env)
 
     true
   end
@@ -82,19 +78,28 @@ class Action
     command.split(" ").reject(&:nil?) | @args
   end
 
-  private def not_in_envs
-    @config["not_in_envs"] || [] of String
+  private def not_in_envs 
+    env_list = @config["not_in_envs"]
+    raise ActionConfigError.new("'not_in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
+
+    env_list || [] of String
   end
 
-  private def in_envs
-    @config["in_envs"] || [] of String
+  private def in_envs : Array(String)
+    env_list = @config["in_envs"]
+    raise ActionConfigError.new("'in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
+
+    env_list || [] of String
   end
 
   private def skip_in_envs
-    @config["skip_in_envs"] || [] of String
+    env_list = @config["skip_in_envs"]
+    raise ActionConfigError.new("'skip_in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
+
+    env_list || [] of String
   end
 
-  private def perform_shell_expansion?
-    @config["shell_expansion"].nil? ? true : @config["shell_expansion"]
+  private def perform_shell_expansion? : Bool
+    @config["shell_expansion"].nil? ? true : !!@config["shell_expansion"]
   end
 end
