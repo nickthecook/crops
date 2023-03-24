@@ -19,7 +19,7 @@ class Runner
   @ops_yml : OpsYml
   @action_list : ActionList | Nil
   @builtin : Builtins::Builtin | Nil
-  @action : Action
+  @action : Action | Nil
 
   def initialize(action_name, args, ops_yml)
     @action_name = action_name
@@ -29,16 +29,19 @@ class Runner
   end
 
   def run
+    Output.error "HEEEP"
     l_forward = forward
     return l_forward.run if l_forward
 
     do_before_all
 
+    puts "HEEEEELP"
     l_builtin = builtin
     return l_builtin.run if l_builtin
 
-    
-    raise ActionConfigError.new(@action.config_errors.join("; ")) unless @action.config_valid?
+    l_action = @action
+    raise UnknownActionError.new("Unknown action: #{@action_name}") if l_action.nil?
+    raise ActionConfigError.new(l_action.config_errors.join("; ")) unless l_action.config_valid?
 
     do_before_action
 
@@ -47,12 +50,13 @@ class Runner
 
   private def do_before_all
     AppConfig.load
-    Secrets.load if action.not_nil!.load_secrets?
+    l_action = action
+    Secrets.load if l_action && l_action.load_secrets?
     environment.set_variables
   end
 
   private def do_before_action
-    return if ENV["OPS_RUNNING"] || @action.skip_hooks?("before")
+    return if ENV["OPS_RUNNING"] || @action.not_nil!.skip_hooks?("before")
 
     # this prevents before hooks from running in ops executed by ops
     ENV["OPS_RUNNING"] = "1"
@@ -76,27 +80,25 @@ class Runner
   end
 
   private def run_action
-    unless action.allowed_in_env?(Environment.environment)
+    unless @action.not_nil!.allowed_in_env?(Environment.environment)
       raise NotAllowedInEnvError.new("Action not allowed in #{Environment.environment} environment.")
     end
 
-    unless action.execute_in_env?(Environment.environment)
-      Output.warn("Skipping action '#{action.name}' in environment #{Environment.environment}.")
+    unless @action.not_nil!.execute_in_env?(Environment.environment)
+      Output.warn("Skipping action '#{@action.not_nil!.name}' in environment #{Environment.environment}.")
       return true
     end
 
-    Output.notice("Running '#{action}' in environment '#{ENV["environment"]}'...")
-    action.run
+    Output.notice("Running '#{@action}' in environment '#{ENV["environment"]}'...")
+    action.not_nil!.run
   end
 
-  private def action : Action
+  private def action : Action | Nil
     action_by_name = action_list.get(@action_name)
     return action_by_name if action_by_name
 
     action_by_alias = action_list.get_by_alias(@action_name)
-    return action_by_alias if action_by_alias
-
-    raise UnknownActionError.new("Unknown action: #{@action_name}")
+    return action_by_alias
   end
 
   private def action_list

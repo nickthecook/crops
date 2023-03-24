@@ -26,15 +26,15 @@ class Output
   end
 
   def self.skipped
-    @@out.puts(SKIPPED.colorize(:yellow))
+    @@out.puts(SKIPPED.colorize(:light_red))
   end
 
   def self.failed
-    @@out.puts(FAILED.colorize(:red))
+    @@out.puts(FAILED.colorize(:magenta))
   end
 
   def self.warn(msg)
-    @@err.puts(msg.colorize(:yellow))
+    @@err.puts(msg.colorize(:light_red))
   end
 
   def self.notice(msg)
@@ -42,7 +42,7 @@ class Output
   end
 
   def self.error(msg)
-    @@err.puts(msg.colorize(:red))
+    @@err.puts(msg.colorize(:magenta))
   end
 
   def self.out(msg)

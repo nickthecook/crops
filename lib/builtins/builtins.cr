@@ -21,10 +21,7 @@ module Builtins
   }
 
   def self.class_for(name : String) : Builtin | Nil
-    BUILTINS[builtin_class_name_for(name)]
-  end
-
-  private def self.builtin_class_name_for(name : String) : String
-    name.capitalize
+    puts "NAME #{name}"
+    BUILTINS[name]
   end
 end

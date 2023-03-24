@@ -14,11 +14,11 @@ class ActionList
   end
 
   def get(name)
-    @actions[name]
+    @actions[name] if names.includes?(name)
   end
 
   def get_by_alias(name)
-    @aliases[name]
+    @aliases[name] if aliases.includes?(name)
   end
 
   def names
@@ -35,8 +35,10 @@ class ActionList
 
   private def process_action_list
     actions_list.each do |name, config|
-      unless config.is_a?(Hash(String, String | Array(String))) || config.is_a?(String)
-        raise ActionFormatError.new("Action values must be Hash or String.")
+      if config.is_a?(YAML::Any)
+        hash = {} of String => YAML::Any
+        hash["command"] = config
+        config = hash
       end
 
       action = Action.new(name, config, @args)

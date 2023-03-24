@@ -5,15 +5,19 @@ class Action
   getter :name
 
   @alias : String?
-  @aliases : Array(String)?
+  @aliases : Array(String)
   @config_errors : Array(String)?
 
-  def initialize(name : String, config : Hash(String, YAML::Any) | String, args : Array(String))
+  def initialize(name : String, config : Hash(String, YAML::Any), args : Array(String))
     @name = name
-    @config = YamlUtil.hash_with_string_keys(config)
+    @config = config
     @args = args
-    @aliases = @config["aliases"]
-    @alias = @config["alias"]
+    if config.includes?("aliases")
+      @aliases = YamlUtil.array_of_strings(@config["aliases"])
+    else
+      @aliases = [] of String
+    end
+    @alias = @config["alias"].as_s? if @config.includes?("alias")
   end
 
   def run
@@ -29,7 +33,13 @@ class Action
   end
 
   def aliases : Array(String)
-    ([@config["alias"]] << @config["aliases"]).compact
+    alias_list = [] of String
+    unless (l_alias = @alias).nil?
+      alias_list << l_alias
+    end
+    alias_list = alias_list + @aliases
+
+    return alias_list
   end
 
   def command
