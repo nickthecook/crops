@@ -1,3 +1,5 @@
+require "yaml_util"
+
 class Action
   class ActionConfigError < RuntimeError; end
   getter :name
@@ -6,9 +8,9 @@ class Action
   @aliases : Array(String)?
   @config_errors : Array(String)?
 
-  def initialize(name : String, config : Hash(String, String | Array(String)) | String, args : Array(String))
+  def initialize(name : String, config : Hash(String, YAML::Any) | String, args : Array(String))
     @name = name
-    @config = config || {} of String => (String | Array(String))
+    @config = YamlUtil.hash_with_string_keys(config)
     @args = args
     @aliases = @config["aliases"]
     @alias = @config["alias"]
@@ -78,25 +80,16 @@ class Action
     command.split(" ").reject(&:nil?) | @args
   end
 
-  private def not_in_envs 
-    env_list = @config["not_in_envs"]
-    raise ActionConfigError.new("'not_in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
-
-    env_list || [] of String
+  private def not_in_envs : Array(String)
+    YamlUtil.array_of_strings(@config["not_in_envs"])
   end
 
   private def in_envs : Array(String)
-    env_list = @config["in_envs"]
-    raise ActionConfigError.new("'in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
-
-    env_list || [] of String
+    YamlUtil.array_of_strings(@config["in_envs"])
   end
 
   private def skip_in_envs
-    env_list = @config["skip_in_envs"]
-    raise ActionConfigError.new("'skip_in_envs' must be list, but got '#{env_list}'.") if env_list.is_a?(String)
-
-    env_list || [] of String
+    YamlUtil.array_of_strings(@config["skip_in_envs"])
   end
 
   private def perform_shell_expansion? : Bool

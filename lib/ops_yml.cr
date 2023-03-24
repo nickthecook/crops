@@ -1,10 +1,12 @@
 require "yaml"
+require "yaml_util"
 
 class OpsYml
   class OpsYmlError < Exception; end
 
   @config : Hash(String, YAML::Any) | Nil
   @options : Hash(String, YAML::Any) | Nil
+  @actions : Hash(String, YAML::Any) | Nil
   @env_hash : Hash(String, YAML::Any) | Nil
   @forwards : Hash(String, String) | Nil
 
@@ -14,7 +16,7 @@ class OpsYml
 
   def config : Hash(String, YAML::Any)
     @config ||= if config_file_exists?
-      contents = hash_with_string_keys(parsed_config_contents)
+      contents = YamlUtil.hash_with_string_keys(parsed_config_contents)
     else
       {} of String => YAML::Any
     end
@@ -25,23 +27,20 @@ class OpsYml
   end
 
   def actions : Hash(String, YAML::Any)
-    @actions ||= begin
-      actions = config["actions"]
-
-      raise OpsYmlError.new("'actions' must be a Hash with String keys.") unless actions.is_a?(Hash(String, YAML::Any))
-
-      actions || {} of String => YAML::Any
-    end
+    @actions ||= config_section("actions")
   end
 
   def forwards : Hash(String, String)
     @forwards ||= begin
-      forwards = config["forwards"]
-      return {} of String => String unless forwards
+      forwards_section = config_section("forwards")
 
-      raise OpsYmlError.new("'forwards' must be a Hash with String keys and String values.") unless forwards.is_a?(Hash(String, String))
+      forwards_section.transform_values do |value|
+        value = value.as_s?
 
-      forwards
+        raise OpsYmlError.new("'forwards' must be Hash of String => String.") unless value
+
+        value
+      end
     end
   end
 
@@ -72,25 +71,9 @@ class OpsYml
   private def config_section(name : String) : Hash(String, YAML::Any)
     return {} of String => YAML::Any if (config = @config).nil?
 
-    hash_with_string_keys(config[name])
+    YamlUtil.hash_with_string_keys(config[name])
   rescue KeyError
     {} of String => YAML::Any
-  end
-
-  private def hash_with_string_keys(any : YAML::Any) : Hash(String, YAML::Any)
-    hash = any.as_h?
-    raise OpsYmlError.new("Expected hash, got #{any}") unless hash
-
-    keys_to_string(hash)
-  end
-
-  private def keys_to_string(hash : Hash(YAML::Any, YAML::Any)) : Hash(String, YAML::Any)
-    hash.transform_keys do |k|
-      k = k.as_s?
-      raise OpsYmlError.new("Hash keys must be String.") unless k
-
-      k
-    end
   end
 
   private def parsed_config_contents : YAML::Any
