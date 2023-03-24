@@ -1,3 +1,5 @@
+require "yaml_util"
+
 class Environment
   def self.environment
     return "dev" if ENV["environment"].nil? || ENV["environment"].empty?
@@ -32,9 +34,9 @@ class Environment
   private def environment_aliases
     aliases = Options.get("environment_aliases")
 
-    raise Options::OptionsError.new("'options.environment_aliases' must be an Array of Strings.") unless aliases.is_a?(Array(String))
+    return ["environment"] if aliases.nil?
 
-    aliases || ["environment"]
+    YamlUtil.array_of_strings(aliases)
   end
 
   private def set_configured_variables

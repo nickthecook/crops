@@ -7,7 +7,7 @@ class Forwards
   end
 
   def get(name) : Forward | Nil
-    Forward.new(forwards[name], @args) if forwards[name]
+    Forward.new(forwards[name], @args) if forwards.includes?(name)
   end
 
   def forwards : Hash(String, String)

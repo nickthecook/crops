@@ -54,13 +54,12 @@ class OpsYml
     end
   end
 
-  def env_hash
+  def env_hash : Hash(String, YAML::Any)
     @env_hash ||= begin
-      env_hash = config.dig("options", "environment")
+      env_hash = config.dig?("options", "environment")
+      return {} of String => YAML::Any if env_hash.nil?
 
-      raise OpsYmlError.new("'options.environment' must be a hash with string keys.") unless env_hash.is_a?(Hash(String, YAML::Any))
-
-      env_hash
+      YamlUtil.hash_with_string_keys(env_hash)
     end
   end
 

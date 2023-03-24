@@ -1,6 +1,7 @@
 require "json"
 
 require "environment"
+require "yaml_util"
 
 class AppConfig
   class ParsingError < Exception; end
@@ -35,7 +36,8 @@ class AppConfig
 
   def environment : Hash(String, YAML::Any)
     @environment ||= begin
-      environment = config["environment"]
+    return {} of String => YAML::Any unless config.includes?("environment")
+    environment = YamlUtil.hash_with_string_keys(config["environment"])
 
       raise AppConfigError.new("'environment' must be a hash with string keys.") unless environment.is_a?(Hash(String, YAML::Any))
 
@@ -49,11 +51,12 @@ class AppConfig
     end
   end
 
-  private def config
+  private def config : Hash(String, YAML::Any)
     @config ||= if file_contents == ""
       {} of String => YAML::Any
     elsif file_contents
-      YAML.parse(file_contents.not_nil!)
+      parsed_contents = YAML.parse(file_contents.not_nil!)
+      YamlUtil.hash_with_string_keys(parsed_contents)
     else
       {} of String => YAML::Any
     end
