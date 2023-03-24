@@ -22,15 +22,15 @@ class Output
   end
 
   def self.okay
-    @@out.puts(OKAY.green)
+    @@out.puts(OKAY.colorize(:green))
   end
 
   def self.skipped
-    @@out.puts(SKIPPED.yellow)
+    @@out.puts(SKIPPED.colorize(:yellow))
   end
 
   def self.failed
-    @@out.puts(FAILED.red)
+    @@out.puts(FAILED.colorize(:red))
   end
 
   def self.warn(msg)

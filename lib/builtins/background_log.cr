@@ -7,7 +7,7 @@ module Builtins
 		end
 
 		def run
-			unless File.exist?(Background.log_filename)
+			unless File.exists?(Background.log_filename)
 				Output.warn("No background log found at '#{Background.log_filename}'.")
 				return 0
 			end

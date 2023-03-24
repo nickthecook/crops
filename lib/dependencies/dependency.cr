@@ -4,6 +4,8 @@ module Dependencies
   class Dependency
     DESCRIPTION_TYPE_WIDTH = 8
 
+    @executor : Executor | Nil
+
     getter :name
 
     def initialize(name : String)
@@ -40,14 +42,16 @@ module Dependencies
       self.class.name.split("::").last
     end
 
-    def success?
-      @executor.nil? ? true : @executor.success?
+    def success? : Bool
+      executor = @executor
+      executor.nil? ? true : executor.success?
     end
 
     def output : String
-      return "" unless @executor
+      executor = @executor
+      return "" if executor.nil?
 
-      @executor.output
+      executor.output
     end
 
     def exit_code : Integer | Nil
@@ -56,11 +60,12 @@ module Dependencies
       @executor.exit_code
     end
 
-    private def execute(cmd)
-      @executor = Executor.new(cmd)
-      @executor.execute
+    private def execute(cmd : String) : Bool
+      executor = Executor.new(cmd)
+      @executor = executor
+      executor.execute
 
-      @executor.success?
+      executor.success?
     end
   end
 end
