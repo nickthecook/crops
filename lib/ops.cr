@@ -62,6 +62,9 @@ class Ops
   rescue e : OpsYml::OpsYmlError
     Output.error("Error loading #{@config_file}: #{e}")
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
+  rescue e : YamlUtil::YamlError
+    Output.error("Error loading #{@config_file}: #{e}")
+    exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
   # rubocop:enable Metrics/MethodLength
 
@@ -86,6 +89,8 @@ class Ops
 
   def min_version
     ops_yml.config["min_version"]
+  rescue KeyError
+    nil
   end
 
   private def runner
