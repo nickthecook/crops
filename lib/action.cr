@@ -46,10 +46,14 @@ class Action
     return @config if @config.is_a?(String)
 
     @config["command"]
+  rescue KeyError
+    nil
   end
 
   def description
     @config["description"]
+  rescue KeyError
+    nil
   end
 
   def skip_hooks?(name)
