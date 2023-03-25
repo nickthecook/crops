@@ -2,7 +2,8 @@ dependencies:
   gem:
     - rerun
 actions:
-  run: crystal ops.cr
+  run: crystal run ops.cr --
+  run-debug: crystal run -d --error-trace ops.cr --
   run-watch:
-    command: rerun -qbx -p '**/*.cr' ops run
+    command: rerun -qbx -p '**/*.cr' -- ops run
     alias: rw

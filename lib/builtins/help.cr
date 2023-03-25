@@ -37,15 +37,21 @@ module Builtins
 		private def actions
 			return [] of String unless @ops_yml.actions
 
-			@ops_yml.actions.map do |name, action_config|
-				name = "#{name.colorize(:yellow)} #{alias_string_for(action_config)}"
-				desc = action_config["description"] || action_config["command"]
+			action_list = ActionList.new(@ops_yml.actions, [] of String)
+			action_list.names.map do |name|
+				action = action_list.get(name)
+				next if action.nil?
+
+				name = "#{name.colorize(:yellow)} #{action.aliases}"
+				desc = action.description || action.command
 
 				"#{name}-#{NAME_WIDTH}s #{desc}"
-			end.sort
+			end
 		end
 
-		private def alias_string_for(action_config)
+		private def alias_string_for(action_config : YAML::Any) : String
+			return "" if action_config.as_s?
+
 			return "[#{action_config["alias"]}]" if action_config["alias"]
 
 			""
