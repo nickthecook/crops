@@ -1,6 +1,9 @@
 dependencies:
   gem:
     - rerun
+  custom:
+    - true
+    - echo "Initializing the cloud..."
 actions:
   run: crystal run ops.cr --
   run-debug: crystal run -d --error-trace ops.cr --

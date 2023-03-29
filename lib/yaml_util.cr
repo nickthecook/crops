@@ -22,7 +22,8 @@ class YamlUtil
     raise YamlError.new("Expected list, got #{any.class} '#{any}'.") if array.nil?
 
     array = array.map do |item|
-      item = item.as_s?
+      # put coercion for any type => String here
+      item = item.as_s? || item.as_bool?.to_s
 
       raise YamlError.new("Expected string, got #{item.class} '#{item}'.") if item.nil?
 
