@@ -52,7 +52,7 @@ class ActionList
   end
 
   private def check_duplicate_alias(name, aliaz)
-    return if @aliases[aliaz].nil?
+    return unless @aliases.keys.includes?(aliaz)
 
     Output.warn("Duplicate alias '#{aliaz}' detected in action '#{name}'.")
   end

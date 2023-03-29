@@ -2,9 +2,8 @@ require "yaml_util"
 
 class Action
   class ActionConfigError < RuntimeError; end
-  getter :name
+  getter :name, :aliases
 
-  @alias : String?
   @aliases : Array(String)
   @config_errors : Array(String)?
 
@@ -12,12 +11,23 @@ class Action
     @name = name
     @config = config
     @args = args
-    if config.includes?("aliases")
-      @aliases = YamlUtil.array_of_strings(@config["aliases"])
+    @aliases = generate_aliases_list
+  end
+
+  private def generate_aliases_list
+    if @config.keys.includes?("aliases")
+      aliases = YamlUtil.array_of_strings(@config["aliases"])
     else
-      @aliases = [] of String
+      aliases = [] of String
     end
-    @alias = @config["alias"].as_s? if @config.includes?("alias")
+    return aliases unless @config.keys.includes?("alias")
+
+    if (alias_value = @config["alias"])
+      alias_s = alias_value.as_s?
+      aliases << alias_s if alias_s
+    end
+
+    aliases
   end
 
   def run
@@ -28,18 +38,10 @@ class Action
     "#{command} #{@args.join(' ')}".strip
   end
 
-  def alias : String
-    aliases.first
-  end
+  def alias : String | Nil
+    return nil if @aliases.empty?
 
-  def aliases : Array(String)
-    alias_list = [] of String
-    unless (l_alias = @alias).nil?
-      alias_list << l_alias
-    end
-    alias_list = alias_list + @aliases
-
-    return alias_list
+    @aliases.first
   end
 
   def command

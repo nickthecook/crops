@@ -7,3 +7,7 @@ actions:
   run-watch:
     command: rerun -qbx -p '**/*.cr' -- ops run
     alias: rw
+  test: crystal spec
+  test-watch:
+    command: rerun -qbx -p '**/*.cr' -- ops test
+    alias: tw
