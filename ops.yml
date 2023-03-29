@@ -7,6 +7,8 @@ dependencies:
     - less
   brew:
     - openssl@1.1
+  cask:
+    - meld
   custom:
     - true
     - echo "Initializing the cloud..."
