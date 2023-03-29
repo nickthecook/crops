@@ -1,6 +1,8 @@
 dependencies:
   gem:
     - rerun
+  apk:
+    - less
   custom:
     - true
     - echo "Initializing the cloud..."
