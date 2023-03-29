@@ -4,7 +4,7 @@ require "colorize"
 
 module Builtins
 	class Help < Builtin
-		NAME_WIDTH = 40
+		NAME_WIDTH = 30
 
 		def self.description
 			"displays available builtins, actions, and forwards"
@@ -42,10 +42,9 @@ module Builtins
 				action = action_list.get(name)
 				next if action.nil?
 
-				name = "#{name.colorize(:yellow)} #{action.aliases}"
 				desc = action.description || action.command
 
-				"#{name}-#{NAME_WIDTH}s #{desc}"
+				"%-#{NAME_WIDTH}s %s %s" % [name.colorize(:yellow), action.aliases.join(","), desc]
 			end
 		end
 

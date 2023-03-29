@@ -102,6 +102,8 @@ class Ops
   end
 
   private def check_for_config_file
+    return if File.exists?(@config_file)
+
     Output.warn("File '#{@config_file}' does not exist.") unless @action_name == "init"
   end
 end

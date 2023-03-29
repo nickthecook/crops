@@ -3,7 +3,7 @@ class YamlUtil
 
   def self.hash_with_string_keys(any : YAML::Any) : Hash(String, YAML::Any)
     hash = any.as_h?
-    raise YamlError.new("Expected hash, got #{any}") unless hash
+    raise YamlError.new("Expected hash, got #{any.class.name}: #{any}") unless hash
 
     keys_to_string(hash)
   end

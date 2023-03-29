@@ -4,6 +4,8 @@ class ActionList
   class UnknownActionError < Exception; end
   class ActionFormatError < Exception; end
 
+  @actions_list : Hash(String, YAML::Any)
+
   def initialize(actions_list : Hash(String, YAML::Any), args : Array(String))
     @actions_list = actions_list
     @args = args
@@ -29,16 +31,14 @@ class ActionList
     @aliases.keys
   end
 
-  private def actions_list
-    @actions_list ||= {} of String => Hash(String, YAML::Any)
-  end
-
   private def process_action_list
-    actions_list.each do |name, config|
-      if config.is_a?(YAML::Any)
+    @actions_list.each do |name, config|
+      if (config_s = config.as_s?)
         hash = {} of String => YAML::Any
         hash["command"] = config
         config = hash
+      else
+        config = YamlUtil.hash_with_string_keys(config)
       end
 
       action = Action.new(name, config, @args)

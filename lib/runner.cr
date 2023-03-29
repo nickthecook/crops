@@ -29,13 +29,11 @@ class Runner
   end
 
   def run
-    Output.error "HEEEP"
     l_forward = forward
     return l_forward.run if l_forward
 
     do_before_all
 
-    puts "HEEEEELP"
     l_builtin = builtin
     return l_builtin.run if l_builtin
 
