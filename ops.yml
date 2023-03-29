@@ -11,3 +11,6 @@ actions:
   test-watch:
     command: rerun -qbx -p '**/*.cr' -- ops test
     alias: tw
+  sayhi:
+    command: echo 'Hello, world!'
+    alias: hi

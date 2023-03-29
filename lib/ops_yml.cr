@@ -46,11 +46,16 @@ class OpsYml
 
   def dependencies : Hash(String, Array(String))
     @dependencies ||= begin
-    dependencies = config["dependencies"]
+      if config.keys.includes?("dependencies")
+        dependencies_from_config = YamlUtil.hash_with_string_keys(config["dependencies"])
+        dependencies = {} of String => Array(String)
 
-    raise OpsYmlError.new("'dependencies' must be a hash with keys of type string and values of type array of string.") unless dependencies.is_a?(Hash(String, Array(String)))
+        dependencies_from_config.each do |key, value|
+          dependencies[key] = YamlUtil.array_of_strings(value)
+        end
+      end
 
-    dependencies || {} of String => Array(String)
+      dependencies || {} of String => Array(String)
     end
   end
 

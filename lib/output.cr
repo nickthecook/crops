@@ -18,7 +18,7 @@ class Output
   end
 
   def self.status(name)
-    @@out.print("%-#{STATUS_WIDTH}<name>s " % {name: name})
+    @@out.print("%-#{STATUS_WIDTH}s " % [name])
   end
 
   def self.okay

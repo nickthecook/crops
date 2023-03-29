@@ -39,7 +39,7 @@ module Builtins
 			end
 
 			private def deps_to_meet
-				@deps_to_meet ||= dependency_handler.dependencies.select(:should_meet?)
+				@deps_to_meet ||= dependency_handler.dependencies.select { |dep| dep.should_meet? }
 			end
 
 			private def dependency_handler
