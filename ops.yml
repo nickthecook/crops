@@ -3,6 +3,8 @@ dependencies:
     - rerun
   apk:
     - less
+  apt:
+    - less
   custom:
     - true
     - echo "Initializing the cloud..."

@@ -1,13 +1,15 @@
 require "dependencies/dependency"
+require "dependencies/apk"
+require "dependencies/apt"
 require "dependencies/custom"
 require "dependencies/gem"
-require "dependencies/apk"
 
 module Dependencies
   DEPENDENCIES = {
     "custom" => Dependencies::Custom,
     "gem" => Dependencies::Gem,
-    "apk" => Dependencies::Apk
+    "apk" => Dependencies::Apk,
+    "apt" => Dependencies::Apt
   }
 
   def self.class_for(name : String) : Dependency | Nil
