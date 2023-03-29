@@ -66,7 +66,12 @@ class Runner
   end
 
   private def builtin
-    @builtin ||= Builtins.class_for(name: @action_name).new(@args, @ops_yml)
+    @builtin ||= begin
+      klass = Builtins.class_for(name: @action_name)
+      return nil if klass.nil?
+
+      klass.new(@args, @ops_yml)
+    end
   end
 
   private def builtin_names
@@ -87,7 +92,7 @@ class Runner
       return true
     end
 
-    Output.notice("Running '#{@action}' in environment '#{ENV["environment"]}'...")
+    Output.notice("Running '#{@action.to_s}' in environment '#{ENV["environment"]}'...")
     action.not_nil!.run
   end
 

@@ -77,6 +77,8 @@ class Action
   end
 
   def load_secrets?
+    return false unless @config.keys.includes?("load_secrets")
+
     @config["load_secrets"].nil? ? false : @config["load_secrets"]
   end
 
@@ -97,18 +99,26 @@ class Action
   end
 
   private def not_in_envs : Array(String)
+    return [] of String unless @config.keys.includes?("not_in_envs")
+
     YamlUtil.array_of_strings(@config["not_in_envs"])
   end
 
   private def in_envs : Array(String)
+    return [] of String unless @config.keys.includes?("in_envs")
+
     YamlUtil.array_of_strings(@config["in_envs"])
   end
 
   private def skip_in_envs
+    return [] of String unless @config.keys.includes?("skip_in_envs")
+
     YamlUtil.array_of_strings(@config["skip_in_envs"])
   end
 
   private def perform_shell_expansion? : Bool
+    return true unless @config.includes?("shell_expansion")
+
     @config["shell_expansion"].nil? ? true : !!@config["shell_expansion"]
   end
 end

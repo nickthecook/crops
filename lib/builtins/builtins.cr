@@ -21,7 +21,6 @@ module Builtins
   }
 
   def self.class_for(name : String) : Builtin | Nil
-    puts "NAME #{name}"
-    BUILTINS[name]
+    BUILTINS[name] if BUILTINS.keys.includes?(name)
   end
 end
