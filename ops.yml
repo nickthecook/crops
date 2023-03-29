@@ -5,6 +5,8 @@ dependencies:
     - less
   apt:
     - less
+  brew:
+    - openssl@1.1
   custom:
     - true
     - echo "Initializing the cloud..."
