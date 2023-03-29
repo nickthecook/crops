@@ -4,7 +4,11 @@ require "dependencies/apt"
 require "dependencies/brew"
 require "dependencies/cask"
 require "dependencies/custom"
+require "dependencies/dir"
+require "dependencies/docker"
 require "dependencies/gem"
+require "dependencies/pip"
+require "dependencies/snap"
 
 module Dependencies
   DEPENDENCIES = {
@@ -13,7 +17,11 @@ module Dependencies
     "apk" => Dependencies::Apk,
     "apt" => Dependencies::Apt,
     "brew" => Dependencies::Brew,
-    "cask" => Dependencies::Cask
+    "cask" => Dependencies::Cask,
+    "dir" => Dependencies::Dir,
+    "docker" => Dependencies::Docker,
+    "pip" => Dependencies::Pip,
+    "snap" => Dependencies::Snap
   }
 
   def self.class_for(name : String) : Dependency | Nil

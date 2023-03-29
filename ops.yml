@@ -12,6 +12,10 @@ dependencies:
   custom:
     - true
     - echo "Initializing the cloud..."
+  dir:
+    - dirsftw
+  pip:
+    - ansible
 actions:
   run: crystal run ops.cr --
   run-debug: crystal run -d --error-trace ops.cr --
