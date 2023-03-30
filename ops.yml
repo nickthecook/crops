@@ -10,17 +10,15 @@ dependencies:
     - echo "Initializing the cloud..."
   dir:
     - dirsftw
-  sshkey:
-    - id_rsa_nick
 actions:
   run: crystal run ops.cr --
   run-debug: crystal run -d --error-trace ops.cr --
   run-watch:
-    command: rerun -qb -p '**/*.cr' -- ops run
+    command: rerun -qb -p '**/*.{cr,yml,json}' -- ops run
     alias: rw
   test: crystal spec
   test-watch:
-    command: rerun -qb -p '**/*.cr' -- ops test
+    command: rerun -qb -p '**/*.{cr,yml,json}' -- ops test
     alias: tw
   sayhi:
     command: echo 'Hello, world!'

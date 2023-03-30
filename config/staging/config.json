@@ -1,0 +1,5 @@
+{
+  "environment": {
+    "SSH_KEY_PASSPHRASE": "1234"
+  }
+}

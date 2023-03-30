@@ -11,7 +11,6 @@ class AppConfig
   @environment : Hash(String, YAML::Any) | Nil
 
   def self.load
-    puts "LOAD! #{self.name}"
     new(app_config_path).load
   end
 

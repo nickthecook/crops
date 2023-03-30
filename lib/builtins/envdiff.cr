@@ -98,12 +98,12 @@ module Builtins
 		end
 
 		private def check_environment(name)
-			raise_missing_file_error(config_path_for(name)) unless config_file_exists?(name)
-			raise_missing_file_error(secrets_path_for(name)) unless secrets_file_exists?(name)
+			warn_missing_file(config_path_for(name)) unless config_file_exists?(name)
+			warn_missing_file(secrets_path_for(name)) unless secrets_file_exists?(name)
 		end
 
-		private def raise_missing_file_error(path)
-			raise Builtin::ArgumentError.new("File '#{path}' does not exist.")
+		private def warn_missing_file(path)
+			Output.warn("File '#{path}' does not exist.")
 		end
 
 		private def config_file_exists?(env)
@@ -126,9 +126,13 @@ module Builtins
 			@ignored_keys ||= begin
 				option = Options.get("envdiff.ignored_keys")
 
-				raise Options::OptionsError.new("Option 'envdiff.ignored_keys' must be an array of strings.") unless option.is_a?(Array(String))
+				if option.nil?
+					[] of String
+				else
+					raise Options::OptionsError.new("Option 'envdiff.ignored_keys' must be an array of strings; got #{option.class.name}.") unless option.is_a?(Array(String))
 
-				option || [] of String
+					option
+				end
 			end
 		end
 	end
