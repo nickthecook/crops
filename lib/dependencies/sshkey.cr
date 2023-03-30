@@ -18,11 +18,7 @@ module Dependencies
 		def meet
 			Secrets.load
 
-			puts "PASSPHRASE VAR! #{Options.get_s("sshkey.passphrase_var")}"
 			varname = Options.get_s("sshkey.passphrase_var") || "USER"
-			puts "PASSPHRASE! #{ENV[varname]}"
-			puts "SSH_KEY_PASSPHRASE! #{ENV["SSH_KEY_PASSPHRASE"]}"
-			puts "passphrase! #{passphrase}"
 			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
 
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
@@ -39,16 +35,13 @@ module Dependencies
 		end
 
 		private def generate_key
-			puts "ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
-			execute(
+			system(
 				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
 			)
 		end
 
 		private def add_key
-			ENV["DISPLAY"] = "1"
-			ENV["SSH_ASKPASS"] = "/bin/echo -e \"$SSH_KEY_PASSPHRASE\"\n"
-			system("SSH_ASKPASS='./askpass.sh' ssh-add #{priv_key_name}")
+			system("ssh-add #{priv_key_name}")
 		end
 
 		private def should_add_key?

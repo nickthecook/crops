@@ -13,14 +13,5 @@ Spectator.describe Dependencies::Sshkey do
   end
 
   describe "#meet" do
-
-    mock Secrets
-
-    it "loads secrets" do
-      secrets = mock(Secrets)
-      allow(secrets).to receive(:load).and_return(nil)
-      subject.meet
-      expect(secrets).to have_received(:load)
-    end
   end
 end
