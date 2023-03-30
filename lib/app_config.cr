@@ -11,6 +11,7 @@ class AppConfig
   @environment : Hash(String, YAML::Any) | Nil
 
   def self.load
+    puts "LOAD! #{self.name}"
     new(app_config_path).load
   end
 
@@ -30,16 +31,13 @@ class AppConfig
     `echo #{path}`.chomp
   end
 
-  def initialize(@filename = "")
-    # @filename = filename
+  def initialize(@filename : String)
   end
 
   def environment : Hash(String, YAML::Any)
     @environment ||= begin
-    return {} of String => YAML::Any unless config.includes?("environment")
-    environment = YamlUtil.hash_with_string_keys(config["environment"])
-
-      raise AppConfigError.new("'environment' must be a hash with string keys.") unless environment.is_a?(Hash(String, YAML::Any))
+      return {} of String => YAML::Any unless config.keys.includes?("environment")
+      environment = YamlUtil.hash_with_string_keys(config["environment"])
 
       environment
     end

@@ -2,6 +2,7 @@ require "yaml_util"
 
 class Environment
   def self.environment
+    return "dev" unless ENV.keys.includes?("environment")
     return "dev" if ENV["environment"].nil? || ENV["environment"].empty?
 
     ENV["environment"]

@@ -1,0 +1,15 @@
+---
+version: 1.0
+shards:
+  ssh2:
+    git: https://github.com/spider-gazelle/ssh2.cr.git
+    version: 1.5.3
+  singleton:
+    git: https://github.com/waterlink/singleton.cr.git
+    version: 1.0.0
+  mocks:
+    git: https://github.com/waterlink/mocks.cr.git
+    version: 0.9.6
+  spectator:
+    git: https://gitlab.com/arctic-fox/spectator.git
+    version: 0.11.6

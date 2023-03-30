@@ -1,5 +1,5 @@
-require "spec"
-require "action"
+require "./spec_helper"
+
 require "yaml"
 
 describe Action do

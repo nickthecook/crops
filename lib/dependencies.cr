@@ -9,6 +9,7 @@ require "dependencies/docker"
 require "dependencies/gem"
 require "dependencies/pip"
 require "dependencies/snap"
+require "dependencies/sshkey"
 
 module Dependencies
   DEPENDENCIES = {
@@ -21,7 +22,8 @@ module Dependencies
     "dir" => Dependencies::Dir,
     "docker" => Dependencies::Docker,
     "pip" => Dependencies::Pip,
-    "snap" => Dependencies::Snap
+    "snap" => Dependencies::Snap,
+    "sshkey" => Dependencies::Sshkey
   }
 
   def self.class_for(name : String) : Dependency | Nil

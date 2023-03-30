@@ -32,7 +32,7 @@ class Ops
     @args = argv[1..-1]
     @config_file = config_file || "ops.yml"
 
-    Options.set(ops_yml.options || {} of String => YAML::Any)
+    Options.set(ops_yml.options || nil)
     check_for_config_file
   end
 

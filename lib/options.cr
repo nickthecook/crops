@@ -4,29 +4,36 @@ class Options
   class OptionsError < Exception; end
   class OptionsTypeError < Exception; end
 
-  @@options : Hash(String, YAML::Any) | Nil
+  @@options : YAML::Any | Nil
 
-  def self.get(path)
+  def self.get(path) : YAML::Any | Nil
     env_var_path = env_var(path)
     env_var = ENV.includes?(env_var_path) ? ENV[env_var_path] : nil
     return YAML.parse(env_var) unless env_var.nil?
 
     l_options = @@options
     return nil if l_options.nil?
-    dig(path.split("."))
+    self.digmfer(l_options, path.split("."))
   end
 
   def self.get_s(path) : String | Nil
-    var_name = env_var(path)
-    parsed_val = YAML.parse(var_name)
+    value = get(path)
 
-    return nil if parsed_val.nil?
-
-    parsed_val.to_s
+    value.as_s? if value
   end
 
-  def self.set(options : Hash(String, YAML::Any) | Nil)
+  def self.set(options : YAML::Any | Nil)
     @@options = options
+  end
+
+  private def self.digmfer(obj : YAML::Any, keys : Array(String)) : YAML::Any | Nil
+    return obj if keys.empty?
+
+    hash = obj.as_h?
+    return nil if hash.nil?
+    return nil unless hash.keys.includes?(keys.first)
+
+    digmfer(hash[keys.first], keys[1..])
   end
 
   private def self.env_var(path)
