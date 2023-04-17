@@ -31,7 +31,12 @@ class Action
   end
 
   def run
-    Process.exec(command: to_s, shell: perform_shell_expansion?)
+    if perform_shell_expansion?
+      Process.exec(command: to_s, shell: true)
+    else
+      tokens = to_s.split(" ")
+      Process.exec(tokens.first, tokens.[1..], shell: false)
+    end
   end
 
   def to_s
@@ -119,8 +124,8 @@ class Action
   end
 
   private def perform_shell_expansion? : Bool
-    return true unless @config.includes?("shell_expansion")
+    return true unless @config.keys.includes?("shell_expansion")
 
-    @config["shell_expansion"].nil? ? true : !!@config["shell_expansion"]
+    @config["shell_expansion"].as_bool
   end
 end
