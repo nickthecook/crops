@@ -26,4 +26,4 @@ while ARGV.first =~ /^-/
   end
 end
 
-Ops.new(ARGV, config_file: options["config_file"]).run
+exit Ops.new(ARGV, config_file: options["config_file"]).run ? 0 : 1
