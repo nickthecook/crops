@@ -5,13 +5,11 @@ class HookHandler
 	class HookExecError < RuntimeError; end
 
 	def initialize(@hooks_config : Hash(String, YAML::Any))
-		Output.debug("GOT hooks config #{@hooks_config}")
 	end
 
 	def do_hooks(name)
 		raise HookConfigError.new("'hooks.#{name}' must be a list") unless hooks(name).is_a?(Array)
 
-		Output.debug("Running hooks #{hooks(name)}...")
 		execute_hooks(name)
 	end
 

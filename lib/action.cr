@@ -65,7 +65,6 @@ class Action
 
   def skip_hooks?(name)
     skip_key = "skip_#{name}_hooks"
-    Output.debug("#{skip_key}? #{@config.keys.includes?(skip_key)}")
     @config.keys.includes?(skip_key) && @config[skip_key]
   end
 
