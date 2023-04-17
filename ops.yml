@@ -12,9 +12,6 @@ dependencies:
     - dirsftw
 forwards:
   ftw: dirsftw
-hooks:
-  before:
-    - touch test_hook_file
 actions:
   run: crystal run ops.cr --
   run-debug: crystal run -d --error-trace ops.cr --
