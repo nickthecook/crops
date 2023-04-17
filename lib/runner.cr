@@ -106,7 +106,9 @@ class Runner
 
   private def action_list
     @action_list ||= begin
-      Output.warn("'ops.yml' has no 'actions' defined.") if @ops_yml.config.any? && @ops_yml.config["actions"].nil?
+      if @ops_yml.config.any? && (!@ops_yml.config.keys.includes?("actions") || @ops_yml.config["actions"].nil?)
+        Output.warn("'ops.yml' has no 'actions' defined.")
+      end
 
       ActionList.new(@ops_yml.actions, @args)
     end
