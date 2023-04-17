@@ -60,4 +60,10 @@ class Output
   def self.dummy_output
     @@dummy_output ||= DummyOutput.new
   end
+
+  def self.debug(msg)
+    return unless ENV.keys.includes?("OPS_DEBUG_OUTPUT") && ENV["OPS_DEBUG_OUTPUT"]
+
+    @@err.puts(msg.colorize(:blue))
+  end
 end

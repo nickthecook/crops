@@ -54,7 +54,7 @@ class Runner
   end
 
   private def do_before_action
-    return if ENV["OPS_RUNNING"] || @action.not_nil!.skip_hooks?("before")
+    return if ENV.keys.includes?("OPS_RUNNING") || @action.not_nil!.skip_hooks?("before")
 
     # this prevents before hooks from running in ops executed by ops
     ENV["OPS_RUNNING"] = "1"
@@ -62,7 +62,7 @@ class Runner
   end
 
   private def hook_handler
-    HookHandler.new(@ops_yml.config)
+    HookHandler.new(@ops_yml.hooks)
   end
 
   private def builtin

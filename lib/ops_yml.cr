@@ -9,6 +9,7 @@ class OpsYml
   @actions : Hash(String, YAML::Any) | Nil
   @env_hash : Hash(String, YAML::Any) | Nil
   @forwards : Hash(String, String) | Nil
+  @hooks : Hash(String, YAML::Any) | Nil
 
   def initialize(config_file : String)
     @config_file = config_file
@@ -26,12 +27,17 @@ class OpsYml
 
   def options : YAML::Any | Nil
     return nil if (l_config = config).nil?
+    return nil unless l_config.keys.includes?("options")
 
     l_config["options"]
   end
 
   def actions : Hash(String, YAML::Any)
     @actions ||= config_section("actions")
+  end
+
+  def hooks : Hash(String, YAML::Any)
+    @hooks ||= config_section("hooks")
   end
 
   def forwards : Hash(String, String)
@@ -78,6 +84,7 @@ class OpsYml
 
   private def config_section(name : String) : Hash(String, YAML::Any)
     return {} of String => YAML::Any if (l_config = config).nil?
+    return {} of String => YAML::Any unless l_config.keys.includes?(name)
 
     YamlUtil.hash_with_string_keys(l_config[name])
   rescue KeyError

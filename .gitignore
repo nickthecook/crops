@@ -2,3 +2,4 @@ lib/spectator
 lib/ssh2
 lib/singleton
 ops.dwarf
+ops

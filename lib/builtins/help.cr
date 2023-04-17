@@ -26,12 +26,17 @@ module Builtins
 
 		private def forwards
 			Forwards.new(@ops_yml).forwards.map do |name, dir|
-				"#{name.colorize(:yellow)}-#{NAME_WIDTH}s #{dir.to_s}"
+				"%-#{NAME_WIDTH}s %s" % [name.colorize(:yellow), dir.to_s]
 			end
 		end
 
 		private def builtins
-			Builtins::BUILTINS.keys
+			Builtins::BUILTINS.keys.map do |builtin|
+				builtin_class = Builtins.class_for(builtin)
+				next unless builtin_class
+
+				"%-#{NAME_WIDTH}s %s" % [builtin.colorize(:yellow), builtin_class.description]
+			end
 		end
 
 		private def actions
@@ -43,8 +48,13 @@ module Builtins
 				next if action.nil?
 
 				desc = action.description || action.command
+				name_and_aliases = if action.aliases.any?
+					"#{name.colorize(:yellow)} [#{action.aliases.join(",")}]"
+				else
+					name.colorize(:yellow)
+				end
 
-				"%-#{NAME_WIDTH}s %s %s" % [name.colorize(:yellow), action.aliases.join(","), desc]
+				"%-#{NAME_WIDTH}s %s" % [name_and_aliases, desc]
 			end
 		end
 

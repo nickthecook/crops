@@ -5,16 +5,19 @@ class HookHandler
 	class HookExecError < RuntimeError; end
 
 	def initialize(@hooks_config : Hash(String, YAML::Any))
+		Output.debug("GOT hooks config #{@hooks_config}")
 	end
 
 	def do_hooks(name)
 		raise HookConfigError.new("'hooks.#{name}' must be a list") unless hooks(name).is_a?(Array)
 
+		Output.debug("Running hooks #{hooks(name)}...")
 		execute_hooks(name)
 	end
 
 	private def hooks(name) : Array(String)
 		return [] of String unless @hooks_config
+		return [] of String unless @hooks_config.keys.includes?(name)
 
 		hooks_list = @hooks_config[name].as_a
 		return hooks_list.map { |hook| hook.to_s }
