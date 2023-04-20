@@ -50,6 +50,7 @@ class AppConfig
 
   private def config : Hash(String, YAML::Any)
     @config ||= if file_contents == ""
+			Output.warn("Config file '#{@filename}' exists but is empty.")
       {} of String => YAML::Any
     elsif file_contents
       parsed_contents = YAML.parse(file_contents.not_nil!)
