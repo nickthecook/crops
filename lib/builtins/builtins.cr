@@ -1,4 +1,5 @@
 require "builtins/builtin"
+require "builtins/countdown"
 require "builtins/down"
 require "builtins/env"
 require "builtins/envdiff"
@@ -10,6 +11,7 @@ require "builtins/version"
 
 module Builtins
   BUILTINS = {
+    "countdown" => Countdown,
     "down" => Down,
     "env" => Env,
     "envdiff" => Envdiff,
