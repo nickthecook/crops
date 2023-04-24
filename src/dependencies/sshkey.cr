@@ -19,7 +19,6 @@ module Dependencies
 		def meet
 			Secrets.load
 
-			Output.debug("Passphrase: #{passphrase}")
 			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
 
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
@@ -36,7 +35,7 @@ module Dependencies
 		end
 
 		private def generate_key
-			Output.debug("Generating SSH key with passphrase '#{passphrase}'...")
+			Output.debug("Generating SSH key with passphrase...")
 			execute(
 				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
 			)

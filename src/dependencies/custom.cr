@@ -56,8 +56,9 @@ module Dependencies
 		private def parse_definition : Tuple(String, Hash(String, String) | Nil)
 			return Tuple.new(@definition.to_s, nil) if @definition.is_a?(String)
 
+			Output.debug("NOT A STRING")
       unless @definition.is_a?(Hash(String, Hash(String, String)))
-        raise CustomConfigError.new("Each 'custom' depdendencies must be a string or, e.g.: name: { up: 'up cmd', down: 'down cmd' }")
+        raise CustomConfigError.new("Each 'custom' depdendency must be a string or, e.g.: name: { up: 'up cmd', down: 'down cmd' }")
       end
 
 			Hash.cast(@definition).first

@@ -28,7 +28,7 @@ module Dependencies
 
       private def decrypt_key : String | Nil
         FileUtils.cp(@source_key_path, temp_key_file.path)
-        Output.debug("Decrypting key with passphrase '#{@passphrase}'")
+        Output.debug("Decrypting key with passphrase...")
         if executor.execute
           Output.debug("Key decrypted in #{temp_key_file.path}")
 
