@@ -4,3 +4,5 @@ lib/singleton
 ops.dwarf
 ops
 config/dev
+/test
+/test.pub

@@ -62,7 +62,7 @@ class Output
   end
 
   def self.debug(msg)
-    return unless ENV.keys.includes?("OPS_DEBUG_OUTPUT") && ENV["OPS_DEBUG_OUTPUT"]
+    return unless ENV.keys.includes?("OPS_DEBUG_OUTPUT") && ENV["OPS_DEBUG_OUTPUT"] == "true"
 
     @@err.puts(msg.colorize(:blue))
   end

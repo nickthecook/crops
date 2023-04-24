@@ -43,8 +43,7 @@ module Dependencies
     end
 
     def success? : Bool
-      executor = @executor
-      executor.nil? ? true : executor.success?
+      (l_executor = @executor).nil? ? true : l_executor.success?
     end
 
     def output : String

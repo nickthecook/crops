@@ -1,4 +1,6 @@
 dependencies:
+  sshkey:
+    - test
   gem:
     - rerun
   apk:
@@ -18,11 +20,11 @@ actions:
   run: crystal run ops.cr --
   run-debug: crystal run -d --error-trace ops.cr --
   run-watch:
-    command: rerun --no-notify -qb -p '**/*.{cr,yml,json}' -- ops run
+    command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops run
     alias: rw
   test: crystal spec
   test-watch:
-    command: rerun --no-notify -qb -p '**/*.{cr,yml,json}' -- ops test
+    command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
   sayhi:
     command: echo 'Hello, world!'
@@ -32,7 +34,5 @@ actions:
     echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
     ops build && cp ./ops "$INSTALL_DIR"
 options:
-  sshkey:
-    passphrase_var: SSH_KEY_PASSPHRASE
   environment:
     INSTALL_DIR: "$HOME/bin/"

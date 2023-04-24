@@ -1,5 +1,6 @@
 require "dependencies/dependency"
 require "../secrets"
+require "dependencies/helpers/ssh_key_decryptor"
 
 require "ssh2"
 
@@ -18,7 +19,7 @@ module Dependencies
 		def meet
 			Secrets.load
 
-			varname = Options.get_s("sshkey.passphrase_var") || "USER"
+			Output.debug("Passphrase: #{passphrase}")
 			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
 
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
@@ -35,21 +36,27 @@ module Dependencies
 		end
 
 		private def generate_key
-			system(
+			Output.debug("Generating SSH key with passphrase '#{passphrase}'...")
+			execute(
 				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
 			)
 		end
 
 		private def add_key
-			system("ssh-add #{priv_key_name}")
+			Output.debug("Calling SshKeyDecryptor...")
+			decryptor.plaintext_key
+			@executor = l_executor = decryptor.executor
+			return unless l_executor.success?
+			Output.debug("Adding decrypted SSH key...")
+			execute("ssh-add -q - <<~EOF\n#{decryptor.plaintext_key}\nEOF &>/dev/null")
 		end
 
 		private def should_add_key?
 			ENV["SSH_AUTH_SOCK"] && opt_add_keys?
 		end
 
-		private def unencrypted_key
-			Net::SSH::KeyFactory.load_private_key(priv_key_name, passphrase.empty? ? nil : passphrase)
+		private def decryptor
+			@decryptor ||= Helpers::SshKeyDecryptor.new(priv_key_name, passphrase)
 		end
 
 		private def key_comment
@@ -85,7 +92,7 @@ module Dependencies
 		end
 
 		private def opt_passphrase
-			Options.get_s("sshkey.passphrase_var")
+			Options.get_s("sshkey.passphrase_var") || "SSH_KEY_PASSPHRASE"
 		end
 
 		private def opt_add_keys?
