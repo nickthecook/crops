@@ -36,3 +36,4 @@ options:
     passphrase_var: SSH_KEY_PASSPHRASE
   environment:
     INSTALL_DIR: "$HOME/bin/"
+    CRYSTAL_PATH: "src:lib:/snap/crystal/1607/bin/../share/crystal/src"
