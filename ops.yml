@@ -6,6 +6,7 @@ dependencies:
   apt:
     - less
   custom:
+    - shards install
     - true
     - echo "Initializing the cloud..."
   dir:
