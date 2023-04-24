@@ -22,7 +22,7 @@ module Builtins
     "version" => Version,
   }
 
-  def self.class_for(name : String) : Builtin | Nil
+  def self.class_for(name : String) : Builtin.class | Nil
     BUILTINS[name] if BUILTINS.keys.includes?(name)
   end
 end

@@ -5,6 +5,7 @@ dependencies:
     - less
   apt:
     - less
+    - libssh2-1-dev
   custom:
     - shards install
     - true

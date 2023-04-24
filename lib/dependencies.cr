@@ -26,7 +26,7 @@ module Dependencies
     "sshkey" => Dependencies::Sshkey
   }
 
-  def self.class_for(name : String) : Dependency | Nil
+  def self.class_for(name : String) : Dependency.class | Nil
     DEPENDENCIES[name] if DEPENDENCIES.keys.includes?(name)
   end
 end
