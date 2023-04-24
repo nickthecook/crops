@@ -44,7 +44,15 @@ class AppConfig
 
   def load
     environment.each do |key, value|
-      ENV[key] = value.is_a?(Hash) || value.is_a?(Array) ? value.to_json : value.to_s
+      if (hash_value = value.as_h?)
+        value = value.to_json
+      elsif (array_value = value.as_a?)
+        value = value.to_json
+      else
+        value = value.to_s
+      end
+
+      ENV[key] = value
     end
   end
 
