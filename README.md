@@ -4,7 +4,6 @@
 
 `crops` does not support:
 
-- the `countdown` builtin (`cd`)
 - the `background` builtin (`bg`)
 - the `background-log` builtin (`bglog`)
 - performance profiling
