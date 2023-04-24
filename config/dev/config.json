@@ -1,7 +1,0 @@
-{
-  "environment": {
-    "SSH_KEY_PASSPHRASE": "1235",
-    "DEBUG": true,
-    "CRYSTAL_PATH": "src:lib:/snap/crystal/1607/bin/../share/crystal/src"
-  }
-}
