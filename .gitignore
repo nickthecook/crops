@@ -6,3 +6,4 @@ ops
 config/dev
 /test
 /test.pub
+ops.o

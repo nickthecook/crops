@@ -18,7 +18,7 @@ forwards:
   ftw: dirsftw
 actions:
   run: crystal run ops.cr --
-  run-debug: crystal run -d --error-trace ops.cr --
+  debug: OPS_DEBUG_OUTPUT=true crystal run -d --error-trace ops.cr --
   run-watch:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops run
     alias: rw
@@ -26,13 +26,15 @@ actions:
   test-watch:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
-  sayhi:
-    command: echo 'Hello, world!'
-    alias: hi
   build: crystal build ops.cr
+  build-mac-arm64: crystal build ops.cr --cross-compile --target arm64-apple-darwin22.4.0
+  build-mac-amd64: crystal build ops.cr --cross-compile --target x86_64-apple-darwin22.4.0
+  build-linux-amd64: crystal build ops.cr --cross-compile --target x86_64-pc-linux-gnu
+  get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install: |-
     echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
     ops build && cp ./ops "$INSTALL_DIR"
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
+    SSH_KEY_PASSPHRASE: test
