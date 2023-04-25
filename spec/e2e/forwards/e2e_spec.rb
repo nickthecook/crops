@@ -9,12 +9,12 @@ RSpec.describe "forwards" do
 
 		remove_untracked_files
 
-		@output1, @output_file1, @exit_status1 = run_ops("../../../bin/ops app action_one")
-		@output2, @output_file2, @exit_status2 = run_ops("../../../bin/ops app action_two")
-		@output3, @output_file3, @exit_status3 = run_ops("../../../bin/ops app config_val")
-		@output4, @output_file4, @exit_status4 = run_ops("../../../bin/ops app secret_val")
-		@output5, @output_file5, @exit_status5 = run_ops("../../../bin/ops app echo_var")
-		@output6, @output_file6, @exit_status6 = run_ops("../../../bin/ops app echo_top_var")
+		@output1, @output_file1, @exit_status1 = run_ops("../../../build/ops app action_one")
+		@output2, @output_file2, @exit_status2 = run_ops("../../../build/ops app action_two")
+		@output3, @output_file3, @exit_status3 = run_ops("../../../build/ops app config_val")
+		@output4, @output_file4, @exit_status4 = run_ops("../../../build/ops app secret_val")
+		@output5, @output_file5, @exit_status5 = run_ops("../../../build/ops app echo_var")
+		@output6, @output_file6, @exit_status6 = run_ops("../../../build/ops app echo_top_var")
 	end
 
 	it "succeeds" do

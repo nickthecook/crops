@@ -8,7 +8,7 @@ RSpec.describe "no actions" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../../bin/ops ls")
+		@output, @output_file, @exit_status = run_ops("../../../../build/ops ls")
 	end
 
 	it "fails" do

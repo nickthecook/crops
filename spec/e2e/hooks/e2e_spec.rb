@@ -9,7 +9,7 @@ RSpec.describe "hooks" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../bin/ops hello")
+		@output, @output_file, @exit_status = run_ops("../../../build/ops hello")
 	end
 
 	it "succeeds" do

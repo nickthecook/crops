@@ -6,7 +6,6 @@ ops.dwarf
 /config/dev
 /test
 /test.pub
-/ops.o
 vendor
 .DS_Store
 
@@ -15,5 +14,5 @@ ops*.out
 ops*.err
 spec/e2e/hooks/before_hook_*
 user@host*
-bin/ops
+build/ops
 spec/e2e/dependencies/custom/custom*
