@@ -34,7 +34,7 @@ class Output
   end
 
   def self.warn(msg)
-    @@err.puts(msg.colorize(:light_red))
+    @@err.puts(msg.colorize(:yellow))
   end
 
   def self.notice(msg)
@@ -42,7 +42,7 @@ class Output
   end
 
   def self.error(msg)
-    @@err.puts(msg.colorize(:magenta))
+    @@err.puts(msg.colorize(:red))
   end
 
   def self.out(msg)
