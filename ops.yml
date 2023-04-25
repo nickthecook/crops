@@ -35,6 +35,7 @@ actions:
   test-e2e-watch:
     command: rerun --no-notify -qb -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
+  lint: rubocop --autocorrect
   build: crystal build ops.cr -o bin/ops
   build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin22.4.0
   build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin22.4.0

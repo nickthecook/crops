@@ -1,11 +1,12 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  NewCops: enable
 Layout/IndentationStyle:
   Enabled: false
 Layout/IndentationWidth:
   Width: 1
 Style/Documentation:
   Enabled: false
-AllCops:
-  TargetRubyVersion: 2.5
 Style/StringLiterals:
   Enabled: false
 Style/HashEachMethods:

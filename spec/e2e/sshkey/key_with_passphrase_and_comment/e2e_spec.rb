@@ -1,6 +1,6 @@
-require_relative '../ssh_spec_helper'
-
 # frozen_string_literal: true
+
+require_relative '../ssh_spec_helper'
 
 RSpec.describe "ssh key with passphrase var" do
 	include_context "ops e2e"

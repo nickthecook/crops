@@ -18,7 +18,7 @@ shared_context "ops e2e" do
 	def run_ops(cmd, output_file = "ops.out")
 		output, status = Open3.capture2e(cmd)
 
-		File.open(output_file, "w") { |file| file.write(output) }
+		File.write(output_file, output)
 
 		[output, output_file, status.exitstatus]
 	end

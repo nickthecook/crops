@@ -3,7 +3,7 @@
 require 'English'
 
 shared_examples "creates an SSH key" do |private_key_file|
-	let(:public_key_file) { private_key_file + ".pub" }
+	let(:public_key_file) { "#{private_key_file}.pub" }
 	let(:private_key) { File.read(private_key_file) }
 	let(:public_key) { File.read(public_key_file) }
 

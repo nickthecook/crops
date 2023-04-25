@@ -8,7 +8,7 @@
 - the `background-log` builtin (`bglog`)
 - performance profiling
 - "did you mean...?" suggestions
-- the `sshkey.passphrase` option (use `ssh.passphrase_var`)
+- the `sshkey.passphrase` option (use `ssh.passphrase_var`; default is `SSH_KEY_PASSPHRASE`)
 
 ## Things that are different from `ops` but will be fixed
 
