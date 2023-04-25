@@ -14,8 +14,11 @@ module Dependencies
 
       def plaintext_key : String | Nil
         @plaintext_key ||= begin
+        Output.debug("Creating temporary key file '#{temp_key_file.path}'...")
+        FileUtils.cp(@source_key_path, temp_key_file.path)
           plaintext = decrypt_key
 
+          Output.debug("Deleting temporary key file '#{temp_key_file.path}'...")
           File.delete(temp_key_file.path)
 
           plaintext
@@ -27,12 +30,11 @@ module Dependencies
       end
 
       private def decrypt_key : String | Nil
-        FileUtils.cp(@source_key_path, temp_key_file.path)
         Output.debug("Decrypting key with passphrase...")
         if executor.execute
           Output.debug("Key decrypted in #{temp_key_file.path}")
 
-          File.read(temp_key_file.path)
+          temp_key_file.gets_to_end
         else
           Output.debug("Key decryption failed: #{executor.output}")
         end
