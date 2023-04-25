@@ -1,5 +1,9 @@
 # crops changelog
 
+## 0.3.0
+
+- add support for split custom dependencies
+
 ## 0.2.0
 
 - output version with name, i.e. `crops-x.y.x`, to distinguish from Ruby `ops`
