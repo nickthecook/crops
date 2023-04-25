@@ -17,6 +17,9 @@ dependencies:
     - echo "Initializing the cloud..."
   dir:
     - build
+    - build/darwin_arm64
+    - build/darwin_amd64
+    - build/linux_x86_64
 forwards:
   ftw: dirsftw
 actions:
@@ -37,13 +40,17 @@ actions:
     alias: ew
   lint: rubocop --autocorrect
   build: crystal build ops.cr -o build/ops
-  build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin22.4.0
-  build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin22.4.0
-  build-linux-amd64: ops build --cross-compile --target x86_64-pc-linux-gnu
+  build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin -o build/darwin_arm64/ops
+  build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin -o build/darwin_amd64/ops
+  build-linux-amd64: ops build --cross-compile --target x86_64-pc-linux-gnu -o build/linux_x86_64/ops
+  build-all: |-
+    ops build-mac-arm64
+    ops build-mac-amd64
+    ops build-linux-amd64
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install:
     command: |-
-      echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
+      echo 1>&2 "Installing 'build/ops' into '$INSTALL_DIR'..."
       ops build && cp build/ops "$INSTALL_DIR"
     alias: bi
 options:
