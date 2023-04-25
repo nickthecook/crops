@@ -6,7 +6,7 @@ require "dependencies/gem"
 module Builtins
 	module Helpers
 		class DependencyHandler
-			@dependency_set : Hash(String, Array(String))
+			@dependency_set : Hash(String, Array(String | Hash(String, YAML::Any)))
 
 			def initialize(dependency_set)
 				@dependency_set = dependency_set

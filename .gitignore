@@ -16,3 +16,4 @@ ops*.err
 spec/e2e/hooks/before_hook_*
 user@host*
 bin/ops
+spec/e2e/dependencies/custom/custom*

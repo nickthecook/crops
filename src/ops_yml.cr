@@ -54,18 +54,26 @@ class OpsYml
     end
   end
 
-  def dependencies : Hash(String, Array(String))
+  def dependencies : Hash(String, Array(String | Hash(String, YAML::Any)))
     @dependencies ||= begin
       if config.keys.includes?("dependencies")
         dependencies_from_config = YamlUtil.hash_with_string_keys(config["dependencies"])
-        dependencies = {} of String => Array(String)
+        dependencies = {} of String => Array(String | Hash(String, YAML::Any))
 
         dependencies_from_config.each do |key, value|
-          dependencies[key] = YamlUtil.array_of_strings(value)
+          dep_arr = [] of String | Hash(String, YAML::Any)
+          YamlUtil.array(value).each do |array_value|
+            if array_value.as_h?
+              dep_arr << YamlUtil.hash_with_string_keys(array_value)
+            elsif array_value.as_s?
+              dep_arr << array_value.as_s
+            end
+          end
+          dependencies[key] = dep_arr
         end
       end
 
-      dependencies || {} of String => Array(String)
+      dependencies || {} of String => Array(String | Hash(String, YAML::Any))
     end
   end
 

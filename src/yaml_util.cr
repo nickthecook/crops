@@ -17,6 +17,13 @@ class YamlUtil
     end
   end
 
+  def self.array(any : YAML::Any) : Array(YAML::Any)
+    array = any.as_a?
+    raise YamlError.new("Expected list, got #{any.class} '#{any}'.") if array.nil?
+
+    array
+  end
+
   def self.array_of_strings(any : YAML::Any) : Array(String)
     array = any.as_a?
     raise YamlError.new("Expected list, got #{any.class} '#{any}'.") if array.nil?

@@ -33,7 +33,7 @@ actions:
     command: ops build && bundle exec rspec
     alias: e2e
   test-e2e-watch:
-    command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops e2e
+    command: rerun --no-notify -qb -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
   build: crystal build ops.cr -o bin/ops
   build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin22.4.0

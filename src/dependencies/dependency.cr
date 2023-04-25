@@ -4,12 +4,13 @@ module Dependencies
   class Dependency
     DESCRIPTION_TYPE_WIDTH = 8
 
+    @name : String
     @executor : Executor | Nil
 
     getter :name
 
-    def initialize(name : String)
-      @name = name
+    def initialize(name)
+      @name = name.to_s
     end
 
     def met?

@@ -2,14 +2,13 @@ require "dependencies/dependency"
 
 module Dependencies
 	class Custom < Dependency
-		class CustomConfigError < Exception; end
 
     @name : String
     @config : Hash(String, String) | Nil
     @up_command : String?
     @down_command : String?
 
-		def initialize(@definition : String | Hash(String, Hash(String, String)))
+		def initialize(@definition : String | Hash(String, YAML::Any))
 			super
 			@name, @config = parse_definition
 		end
@@ -54,14 +53,14 @@ module Dependencies
 		end
 
 		private def parse_definition : Tuple(String, Hash(String, String) | Nil)
-			return Tuple.new(@definition.to_s, nil) if @definition.is_a?(String)
+			l_def = @definition
+			return Tuple.new(l_def.to_s, nil) if l_def.is_a?(String)
 
-			Output.debug("NOT A STRING")
-      unless @definition.is_a?(Hash(String, Hash(String, String)))
-        raise CustomConfigError.new("Each 'custom' depdendency must be a string or, e.g.: name: { up: 'up cmd', down: 'down cmd' }")
-      end
+			hss = l_def.transform_values do |value|
+				value.to_s
+			end
 
-			Hash.cast(@definition).first
+			Tuple.new(l_def.to_s, hss)
 		end
 	end
 end
