@@ -40,9 +40,11 @@ actions:
   build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin22.4.0
   build-linux-amd64: ops build --cross-compile --target x86_64-pc-linux-gnu
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
-  install: |-
-    echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
-    ops build && cp ./ops "$INSTALL_DIR"
+  install:
+    command: |-
+      echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
+      ops build && cp bin/ops "$INSTALL_DIR"
+    alias: bi
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"

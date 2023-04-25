@@ -7,7 +7,7 @@ module Builtins
 		end
 
 		def run
-			Output.out(::Version.version)
+			Output.out(::Version.name_and_version)
 
 			true
 		end
