@@ -20,7 +20,6 @@ module Dependencies
 			Secrets.load
 
 			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
-			Output.debug("SSH key passphrase is #{passphrase}")
 
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
 			generate_key unless File.exists?(priv_key_name) && File.exists?(pub_key_name)
