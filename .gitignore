@@ -2,8 +2,17 @@ lib/spectator
 lib/ssh2
 lib/singleton
 ops.dwarf
-ops
-config/dev
+/ops
+/config/dev
 /test
 /test.pub
-ops.o
+/ops.o
+vendor
+.DS_Store
+
+# e2e spec artefacts
+ops*.out
+ops*.err
+spec/e2e/hooks/before_hook_*
+user@host*
+bin/ops

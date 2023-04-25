@@ -1,0 +1,24 @@
+hooks:
+  before:
+    - echo app before hook
+actions:
+  action_one:
+    command: echo "action one"
+  action_two:
+    command: echo "action two"
+  config_val:
+    command: echo $VAR_ONE
+  secret_val:
+    command: echo $SECRET_ONE
+    load_secrets: true
+  echo_var:
+    command: echo $ENVIRONMENT_OPTION
+  echo_top_var:
+    command: echo $TOP_LEVEL_OPTION
+options:
+  config:
+    path: config.json
+  secrets:
+    path: secrets.json
+  environment:
+    ENVIRONMENT_OPTION: app-level value

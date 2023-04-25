@@ -1,6 +1,8 @@
 require "json"
 require "command"
 
+require "app_config"
+
 class Secrets < AppConfig
   @ejson_contents : String | Nil
 

@@ -3,6 +3,7 @@ dependencies:
     - test
   gem:
     - rerun
+    - bundle
   apk:
     - less
   apt:
@@ -10,6 +11,8 @@ dependencies:
     - libssh2-1-dev
   custom:
     - shards install
+    - bundle config --local path vendor/bundle
+    - bundle
     - true
     - echo "Initializing the cloud..."
   dir:
@@ -26,10 +29,16 @@ actions:
   test-watch:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
-  build: crystal build ops.cr
-  build-mac-arm64: crystal build ops.cr --cross-compile --target arm64-apple-darwin22.4.0
-  build-mac-amd64: crystal build ops.cr --cross-compile --target x86_64-apple-darwin22.4.0
-  build-linux-amd64: crystal build ops.cr --cross-compile --target x86_64-pc-linux-gnu
+  test-e2e:
+    command: ops build && bundle exec rspec
+    alias: e2e
+  test-e2e-watch:
+    command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops e2e
+    alias: ew
+  build: crystal build ops.cr -o bin/ops
+  build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin22.4.0
+  build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin22.4.0
+  build-linux-amd64: ops build --cross-compile --target x86_64-pc-linux-gnu
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install: |-
     echo 1>&2 "Installing 'ops' into '$INSTALL_DIR'..."
@@ -37,4 +46,3 @@ actions:
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
-    SSH_KEY_PASSPHRASE: test

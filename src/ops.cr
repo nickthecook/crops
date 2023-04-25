@@ -39,6 +39,7 @@ class Ops
   # rubocop:disable Metrics/MethodLength
   # better to have all the rescues in one place
   def run
+    Output.debug("$environment == '#{Environment.environment}'.")
     # "return" is here to allow specs to stub "exit" without executing everything after it
     return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
     return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?

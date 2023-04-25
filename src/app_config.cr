@@ -72,6 +72,7 @@ class AppConfig
 
   private def file_contents
     @file_contents ||= begin
+      Output.debug("Loading config file '#{@filename}'...")
       File.read(@filename)
     rescue e : File::NotFoundError
       nil
