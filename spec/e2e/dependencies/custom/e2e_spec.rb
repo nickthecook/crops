@@ -22,12 +22,10 @@ RSpec.describe "forwards" do
 	end
 
 	it "runs the 'up' portion of the split dependency" do
-		puts @output1
 		expect(File.exist?("custom_up")).to be true
 	end
 
 	it "runs the 'down' portion of the split dependency" do
-		puts @output1
 		expect(File.exist?("custom_down")).to be true
 	end
 end

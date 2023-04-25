@@ -67,6 +67,10 @@ class OpsYml
               dep_arr << YamlUtil.hash_with_string_keys(array_value)
             elsif array_value.as_s?
               dep_arr << array_value.as_s
+            elsif array_value.as_bool?  != nil
+              dep_arr << array_value.as_bool.to_s
+            else
+              Output.warn("Unable to parse dependency '#{array_value}'; skipping...")
             end
           end
           dependencies[key] = dep_arr

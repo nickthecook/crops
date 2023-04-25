@@ -1,5 +1,9 @@
 # crops changelog
 
+## 0.3.1
+
+- fix issue with YAML converting strings to bools when custom dependency command is `true` or `false`
+
 ## 0.3.0
 
 - add support for split custom dependencies

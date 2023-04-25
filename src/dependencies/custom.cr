@@ -24,11 +24,11 @@ module Dependencies
 		def meet
 			execute(up_command) if up_command
 		end
-
+		
 		def unmeet : Bool
 			downcmd = down_command
 			return true if downcmd.nil?
-
+			
 			execute(downcmd)
 		end
 
