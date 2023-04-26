@@ -2,8 +2,6 @@ require "dependencies/dependency"
 require "../secrets"
 require "dependencies/helpers/ssh_key_decryptor"
 
-require "ssh2"
-
 module Dependencies
 	class Sshkey < Dependency
 		DEFAULT_KEY_SIZE = 4096
