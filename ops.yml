@@ -34,7 +34,7 @@ actions:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
   test-e2e:
-    command: ops build && bundle exec rspec
+    command: ops build && SSH_ASKPASS= bundle exec rspec
     alias: e2e
   test-e2e-watch:
     command: rerun --no-notify -qb -p '**/*.{cr,rb,yml,json}' -- ops e2e
