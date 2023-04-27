@@ -11,7 +11,7 @@ for platform in $platforms; do
     bindir=darwin_amd64
     ;;
   x86_64-pc-linux-gnu)
-    bindir=linux_x86_64
+    bindir=linux_amd64
     ;;
   armv6k-unknown-linux-gnueabihf)
     bindir=linux_armv6k

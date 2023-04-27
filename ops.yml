@@ -15,12 +15,6 @@ dependencies:
     - bundle
     - true
     - echo "Initializing the cloud..."
-  dir:
-    - build
-    - build/darwin_arm64
-    - build/darwin_amd64
-    - build/linux_x86_64
-    - build/linux_armv6k
 forwards:
   ftw: dirsftw
 actions:
@@ -41,14 +35,7 @@ actions:
     alias: ew
   lint: rubocop --autocorrect
   build: crystal build ops.cr -o build/ops
-  build-mac-arm64: ops build --cross-compile --target arm64-apple-darwin -o build/darwin_arm64/ops
-  build-mac-amd64: ops build --cross-compile --target x86_64-apple-darwin -o build/darwin_amd64/ops
-  build-linux-amd64: ops build --cross-compile --target x86_64-pc-linux-gnu -o build/linux_x86_64/ops
-  build-linux-pi3: ops build --cross-compile --target armv6k-unknown-linux-gnueabihf -o build/linux_armv6k/ops
-  build-all: |-
-    ops build-mac-arm64
-    ops build-mac-amd64
-    ops build-linux-amd64
+  build-all: bin/build-objects.sh
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install:
     command: |-
