@@ -42,6 +42,8 @@ actions:
       echo 1>&2 "Installing 'build/ops' into '$INSTALL_DIR'..."
       ops build && cp build/ops "$INSTALL_DIR"
     alias: bi
+  gem: gem build ops_team.gemspec
+  push: gem push `ls -t ops_team-*.gem | head -n 1`
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"

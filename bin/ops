@@ -1,13 +1,6 @@
-#!/bin/sh
+#!/usr/bin/env ruby
+bindir = `uname -sm | tr A-Z a-z | tr ' ' _`
+binpath = File.expand_path("../build/#{bindir}", __FILE__)
 
-bindir=`uname -sm | tr A-Z a-z | tr ' ' _`
-binpath="`pwd`/build/$bindir"
-
-if ! [ -e "$binpath/ops" ]; then
-  echo 1>&2 "$0: unable to locate ops binary for platform '$bindir'."
-  exit 255
-fi
-
-export PATH="$binpath:$PATH"
-
-ops "$@"
+ENV['PATH'] = "#{binpath}:#{ENV.fetch('PATH')}"
+exec "ops", *ARGV

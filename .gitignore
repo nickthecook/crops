@@ -18,3 +18,4 @@ user@host*
 spec/e2e/dependencies/custom/custom*
 /ops-*-amd64
 /ops-*-arm*
+ops_team-*.gem
