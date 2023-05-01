@@ -16,3 +16,5 @@ spec/e2e/hooks/before_hook_*
 user@host*
 /build
 spec/e2e/dependencies/custom/custom*
+/ops-*-amd64
+/ops-*-arm*
