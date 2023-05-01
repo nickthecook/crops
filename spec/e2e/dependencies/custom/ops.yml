@@ -2,5 +2,5 @@ dependencies:
   custom:
     - touch custom
     - split_custom:
-      up: touch custom_up
-      down: touch custom_down
+        up: touch custom_up
+        down: touch custom_down

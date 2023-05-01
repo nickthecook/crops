@@ -56,11 +56,9 @@ module Dependencies
 			l_def = @definition
 			return Tuple.new(l_def.to_s, nil) if l_def.is_a?(String)
 
-			hss = l_def.transform_values do |value|
-				value.to_s
-			end
+			hss = YamlUtil.hash_with_string_keys(l_def.first_value).transform_values { |v| v.to_s }
 
-			Tuple.new(l_def.to_s, hss)
+			Tuple.new(l_def.first_key, hss)
 		end
 	end
 end
