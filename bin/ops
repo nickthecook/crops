@@ -3,4 +3,6 @@ bindir = `uname -sm | tr A-Z a-z | tr ' ' _`
 binpath = File.expand_path("../build/#{bindir}", __FILE__)
 
 ENV['PATH'] = "#{binpath}:#{ENV.fetch('PATH')}"
+ENV['MANPATH'] = File.expand_path("../man", __FILE__)
+
 exec "ops", *ARGV
