@@ -15,6 +15,7 @@ class Ops
   BUILTIN_SYNTAX_ERROR_EXIT_CODE = 69
   ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
+  SKIP_VERSION_CHECK_FOR_ACTIONS = ["version"]
 
   RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
@@ -79,6 +80,7 @@ class Ops
 
   private def min_version_met?
     return true unless min_version
+    return true if SKIP_VERSION_CHECK_FOR_ACTIONS.includes?(@action_name)
 
     if Version.min_version_met?(min_version)
       true
