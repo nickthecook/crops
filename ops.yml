@@ -36,7 +36,8 @@ actions:
     alias: ew
   lint: rubocop --autocorrect
   build: crystal build ops.cr -o build/ops
-  build-all: bin/build-objects.sh
+  build-all: build/build-objects.sh
+  build-platforms: build/build-platforms.sh
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install:
     command: |-
