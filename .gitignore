@@ -14,7 +14,9 @@ ops*.out
 ops*.err
 spec/e2e/hooks/before_hook_*
 user@host*
-/build
+/build/darwin*
+/build/linux*
+/build/ops
 spec/e2e/dependencies/custom/custom*
 /ops-*-amd64
 /ops-*-arm*

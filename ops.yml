@@ -43,6 +43,9 @@ actions:
       ops build && cp build/ops "$INSTALL_DIR"
     alias: bi
   gem: gem build ops_team.gemspec
+  gem-install:
+    command: ops gem && gem install `ls -t ops_team-*.gem | head -n 1`
+    alias: gemi
   push: gem push `ls -t ops_team-*.gem | head -n 1`
 options:
   environment:
