@@ -8,10 +8,10 @@ for platform in $platforms; do
     bindir=darwin_arm64
     ;;
   x86_64-apple-darwin)
-    bindir=darwin_amd64
+    bindir=darwin_x86_64
     ;;
   x86_64-pc-linux-gnu)
-    bindir=linux_amd64
+    bindir=linux_x86_64
     ;;
   armv6k-unknown-linux-gnueabihf)
     bindir=linux_armv6k

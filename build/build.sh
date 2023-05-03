@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 export CRYSTAL_PATH="src:lib:$(crystal env CRYSTAL_PATH)"
 
