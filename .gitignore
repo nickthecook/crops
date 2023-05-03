@@ -14,10 +14,13 @@ ops*.out
 ops*.err
 spec/e2e/hooks/before_hook_*
 user@host*
+spec/e2e/dependencies/custom/custom*
+
+# build artifacts
 /build/darwin*
 /build/linux*
 /build/ops
-spec/e2e/dependencies/custom/custom*
+/build/crops-*.tar.xz
 /ops-*-amd64
 /ops-*-arm*
 ops_team-*.gem

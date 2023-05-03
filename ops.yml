@@ -49,6 +49,7 @@ actions:
     command: ops gem && gem install `ls -t ops_team-*.gem | head -n 1`
     alias: gemi
   push: gem push `ls -t ops_team-*.gem | head -n 1`
+  export-darwin-intel-tar: cd build && tar cjvf crops-darwin-x86_64.tar.xz darwin_x86_64
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
