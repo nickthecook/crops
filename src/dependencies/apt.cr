@@ -25,7 +25,7 @@ module Dependencies
 		end
 
 		def should_meet?
-			`uname`.chomp == "Linux" && system("which apt-get")
+			`uname`.chomp == "Linux" && system("which apt-get > /dev/null 2>&1")
 		end
 
 		private def apt_cache_policy
