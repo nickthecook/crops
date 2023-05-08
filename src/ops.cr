@@ -15,7 +15,9 @@ class Ops
   BUILTIN_SYNTAX_ERROR_EXIT_CODE = 69
   ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
-  SKIP_VERSION_CHECK_FOR_ACTIONS = ["version"]
+  MISSING_OPS_YML_ERROR_EXIT_CODE = 72
+  SKIP_VERSION_CHECK_FOR_ACTIONS = ["version", "help"]
+  CONFIG_OPTIONAL_FOR_ACTIONS = ["init", "version", "help", "env", "envdiff", "exec"]
 
   RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
@@ -106,7 +108,9 @@ class Ops
 
   private def check_for_config_file
     return if File.exists?(@config_file)
+    return if CONFIG_OPTIONAL_FOR_ACTIONS.includes?(@action_name)
 
-    Output.warn("File '#{@config_file}' does not exist.") unless @action_name == "init"
+    Output.error("File '#{@config_file}' does not exist.")
+    exit(MISSING_OPS_YML_ERROR_EXIT_CODE)
   end
 end
