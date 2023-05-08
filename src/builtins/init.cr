@@ -1,58 +1,63 @@
 require "file_utils"
+require "builtins/helpers/templates"
 
 module Builtins
-	class Init < Builtin
-		OPS_YML = "ops.yml"
-		TEMPLATE_DIR = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "etc"))
-		OPS_YML_TEMPLATE = File.join(TEMPLATE_DIR, "%<template_name>s.template.yml")
-		DEFAULT_TEMPLATE_NAME = "ops"
+  class Init < Builtin
+    OPS_YML = "ops.yml"
+    TEMPLATE_DIR = File.expand_path(File.join(File.dirname(__FILE__), "..", "..", "etc"))
+    OPS_YML_TEMPLATE = File.join(TEMPLATE_DIR, "%<template_name>s.template.yml")
+    DEFAULT_TEMPLATE_NAME = "ops"
 
-		def self.description
-			"creates an ops.yml file from a template"
-		end
+    def self.description
+      "creates an ops.yml file from a template"
+    end
 
-		def run
-			if File.exists?(OPS_YML)
-				Output.error("File '#{OPS_YML} exists; not initializing.")
+    def run
+      if File.exists?(OPS_YML)
+        Output.error("File '#{OPS_YML} exists; not initializing.")
 
-				return false
-			end
+        return false
+      end
 
-			Output.out("Creating '#{OPS_YML} from template...")
-			FileUtils.cp(template_path, OPS_YML)
+      Output.out("Creating '#{OPS_YML} from template...")
+      File.write(OPS_YML, templates[template_name])
 
-			true
-		end
+      true
+    end
 
-		private def template_name
-			@args[0]
-		end
+    private def templates
+      Builtins::Helpers::Templates::TEMPLATES
+    end
 
-		private def template_path
-			return template_name if template_name && File.exists?(template_name)
+    private def template_name
+      @args.size > 0 ? @args[0] : "ops"
+    end
 
-			builtin_template_path
-		end
+    private def template_path
+      return template_name if template_name && File.exists?(template_name)
 
-		private def builtin_template_path
-			"#{template_name}.template.yml"
-		end
+      builtin_template_path
+    end
 
-		private def template_name_list
-			matches = name.match(/^([^.]*).template.yml/)
-			return [] of String unless matches
+    private def builtin_template_path
+      "#{template_name}.template.yml"
+    end
 
-			@template_name_list ||= Dir.entries(TEMPLATE_DIR).map do |name|
-				matches.captures.first
-			end.compact
-		end
+    private def template_name_list
+      matches = name.match(/^([^.]*).template.yml/)
+      return [] of String unless matches
 
-		private def template_not_found_message
-			<<-MESSAGE
-				Template '#{template_path}' does not exist.
-				\nValid template names are:
-				   - #{template_name_list.join("\n   - ")}\n
-			MESSAGE
-		end
-	end
+      @template_name_list ||= Dir.entries(TEMPLATE_DIR).map do |name|
+        matches.captures.first
+      end.compact
+    end
+
+    private def template_not_found_message
+      <<-MESSAGE
+        Template '#{template_path}' does not exist.
+        \nValid template names are:
+           - #{template_name_list.join("\n   - ")}\n
+      MESSAGE
+    end
+  end
 end
