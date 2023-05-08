@@ -1,5 +1,13 @@
 # crops changelog
 
+## 2.0.0.rc13
+
+- [prefer `ops.yaml` over `ops.yml`](https://yaml.org/faq.html)
+
+## 2.0.0.rc12
+
+- this is 0.3.1
+
 ## 0.3.1
 
 - fix issue with YAML converting strings to bools when custom dependency command is `true` or `false`

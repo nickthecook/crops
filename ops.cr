@@ -2,9 +2,13 @@ require "colorize"
 
 require "ops"
 
+CONFIG_FILES = ["ops.yaml", "ops.yml"]
+
 options = {
-  "config_file" => "ops.yml"
+  "config_file" => CONFIG_FILES.find { |file| File.exists?(file) }
 }
+
+STDERR.puts("Using ops file '#{options["config_file"]}'...")
 
 def usage
   STDERR.puts "Usage: ops [-f <filename>] <action>".colorize(:red)
