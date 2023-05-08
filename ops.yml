@@ -37,7 +37,11 @@ actions:
     command: rerun --no-notify -qb -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
   lint: rubocop --autocorrect
-  build: crystal build ops.cr -o build/`uname -sm | tr A-Z a-z | tr ' ' _`/ops
+  platform: uname -sm | tr A-Z a-z | tr ' ' _
+  build: |-
+    output_file="build/`ops platform`/ops"
+    crystal build ops.cr -o "$output_file"
+    echo 1>&2 "Built '$output_file'."
   build-all: build/build-objects.sh
   build-platforms: build/build-platforms.sh
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
