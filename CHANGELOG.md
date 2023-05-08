@@ -1,5 +1,9 @@
 # crops changelog
 
+## 2.0.0.rc15
+
+- remove debug print statement
+
 ## 2.0.0.rc14
 
 - [prefer `ops.yaml` over `ops.yml`](https://yaml.org/faq.html)
