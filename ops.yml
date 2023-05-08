@@ -47,8 +47,8 @@ actions:
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install:
     command: |-
-      echo 1>&2 "Installing 'build/ops' into '$INSTALL_DIR'..."
       ops build && cp build/ops "$INSTALL_DIR"
+      echo 1>&2 "Installed into '$INSTALL_DIR'."
     alias: bi
   gem: gem build ops_team.gemspec
   gem-install:
