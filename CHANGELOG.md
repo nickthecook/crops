@@ -1,5 +1,11 @@
 # crops changelog
 
+## 2.0.0.rc16
+
+- exit with non-zero status if ops.yml doesn't exist for builtins that require it
+  - builtins that DO NOT require ops.yml: ["init", "version", "help", "env", "envdiff", "exec"]
+- fix `ops init` for built-in templates ("ops", "terraform", "ruby")
+
 ## 2.0.0.rc15
 
 - remove debug print statement
