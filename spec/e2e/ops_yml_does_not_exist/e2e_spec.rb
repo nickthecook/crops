@@ -9,6 +9,10 @@ RSpec.describe "no actions" do
 		remove_untracked_files
 	end
 
+	after do
+		`rm -f ops.yml`
+	end
+
 	let(:success_commands) do
 		[
 			"../../../build/ops version",
