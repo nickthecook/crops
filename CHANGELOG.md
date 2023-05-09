@@ -1,5 +1,12 @@
 # crops changelog
 
+## 2.0.0.rc17
+
+- support user template dir
+  - "$HOME/.ops_templates" by default
+  - set with option `init.template_dir` or `OPS__INIT__TEMPLATE_DIR`
+  - can be relative path or absolute
+
 ## 2.0.0.rc16
 
 - exit with non-zero status if ops.yml doesn't exist for builtins that require it
