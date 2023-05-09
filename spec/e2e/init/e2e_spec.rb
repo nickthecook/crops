@@ -23,6 +23,7 @@ RSpec.describe "init" do
 		end
 
 		it "outputs valid YAML" do
+			puts result[OUTPUT_IDX]
 			expect { YAML.safe_load(ops_yml) }.not_to raise_exception
 		end
 	end
@@ -46,6 +47,30 @@ RSpec.describe "init" do
 
 		it "outputs the correct template" do
 			expect(ops_yml).to match(/rerun -x ops test/)
+		end
+	end
+
+	context "when template is in user template dir" do
+		let(:ops_env_vars) { { "OPS__INIT__TEMPLATE_DIR" => "templates" } }
+
+		include_examples "inits ops.yml", "init custom"
+
+		it "outputs the correct template" do
+			expect(ops_yml).to match(/- wtf/)
+		end
+	end
+
+	context "when template cannot be found" do
+		let!(:result) { run_ops("../../../build/ops init custom") }
+		let(:exit_code) { result[EXIT_CODE_IDX] }
+		let(:output) { result[OUTPUT_IDX] }
+
+		it "exits with non-zero" do
+			expect(exit_code).to eq(1)
+		end
+
+		it "prints an error" do
+			expect(output).to match(/Could not find template for 'custom'/)
 		end
 	end
 end

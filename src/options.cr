@@ -8,7 +8,7 @@ class Options
 
   def self.get(path) : YAML::Any | Nil
     env_var_path = env_var(path)
-    env_var = ENV.includes?(env_var_path) ? ENV[env_var_path] : nil
+    env_var = ENV.keys.includes?(env_var_path) ? ENV[env_var_path] : nil
     return YAML.parse(env_var) unless env_var.nil?
 
     l_options = @@options
