@@ -7,7 +7,10 @@
 - the `background` builtin (`bg`)
 - the `background-log` builtin (`bglog`)
 - performance profiling
-- the `sshkey.passphrase` option (use `ssh.passphrase_var`; default is `SSH_KEY_PASSPHRASE`)
+- the `sshkey.passphrase` option (use `ssh.passphrase_var` instead; default is `SSH_KEY_PASSPHRASE`)
+
+The following things are different between `crops` and `ops`:
+
 - default template dir for `ops init` is `$HOME/.ops_templates`; override with option `init.template_dir` or `OPS__INIT__TEMPLATE_DIR`
 
 ## Things that are different from `ops` but will be fixed
