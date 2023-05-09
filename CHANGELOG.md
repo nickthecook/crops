@@ -1,5 +1,11 @@
 # crops changelog
 
+> Note: Darwin x86_64 binary is still at 2.0.0.rc12 while I figure out how to build that on my ARM Mac.
+
+## 2.0.0.rc18
+
+- update linux binary (only Darwin x86_64 is not updated now)
+
 ## 2.0.0.rc17
 
 - support user template dir
