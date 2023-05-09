@@ -16,6 +16,7 @@ dependencies:
     - shards install
     - bundle config --local path vendor/bundle
     - bundle
+    - ln -s `ops platform`/ops build/
     - true
     - echo "Initializing the cloud..."
 forwards:
@@ -34,7 +35,7 @@ actions:
     command: ops build && SSH_ASKPASS= bundle exec rspec
     alias: e2e
   test-e2e-watch:
-    command: rerun --no-notify -qb -p '**/*.{cr,rb,yml,json}' -- ops e2e
+    command: rerun --no-notify -qbx -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
   lint: rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _

@@ -3,17 +3,9 @@
 RSpec.describe "countdown" do
 	include_context "ops e2e"
 
-	before(:all) do
-		# change to the directory containing this file
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-
-		@output, @output_file, @exit_status = ops("countdown 1")
-	end
-
+	let(:commands) { ["countdown 1"] }
 	it "succeeds" do
-		expect(@exit_status).to eq(0)
+		expect(exit_code).to eq(0)
 	end
 
 	it "takes 1 seconds" do
@@ -21,7 +13,7 @@ RSpec.describe "countdown" do
 	end
 
 	it "outputs a message when complete" do
-		expect(@output).to match("Countdown complete after 1s.")
+		expect(output).to match("Countdown complete after 1s.")
 	end
 
 	def measure

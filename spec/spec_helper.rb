@@ -19,6 +19,18 @@ RSpec.configure do |config|
 
 	config.order = :random
 	Kernel.srand config.seed
+
+	config.before(:each) do |example|
+		# each spec needs to be run from its own dir
+		example_path = File.join(
+			__dir__,
+			"..",
+			example.metadata[:example_group][:file_path]
+		)
+		Dir.chdir(File.dirname(example_path))
+
+		remove_untracked_files
+	end
 end
 
 require_relative "e2e/e2e_spec_helper"
