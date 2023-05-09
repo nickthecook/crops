@@ -16,7 +16,7 @@ RSpec.describe "init" do
 	let(:ops_yml) { File.read("ops.yml") }
 
 	shared_examples "inits ops.yml" do |ops_args|
-		let!(:result) { run_ops("../../../build/ops #{ops_args}") }
+		let!(:result) { ops("#{ops_args}") }
 
 		it "succeeds" do
 			expect(result[EXIT_CODE_IDX]).to eq(0)
@@ -60,7 +60,7 @@ RSpec.describe "init" do
 	end
 
 	context "when template cannot be found" do
-		let!(:result) { run_ops("../../../build/ops init custom") }
+		let!(:result) { ops("init custom") }
 		let(:exit_code) { result[EXIT_CODE_IDX] }
 		let(:output) { result[OUTPUT_IDX] }
 

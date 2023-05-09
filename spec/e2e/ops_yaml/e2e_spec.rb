@@ -8,7 +8,7 @@ RSpec.describe "ops.yaml precedence" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../build/ops test")
+		@output, @output_file, @exit_status = ops("test")
 	end
 
 	it "succeeds" do

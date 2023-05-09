@@ -9,7 +9,7 @@ RSpec.describe "countdown" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../build/ops countdown 1")
+		@output, @output_file, @exit_status = ops("countdown 1")
 	end
 
 	it "succeeds" do
@@ -17,7 +17,7 @@ RSpec.describe "countdown" do
 	end
 
 	it "takes 1 seconds" do
-		expect(measure { run_ops("../../../build/ops countdown 1") } >= 1).to be true
+		expect(measure { ops("countdown 1") } >= 1).to be true
 	end
 
 	it "outputs a message when complete" do

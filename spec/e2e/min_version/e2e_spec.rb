@@ -8,8 +8,8 @@ RSpec.describe "min_version checking" do
 
 		remove_untracked_files
 
-		@output1, @output_file1, @exit_status1 = run_ops("../../../build/ops up")
-		@output2, @output_file2, @exit_status2 = run_ops("../../../build/ops version")
+		@output1, @output_file1, @exit_status1 = ops("up")
+		@output2, @output_file2, @exit_status2 = ops("version")
 	end
 
 	it "fails with config error exit code" do

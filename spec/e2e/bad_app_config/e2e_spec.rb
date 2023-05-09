@@ -9,7 +9,7 @@ RSpec.describe "bad ejson contents" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../build/ops up")
+		@output, @output_file, @exit_status = ops("up")
 	end
 
 	it "fails with config error exit code" do

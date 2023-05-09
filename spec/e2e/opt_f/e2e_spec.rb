@@ -9,10 +9,10 @@ RSpec.describe "forwards" do
 
 		remove_untracked_files
 
-		@output1, @output_file1, @exit_status1 = run_ops("../../../build/ops -f app/ops.yml say-name")
-		@output2, @output_file2, @exit_status2 = run_ops("../../../build/ops -f app/ops.yml ls -l")
-		@output3, @output_file3, @exit_status3 = run_ops("../../../build/ops -f")
-		@output4, @output_file4, @exit_status4 = run_ops("../../../build/ops --file app/ops.yml say-name")
+		@output1, @output_file1, @exit_status1 = ops("-f app/ops.yml say-name")
+		@output2, @output_file2, @exit_status2 = ops("-f app/ops.yml ls -l")
+		@output3, @output_file3, @exit_status3 = ops("-f")
+		@output4, @output_file4, @exit_status4 = ops("--file app/ops.yml say-name")
 	end
 
 	context "when running action without params" do
