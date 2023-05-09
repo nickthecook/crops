@@ -10,15 +10,9 @@ RSpec.describe "no actions" do
 	end
 
 	let(:commands) do
-		[
-			"../../../build/ops t",
-			"../../../build/ops tw",
-			"../../../build/ops rw",
-			"../../../build/ops te",
-			"../../../build/ops e2e"
-		]
+		%w[t tw rw te e2e]
 	end
-	let(:results) { commands.map { |cmd| run_ops(cmd) } }
+	let(:results) { commands.map { |cmd| ops(cmd) } }
 	let(:exit_codes) { results.map { |result| result[EXIT_CODE_IDX] } }
 
 	it "succeeds" do
@@ -26,7 +20,7 @@ RSpec.describe "no actions" do
 	end
 
 	context "when alias does not exist" do
-		let(:commands) { ["../../../build/ops zz"] }
+		let(:commands) { ["zz"] }
 
 		it "fails" do
 			expect(exit_codes).to eq([65])

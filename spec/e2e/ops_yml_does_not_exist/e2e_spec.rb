@@ -14,21 +14,13 @@ RSpec.describe "no actions" do
 	end
 
 	let(:success_commands) do
-		[
-			"../../../build/ops version",
-			"../../../build/ops init",
-			"../../../build/ops help"
-		]
+		%w[version init help]
 	end
 	let(:error_commands) do
-		[
-			"../../../build/ops up",
-			"../../../build/ops down",
-			"../../../build/ops test"
-		]
+		%w[up down test]
 	end
-	let(:success_results) { success_commands.map { |cmd| run_ops(cmd) } }
-	let(:error_results) { error_commands.map { |cmd| run_ops(cmd) } }
+	let(:success_results) { success_commands.map { |cmd| ops(cmd) } }
+	let(:error_results) { error_commands.map { |cmd| ops(cmd) } }
 	let(:success_exit_codes) { success_results.map { |result| result[EXIT_CODE_IDX] } }
 	let(:error_exit_codes) { error_results.map { |result| result[EXIT_CODE_IDX] } }
 	let(:error_outputs) { error_results.map { |result| result[OUTPUT_IDX] } }

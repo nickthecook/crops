@@ -9,7 +9,7 @@ RSpec.describe "environment_loading" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../build/ops print_env")
+		@output, @output_file, @exit_status = ops("print_env")
 	end
 
 	it "succeeds" do

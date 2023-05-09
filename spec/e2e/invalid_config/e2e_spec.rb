@@ -9,7 +9,7 @@ RSpec.describe "environment_loading" do
 
 		remove_untracked_files
 
-		@output, @output_file, @exit_status = run_ops("../../../build/ops version")
+		@output, @output_file, @exit_status = ops("version")
 	end
 
 	it "fails with code 66" do

@@ -9,8 +9,8 @@ RSpec.describe "forwards" do
 
 		remove_untracked_files
 
-		@output1, @output_file1, @exit_status1 = run_ops("../../../build/ops expansion")
-		@output2, @output_file2, @exit_status2 = run_ops("../../../build/ops no-expansion")
+		@output1, @output_file1, @exit_status1 = ops("expansion")
+		@output2, @output_file2, @exit_status2 = ops("no-expansion")
 	end
 
 	it "succeeds" do
