@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe "no actions" do
+	let(:commands) { [] }
+
 	include_context "ops e2e"
-
-	before(:all) do
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-	end
 
 	after do
 		`rm -f ops.yml`

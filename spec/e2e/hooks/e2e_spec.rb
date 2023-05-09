@@ -1,19 +1,12 @@
 # frozen_string_literal: true
 
 RSpec.describe "hooks" do
+	let(:commands) { ["hello"] }
+
 	include_context "ops e2e"
 
-	before(:all) do
-		# change to the directory containing this file
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-
-		@output, @output_file, @exit_status = ops("hello")
-	end
-
 	it "succeeds" do
-		expect(@exit_status).to eq(0)
+		expect(exit_code).to eq(0)
 	end
 
 	it "executes the first before hook" do

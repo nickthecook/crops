@@ -1,17 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe "no actions" do
+	let(:commands) { ["up"] }
+
 	include_context "ops e2e"
 
-	before(:all) do
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-
-		@output, @output_file, @exit_status = ops("up")
-	end
-
 	it "succeeds" do
-		expect(@exit_status).to eq(0)
+		expect(exit_code).to eq(0)
 	end
 end

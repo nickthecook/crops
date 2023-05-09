@@ -1,19 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe "no actions" do
-	include_context "ops e2e"
-
-	before(:all) do
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-	end
-
 	let(:commands) do
 		%w[t tw rw te e2e]
 	end
-	let(:results) { commands.map { |cmd| ops(cmd) } }
-	let(:exit_codes) { results.map { |result| result[EXIT_CODE_IDX] } }
+
+	include_context "ops e2e"
 
 	it "succeeds" do
 		expect(exit_codes).to all(eq(0))

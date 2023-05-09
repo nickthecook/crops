@@ -3,53 +3,41 @@
 RSpec.describe "forwards" do
 	include_context "ops e2e"
 
-	before(:all) do
-		# change to the directory containing this file
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-
-		@output1, @output_file1, @exit_status1 = ops("app action_one")
-		@output2, @output_file2, @exit_status2 = ops("app action_two")
-		@output3, @output_file3, @exit_status3 = ops("app config_val")
-		@output4, @output_file4, @exit_status4 = ops("app secret_val")
-		@output5, @output_file5, @exit_status5 = ops("app echo_var")
-		@output6, @output_file6, @exit_status6 = ops("app echo_top_var")
-	end
+	let(:commands) { ["app action_one", "app action_two", "app config_val", "app secret_val", "app echo_var", "app echo_top_var"]}
 
 	it "succeeds" do
-		expect(@exit_status1).to eq(0)
+		expect(exit_codes).to all eq(0)
 	end
 
 	it "runs action_one in 'app/'" do
-		expect(@output1).to match(/action one/)
+		expect(outputs[0]).to match(/action one/)
 	end
 
 	it "runs action_two in 'app/'" do
-		expect(@output2).to match(/action two/)
+		expect(outputs[1]).to match(/action two/)
 	end
 
 	it "sets the config from the app dir" do
-		expect(@output3).to match(/app value one/)
+		expect(outputs[2]).to match(/app value one/)
 	end
 
 	it "does not set the config from the top-level dir" do
-		expect(@output3).not_to match(/top value one/)
+		expect(outputs[2]).not_to match(/top value one/)
 	end
 
 	it "sets the secret from the app dir" do
-		expect(@output4).to match(/app secret one/)
+		expect(outputs[3]).to match(/app secret one/)
 	end
 
 	it "does not set the secret from the top-level dir" do
-		expect(@output4).not_to match(/top secret one/)
+		expect(outputs[3]).not_to match(/top secret one/)
 	end
 
 	it "sets env vars from app options" do
-		expect(@output5).to match(/app-level value/)
+		expect(outputs[4]).to match(/app-level value/)
 	end
 
 	it "does not set env vars from top-level options" do
-		expect(@output6).not_to match(/top-level option/)
+		expect(outputs[5]).not_to match(/top-level option/)
 	end
 end

@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
 RSpec.describe "init" do
+	let(:commands) { [] }
+
 	include_context "ops e2e"
-
-	before(:all) do
-		Dir.chdir(__dir__)
-
-		remove_untracked_files
-	end
 
 	after do
 		`rm -f ops.yml`
@@ -16,7 +12,7 @@ RSpec.describe "init" do
 	let(:ops_yml) { File.read("ops.yml") }
 
 	shared_examples "inits ops.yml" do |ops_args|
-		let!(:result) { ops("#{ops_args}") }
+		let!(:result) { ops(ops_args) }
 
 		it "succeeds" do
 			expect(result[EXIT_CODE_IDX]).to eq(0)
