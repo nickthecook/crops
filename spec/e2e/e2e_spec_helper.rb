@@ -10,7 +10,11 @@ shared_context "ops e2e" do
 	ENV["OPS_RUNNING"] = nil
 	ENV["OPS_DEBUG_OUTPUT"] = "true"
 
-	let(:ops_env_vars) { {} }
+	# this is a method so specs can call `run_ops` inside a `before` block;
+	# however, if a spec needs to override this, it should use `let(:ops_env_vars)` so nothing leaks
+	def ops_env_vars
+		{}
+	end
 
 	def remove_untracked_files
 		untracked_files = `git ls-files --others | grep -v '.rb$' | grep -v '$.yml'`.split("\n")

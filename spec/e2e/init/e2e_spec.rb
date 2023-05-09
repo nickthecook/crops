@@ -23,7 +23,6 @@ RSpec.describe "init" do
 		end
 
 		it "outputs valid YAML" do
-			puts result[OUTPUT_IDX]
 			expect { YAML.safe_load(ops_yml) }.not_to raise_exception
 		end
 	end
