@@ -22,7 +22,7 @@ New devs don't need to find which Rakefile contains the task that failed. Just r
 
 ![ops help output](img/ops_help.png)
 
-You no longer have to write a shell script for that `curl` command that hits your API in dev, just run `ops create-event`.
+You no longer have to write a shell script for that long `curl` command that hits your API in dev, just run `ops create-event`.
 
 ![ops create-event output](img/ops_create_event.png)
 
