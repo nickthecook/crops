@@ -2,7 +2,7 @@ require "semantic_version"
 
 class Version
   def self.name_and_version
-    "crops-#{version}.rc19"
+    "crops-#{version}.rc20"
   end
 
   def self.version : String
