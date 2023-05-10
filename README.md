@@ -1,8 +1,10 @@
 # Crystal Ops (crops)
 
-> This is a port of [`ops`](https://github.com/nickthecook/ops) to Crystal. Versions start at 2.0.0, and the executable is still `ops`.
-> `ops` is still available via `gem` as [`ops_team`](https://rubygems.org/gems/ops_team).
+> This is a port of [`ops`](https://github.com/nickthecook/ops) to Crystal. Versions start at 2.0.0, and the executable is still `ops`. `ops` is still available via `gem` as [`ops_team`](https://rubygems.org/gems/ops_team).
+
 > See bottom of file for differences between `crops` and `ops`.
+
+> The code in this repo is currently hot garbage, due mostly to having been ported from Ruby without significant refactoring. The refactor is a work in progress. However, the tool works.
 
 [![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
 
