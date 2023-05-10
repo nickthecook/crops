@@ -75,7 +75,7 @@ This allows you to check in most of your secrets safely, and transparently load 
 For the Crystallized version of `ops` from this repo:
 
 ```shell
-brew install bdw libevent libyaml pcre2
+brew install bdw-gc libevent libyaml pcre2
 gem install ops_team -v 2.0.0.rc20
 ```
 
