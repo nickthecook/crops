@@ -68,6 +68,27 @@ For an [EJSON](https://github.com/Shopify/ejson) file, `ops` will first decrypt 
 
 This allows you to check in most of your secrets safely, and transparently load them when running your code.
 
+## Installation
+
+#### Via gem
+
+For the Crystallized version of `ops` from this repo:
+
+```shell
+brew install bdw libevent libyaml pcre2
+gem install ops_team -v 2.0.0.rc20
+```
+
+For the plain ol' Ruby version:
+
+`gem install ops_team`
+
+#### Via brew
+
+The formula is not published yet, but you can place [the formula file](build/ops.rb) in your Homebrew "Formula" directory (`/opt/homebrew/Library/Taps/homebrew/homebrew-core/Formula/ops.rb` on an Apple Silicon Mac; different location on an Intel Mac), and run:
+
+`HOMEBREW_NO_INSTALL_FROM_API=1 brew install ops`
+
 ## Differences between `crops` and `ops`
 
 `crops` does not support:
