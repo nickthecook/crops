@@ -1,6 +1,6 @@
 # crops changelog
 
-> Note: Darwin x86_64 binary is still at 2.0.0.rc12 while I figure out how to build that on my ARM Mac.
+> Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
 ## 2.0.0
 
@@ -9,6 +9,7 @@
 ## 2.0.0.rc20
 
 - fix version for brew formula
+- update Darwin Intel binary
 
 ## 2.0.0.rc19
 
