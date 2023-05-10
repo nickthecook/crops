@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc12 while I figure out how to build that on my ARM Mac.
 
+## 2.0.0
+
+- release as stable
+
 ## 2.0.0.rc20
 
 - fix version for brew formula
