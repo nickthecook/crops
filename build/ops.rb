@@ -2,8 +2,7 @@
 class Ops < Formula
   desc "Lightweight automation for your project"
   homepage "https://github.com/nickthecook/crops"
-  version "2.0.0"
-  url "https://github.com/nickthecook/crops/archive/refs/tags/#{version}.tar.gz"
+  url "https://github.com/nickthecook/crops/archive/refs/tags/2.0.0.tar.gz"
   sha256 "56761ee62dfbaca23312fa3abfff776a7e8d86f61eb8aac3a493517cf8a00ff1"
   license "GPL-3.0-only"
 
@@ -12,7 +11,7 @@ class Ops < Formula
   depends_on "libevent"
   depends_on "libyaml"
   depends_on "pcre2"
-  
+
   def install
     local_crystal_path = `crystal env CRYSTAL_PATH`.chomp
     system("CRYSTAL_PATH='src:lib:#{local_crystal_path}' crystal build -o ops ops.cr")
