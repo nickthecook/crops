@@ -21,6 +21,6 @@ for platform in $platforms; do
   bindir="build/$bindir"
   mkdir -p "$bindir"
 
-  ops build --cross-compile --target $platform -o "$bindir/ops" | sed "s:$bindir/::g" > "$bindir/link.sh"
+  crystal build ops.cr --cross-compile --target $platform -o "$bindir/ops" | sed "s:$bindir/::g" > "$bindir/link.sh"
   chmod +x "$bindir/link.sh"
 done
