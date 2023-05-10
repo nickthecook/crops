@@ -1,0 +1,9 @@
+dependencies:
+  sshkey:
+    - persistent@host
+options:
+  sshkey:
+    key_lifetime: 5
+    key_file_comment: persistent
+  environment:
+    SSH_KEY_PASSPHRASE: "12345"
