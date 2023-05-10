@@ -62,6 +62,7 @@ actions:
     VERSION=`bin/ops version`
     test -d "tmpbuild/$VERSION" || mkdir -p "tmpbuild/$VERSION"
     cp -r build tmpbuild/$VERSION/
+    rm tmpbuild/$VERSION/build/ops
     test -d tmpbuild/$VERSION/bin/ || mkdir tmpbuild/$VERSION/bin/
     cp bin/ops tmpbuild/$VERSION/bin/
     cd tmpbuild
