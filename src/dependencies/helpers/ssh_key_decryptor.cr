@@ -14,8 +14,10 @@ module Dependencies
 
       def plaintext_key : String | Nil
         @plaintext_key ||= begin
-        Output.debug("Creating temporary key file '#{temp_key_file.path}'...")
-        FileUtils.cp(@source_key_path, temp_key_file.path)
+          Output.debug("Creating temporary key file '#{temp_key_file.path}'...")
+          FileUtils.cp(@source_key_path, temp_key_file.path)
+          File.chmod(temp_key_file.path, 0o600)
+          Output.debug("Created temporary key file: #{`ls -l #{temp_key_file.path}`}")
           plaintext = decrypt_key
 
           Output.debug("Deleting temporary key file '#{temp_key_file.path}'...")
