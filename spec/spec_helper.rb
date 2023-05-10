@@ -31,6 +31,10 @@ RSpec.configure do |config|
 
 		remove_untracked_files
 	end
+
+	config.after(:suite) do
+		`ssh-add -D`
+	end
 end
 
 require_relative "e2e/e2e_spec_helper"
