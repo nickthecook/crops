@@ -20,7 +20,6 @@ shared_examples "SSH key is added to agent" do |key_comment|
 	it "loads the key" do
 		expect(system("ssh-add -l | grep -q '#{key_comment} (RSA)$'")).to be true
 	end
-
 end
 
 def has_passphrase?(private_key_file)
