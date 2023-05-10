@@ -8,6 +8,8 @@
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
+## Overview
+
 `ops` lets you add shell commands to `ops.yml` and run them when you're in that directory. `ops.yml` becomes a context-aware place to add common commands.
 
 ![ops.yml excerpt](img/ops_yml.png)
@@ -24,9 +26,19 @@ You no longer have to write a shell script for that `curl` command that hits you
 
 ![ops create-event output](img/ops_create_event.png)
 
-`ops` will passphrase-encrypt your SSH keys, using a passphrase from an EJSON file, never prompting you for the passphrase:
+`ops` will encrypt your SSH keys using a passphrase from an EJSON file, and never prompt you for the passphrase:
 
 ![ops up sshkey output](img/ops_up_sshkey.png)
+
+## Dependencies
+
+You can record dependencies for your project in `ops.yml`:
+
+![ops.yml dependencies](img/ops_deps.png)
+
+and `ops up` will satisfy them for you.
+
+![ops up output](img/ops_up_output.png)
 
 ## Differences between `crops` and `ops`
 
