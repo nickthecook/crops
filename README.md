@@ -85,9 +85,10 @@ For the plain ol' Ruby version:
 
 #### Via brew
 
-The formula is not published yet, but you can place [the formula file](build/ops.rb) in your Homebrew "Formula" directory (`/opt/homebrew/Library/Taps/homebrew/homebrew-core/Formula/ops.rb` on an Apple Silicon Mac; different location on an Intel Mac), and run:
-
-`HOMEBREW_NO_INSTALL_FROM_API=1 brew install ops`
+```
+brew tap nickthecook/crops
+brew install ops
+```
 
 ## Differences between `crops` and `ops`
 
