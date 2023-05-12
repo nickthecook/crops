@@ -8,6 +8,8 @@
 
 [View on RubyGems.org](https://rubygems.org/gems/ops_team)
 
+> Jump to the [installation instructions](https://github.com/nickthecook/crops#installation).
+
 ## Overview
 
 `ops` lets you add shell commands to `ops.yml` and run them via shortcuts when you're in that directory. `ops.yml` becomes a context-aware place to add common commands.
