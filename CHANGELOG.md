@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.0.1 (2.0.1.rc1 - gem)
+
+- fix bug in which `shell_expansion: false` would split args that contained spaces
+
 ## 2.0.0
 
 - release as stable
