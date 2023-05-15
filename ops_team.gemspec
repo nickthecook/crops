@@ -16,4 +16,5 @@ Gem::Specification.new do |s|
 	]
 	s.executables = ['ops']
 	s.license = 'GPL-3.0-only'
+	s.required_ruby_version = '> 2.5'
 end
