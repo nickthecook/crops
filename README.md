@@ -94,6 +94,10 @@ brew tap nickthecook/crops
 brew install ops
 ```
 
+#### Via GitHub Release
+
+There are tarballs of binaries in the [Releases](https://github.com/nickthecook/crops/releases) for this project. Just extract one, copy the binary for your platform into your `$PATH`, and run `ops version` to make sure it worked.
+
 ## Differences between `crops` and `ops`
 
 `crops` does not support:
