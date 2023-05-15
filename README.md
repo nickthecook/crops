@@ -1,8 +1,8 @@
 # Crystal Ops (crops)
 
-> This is a port of [`ops`](https://github.com/nickthecook/ops) to Crystal. Versions start at 2.0.0, and the executable is still `ops`. `ops` is still available via `gem` as [`ops_team`](https://rubygems.org/gems/ops_team). See bottom of file for differences between `crops` and `ops`.
+> This is a port of [`ops`](https://github.com/nickthecook/ops) to Crystal. Versions start at 2.0.0, and the executable is still `ops`. `ops` remains available via `gem` as [`ops_team`](https://rubygems.org/gems/ops_team). See bottom of file for differences between `crops` and `ops`.
 
-> The code in this repo is currently hot garbage, due mostly to having been ported from Ruby without significant refactoring. The refactor is a work in progress. However, the tool works.
+> The code in this repo is currently hot garbage, due mostly to having been ported from Ruby without significant refactoring (it's certainly not due to my being new to Crystal). The refactor is a work in progress. However, the tool works.
 
 [![Gem Version](https://badge.fury.io/rb/ops_team.svg)](https://badge.fury.io/rb/ops_team)
 
@@ -31,6 +31,8 @@ You no longer have to write a shell script for that long `curl` command that hit
 `ops` will encrypt your SSH keys using a passphrase from an EJSON file, and never prompt you for the passphrase:
 
 ![ops up sshkey output](img/ops_up_sshkey.png)
+
+This passphrase and other secrets for your project can be kept in an environment-specific EJSON file, which `ops` will automatically load for you every time it runs, if you have `ejson` installed. This lets you commit the secrets safely, while only sharing EJSON keys for each environment with other developers or a CI/CD pipeline.
 
 ## Dependencies
 
