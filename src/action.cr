@@ -6,6 +6,7 @@ class Action
 
   @aliases : Array(String)
   @config_errors : Array(String)?
+  @command : String | Nil
 
   def initialize(name : String, config : Hash(String, YAML::Any), args : Array(String))
     @name = name
@@ -32,10 +33,10 @@ class Action
 
   def run
     if perform_shell_expansion?
+      Output.debug("SHELL EXPANDING")
       Process.exec(command: to_s, shell: true)
     else
-      tokens = to_s.split(" ")
-      Process.exec(tokens.first, tokens.[1..], shell: false)
+      Process.exec(executable, exec_args, shell: false)
     end
   end
 
@@ -49,10 +50,29 @@ class Action
     @aliases.first
   end
 
-  def command
-    return @config if @config.is_a?(String)
+  def executable : String
+    l_command = command
+    raise ActionConfigError.new("Command for action '#{@name}' is nil") if l_command.nil?
 
-    @config["command"]
+    l_command.split(" ").first
+  end
+
+  def exec_args : Array(String)
+    l_command = command
+    return [] of String if l_command.nil?
+
+    l_command.split(" ")[1..] + @args
+  end
+
+  def command : String | Nil
+    @command ||= begin
+      l_config = @config
+      if l_config.is_a?(String)
+        l_config
+      else
+        @config["command"].to_s
+      end
+    end
   rescue KeyError
     nil
   end
