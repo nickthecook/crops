@@ -21,3 +21,4 @@
   - update the checksum in the Formula
   - commit the formula
   - `brew update && brew upgrade ops && ops version` to test
+- release the gem with `ops gem && ops push`
