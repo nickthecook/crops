@@ -1,0 +1,10 @@
+hooks:
+  before:
+    - ln -s ../build .
+actions:
+  gem: gem build ops_team.gemspec
+  latest-gem-file: ls -t ops_team-*.gem | head -n 1
+  gem-install:
+    command: ops gem && gem install `ops latest-gem-file`
+    alias: gemi
+  push: gem push `ls -t ops_team-*.gem | head -n 1`
