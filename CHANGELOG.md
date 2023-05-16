@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.0.6 (gem 2.0.6.rc1)
+
+- `ops init` will now accept the path to a file as a template name
+
 ## 2.0.5
 
 - change Homebrew formula to build release binary (it's smaller)
