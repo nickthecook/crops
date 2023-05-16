@@ -28,3 +28,4 @@ build/crops-*
 /crops-*.tar.xz
 /2\..\...tar.xz
 bin/ops
+rubygem/build

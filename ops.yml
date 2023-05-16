@@ -41,7 +41,7 @@ actions:
   lint: rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _
   build: |-
-    shards build || exit 1
+    shards build --release || exit 1
     output_file="build/`ops platform`/ops"
     cp bin/ops "$output_file"
     echo 1>&2 "Built '$output_file'."
