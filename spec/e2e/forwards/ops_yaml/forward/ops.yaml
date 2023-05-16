@@ -1,0 +1,2 @@
+actions:
+  hi: echo "hello there"

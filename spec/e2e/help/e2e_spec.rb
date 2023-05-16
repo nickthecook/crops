@@ -10,7 +10,6 @@ RSpec.describe "help" do
 	end
 
 	it "includes help for builtins other than 'help'" do
-		# binding.pry
 		expect(output).to match(/33mup\e/)
 		expect(output).to match(/33mdown\e/)
 		expect(output).to match(/33minit\e/)
