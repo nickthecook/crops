@@ -41,7 +41,7 @@ actions:
   platform: uname -sm | tr A-Z a-z | tr ' ' _
   build: |-
     output_file="build/`ops platform`/ops"
-    crystal build ops.cr -o "$output_file"
+    crystal build ops.cr -o "$output_file" || exit 1
     echo 1>&2 "Built '$output_file'."
   build-all: build/build-objects.sh
   build-platforms: build/build-platforms.sh

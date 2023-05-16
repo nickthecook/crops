@@ -2,6 +2,8 @@ class YamlUtil
   class YamlError < RuntimeError; end
 
   def self.hash_with_string_keys(any : YAML::Any) : Hash(String, YAML::Any)
+    return {} of String => YAML::Any if yaml_nil?(any)
+
     hash = any.as_h?
     raise YamlError.new("Expected hash, got #{any.class.name}: #{any}") unless hash
 
@@ -36,5 +38,12 @@ class YamlUtil
 
       item
     end
+  end
+
+  private def self.yaml_nil?(any : YAML::Any)
+    any.as_nil
+    true
+  rescue
+    false
   end
 end

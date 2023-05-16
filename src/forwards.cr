@@ -1,7 +1,7 @@
 require "forward"
 
 class Forwards
-  class ForwardsError < Exception; end
+  class ForwardsError < RuntimeError; end
 
   def initialize(@ops_yml : OpsYml, @args = [] of String)
   end
