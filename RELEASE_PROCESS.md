@@ -19,6 +19,6 @@
   - download the file pointed to by the new URL
   - `sha256sum crops-2.x.y.tar.xz`
   - update the checksum in the Formula
-  - commit the formula
-  - `brew update && brew upgrade ops && ops version` to test
-- release the gem with `ops gem && ops push`
+  - `brew reinstall ops` to test
+  - commit and push the formula
+- release the gem with `ops gem push`

@@ -21,7 +21,7 @@ dependencies:
     - echo "Initializing the cloud..."
 forwards:
   ftw: dirsftw
-  gem: gem
+  gem: rubygem
 actions:
   run: crystal run ops.cr --
   debug: OPS_DEBUG_OUTPUT=true crystal run -d --error-trace ops.cr --
