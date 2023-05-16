@@ -2,7 +2,11 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
-## 2.0.3 (2.0.3.rc1 - gem)
+## 2.0.4
+
+- fix 2.0.3 reporting the wrong version
+
+## 2.0.3
 
 - fix bug in which ops would not find `ops.yaml` when invoked by a forward
 
