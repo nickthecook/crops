@@ -26,3 +26,5 @@ spec/e2e/dependencies/custom/custom*
 ops_team-*.gem
 build/crops-*
 /crops-*.tar.xz
+/2\..\...tar.xz
+bin/ops

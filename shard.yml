@@ -1,24 +1,33 @@
 name: ops
-version: 0.1.0
+version: 2.0.4
 
-# authors:
-#   - name <email@example.com>
+authors:
+  - nickthecook <nickthecook@gmail.com>
 
-# description: |
-#   Short description of ops
+homepage: https://github.com/nickthecook/crops
+repository: https://github.com/nickthecook/crops
 
-# dependencies:
-#   pg:
-#     github: will/crystal-pg
-#     version: "~> 0.5"
+description: |
+  ops lets you add shell commands to ops.yml and run them via shortcuts when
+  you're in that directory. `ops.yml` becomes a context-aware place to add
+  common commands.
 
-# development_dependencies:
-#   webmock:
-#     github: manastech/webmock.cr
+license: GPL-3.0-only
 
-# license: MIT
-
-dependencies:
+development_dependencies:
   spectator:
     gitlab: arctic-fox/spectator
     version: ~> 0.11.0
+
+libraries:
+  bdw-gc: "*"
+  libevent: "*"
+  libyaml: "*"
+  pcre2: "*"
+
+executables:
+- ops
+
+targets:
+  ops:
+    main: ops.cr
