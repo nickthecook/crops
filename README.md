@@ -68,6 +68,8 @@ If these files are present, `ops` will load every key:value pair it finds under 
 
 For an [EJSON](https://github.com/Shopify/ejson) file, `ops` will first decrypt these values, then load them.
 
+> You must have the executable `ejson` in your path to use this feature. You can install it via `gem` or by using the Shopify Homebrew tap `shopify/shopify`.
+
 ![secrets.ejson example](img/ops_secrets.png)
 
 This allows you to check in most of your secrets safely, and transparently load them when running your code.
