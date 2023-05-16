@@ -50,6 +50,7 @@ module Builtins
       [
         File.join(template_dir, "#{name}.yml"),
         File.join(template_dir, "#{name}.yaml"),
+        name,
       ]
     end
 

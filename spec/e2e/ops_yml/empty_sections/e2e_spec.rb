@@ -8,7 +8,6 @@ RSpec.describe "forwards" do
 	include_context "ops e2e"
 
 	it "succeeds" do
-		puts outputs
 		expect(exit_codes).to all eq(0)
 	end
 end

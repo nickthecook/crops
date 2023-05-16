@@ -22,7 +22,7 @@ shared_context "ops e2e" do
 	end
 
 	def ops(cmd, output_file = "ops.out")
-		path = "../build/ops"
+		path = "../bin/ops"
 		5.times do
 			break path if File.executable?(path)
 
