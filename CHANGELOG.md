@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.0.4.rc2 gem
+
+- add ejson as dependency in the gem
+
 ## 2.0.4 (gem 2.0.4.rc1)
 
 - fix 2.0.3 reporting the wrong version
