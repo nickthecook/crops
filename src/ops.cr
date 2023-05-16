@@ -22,6 +22,8 @@ class Ops
 
   RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 
+  CONFIG_FILES = ["ops.yaml", "ops.yml"]
+
   @action_name : String
   @args : Array(String)
   @config : Hash(String, YAML::Any) | Nil
@@ -34,7 +36,7 @@ class Ops
   def initialize(argv, config_file = nil)
     @action_name = argv[0]
     @args = argv[1..-1]
-    @config_file = config_file || "ops.yml"
+    @config_file = config_file || found_config_file || "ops.yml"
 
     Options.set(ops_yml.options || nil)
     check_for_config_file
@@ -106,6 +108,10 @@ class Ops
 
   private def ops_yml : OpsYml
     @ops_yml ||= OpsYml.new(@config_file)
+  end
+
+  private def found_config_file
+    CONFIG_FILES.find { |file| File.exists?(file) }
   end
 
   private def check_for_config_file
