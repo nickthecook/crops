@@ -33,13 +33,15 @@ actions:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
   test-e2e:
-    command: ops build && SSH_ASKPASS= bundle exec rspec
+    command: ops build-debug && SSH_ASKPASS= bundle exec rspec
     alias: e2e
   test-e2e-watch:
     command: rerun --no-notify -qbx -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
   lint: rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _
+  build-debug:
+    shards build
   build: |-
     shards build --release || exit 1
     output_file="build/`ops platform`/ops"

@@ -13,6 +13,8 @@ RSpec.describe "init" do
 
 	shared_examples "inits ops.yml" do |ops_args|
 		let!(:result) { ops(ops_args) }
+		let(:exit_code) { result[EXIT_CODE_IDX] }
+		let(:output) { result[OUTPUT_IDX] }
 
 		it "succeeds" do
 			expect(result[EXIT_CODE_IDX]).to eq(0)
@@ -52,6 +54,14 @@ RSpec.describe "init" do
 
 		it "outputs the correct template" do
 			expect(ops_yml).to match(/- wtf/)
+		end
+	end
+
+	context "when template path is given" do
+		include_examples "inits ops.yml", "init some_other_dir/template.yml"
+
+		it "outputs the correct template" do
+			expect(ops_yml).to match(/- ftw/)
 		end
 	end
 
