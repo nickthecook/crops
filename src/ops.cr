@@ -69,6 +69,7 @@ class Ops
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   rescue e : YamlUtil::YamlError
     Output.error("Error loading #{@config_file}: #{e}")
+    e.backtrace.each { |call| Output.error("  from #{call}") }
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
   # rubocop:enable Metrics/MethodLength
