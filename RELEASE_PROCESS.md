@@ -6,6 +6,7 @@
   - ops_team.gemspec
   - src/version.cr
   - CHANGELOG.md
+- commit as `release 2.x.y`
 - Run the following commands:
   ```
   ops build
