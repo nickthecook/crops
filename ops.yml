@@ -21,6 +21,7 @@ dependencies:
     - echo "Initializing the cloud..."
 forwards:
   ftw: dirsftw
+  gem: gem
 actions:
   run: crystal run ops.cr --
   debug: OPS_DEBUG_OUTPUT=true crystal run -d --error-trace ops.cr --
@@ -51,11 +52,6 @@ actions:
       ops build && cp build/ops "$INSTALL_DIR"
       echo 1>&2 "Installed into '$INSTALL_DIR'."
     alias: bi
-  gem: gem build ops_team.gemspec
-  gem-install:
-    command: ops gem && gem install `ls -t ops_team-*.gem | head -n 1`
-    alias: gemi
-  push: gem push `ls -t ops_team-*.gem | head -n 1`
   export-darwin-intel-tar: cd build && tar cjvf crops-darwin-x86_64.tar.xz darwin_x86_64
   build-release: |-
     set -e
