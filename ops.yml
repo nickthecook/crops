@@ -41,8 +41,9 @@ actions:
   lint: rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _
   build: |-
+    shards build || exit 1
     output_file="build/`ops platform`/ops"
-    crystal build ops.cr -o "$output_file" || exit 1
+    cp bin/ops "$output_file"
     echo 1>&2 "Built '$output_file'."
   build-all: build/build-objects.sh
   build-platforms: build/build-platforms.sh
