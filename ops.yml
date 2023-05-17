@@ -2,6 +2,7 @@ min_version: 2.0.0
 dependencies:
   brew:
     - gnu-tar
+    - gh
   sshkey:
     - test
   gem:
@@ -47,7 +48,7 @@ actions:
     output_file="build/`ops platform`/ops"
     cp bin/ops "$output_file"
     echo 1>&2 "Built '$output_file'."
-  build-all: build/build-objects.sh
+  build-all: ops build && ops build-platforms && ops build-release
   build-platforms: build/build-platforms.sh
   get-build-target: "${LLVM_CONFIG:-llvm-config} --host-target"
   install:
@@ -69,6 +70,7 @@ actions:
     mv "$VERSION.tar.xz" ..
     cd ..
     rm -rf tmpbuild
+  create-release: gh release create
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
