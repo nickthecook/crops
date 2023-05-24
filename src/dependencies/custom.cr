@@ -3,10 +3,10 @@ require "dependencies/dependency"
 module Dependencies
 	class Custom < Dependency
 
-    @name : String
-    @config : Hash(String, String) | Nil
-    @up_command : String?
-    @down_command : String?
+		@name : String
+		@config : Hash(String, String) | Nil
+		@up_command : String?
+		@down_command : String?
 
 		def initialize(@definition : String | Hash(String, YAML::Any))
 			super
@@ -22,7 +22,8 @@ module Dependencies
 		end
 
 		def meet
-			execute(up_command) if up_command
+			l_up_command = up_command
+			execute(l_up_command) if l_up_command
 		end
 		
 		def unmeet : Bool
@@ -34,22 +35,26 @@ module Dependencies
 
 		private def up_command
 			@up_command ||= begin
-        if @config
-          @definition.is_a?(Hash) ? @config.not_nil!.dig("up") : name
-        else
-          @name
-        end
-      end
+				l_config = @config
+
+				if l_config
+					l_config.keys.includes?("up") ? l_config.dig("up") : nil
+				else
+					@name
+				end
+			end
 		end
 
 		private def down_command
 			@down_command ||= begin
-        if @config
-          @config.not_nil!.dig("down") || nil
-        else
-          nil
-        end
-      end
+				l_config = @config
+
+				if l_config
+					l_config.keys.includes?("down") ? l_config.dig("down") : nil
+				else
+					nil
+				end
+			end
 		end
 
 		private def parse_definition : Tuple(String, Hash(String, String) | Nil)

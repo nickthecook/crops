@@ -20,4 +20,12 @@ RSpec.describe "forwards" do
 	it "runs the 'down' portion of the split dependency" do
 		expect(File.exist?("custom_down")).to be true
 	end
+
+	it "runs the 'down' portion of the split custom without an 'up' portion" do
+		expect(File.exist?("custom_down_only")).to be true
+	end
+
+	it "runs the 'up' portion of the split custom without a 'down' portion" do
+		expect(File.exist?("custom_up_only")).to be true
+	end
 end

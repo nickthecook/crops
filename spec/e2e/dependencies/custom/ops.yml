@@ -4,3 +4,7 @@ dependencies:
     - split_custom:
         up: touch custom_up
         down: touch custom_down
+    - half_split_custom:
+        down: touch custom_down_only
+    - other_half_split_custom:
+        up: touch custom_up_only
