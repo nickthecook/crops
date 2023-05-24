@@ -8,7 +8,7 @@
   - CHANGELOG.md
 - commit as `release 2.x.y`
 - Run `ops build-all`
-- Run `ops create-release v2.x.y crops-....tar.xz`
+- Run `ops create-release`
 - update the forumula in `homebrew-crops`
   - change version in URL to match tag from new release
   - run `ops sum` to get the checksum, and put it in the formula
