@@ -25,7 +25,7 @@ spec/e2e/dependencies/custom/custom*
 /ops-*-arm*
 ops_team-*.gem
 build/crops-*
-/crops-*.tar.xz
-/2\..\...tar.xz
+/crops-*.tar.bz2
+/2\..\...tar.bz2
 bin/ops
 rubygem/build
