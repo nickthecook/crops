@@ -29,3 +29,4 @@ build/crops-*
 /2\..\...tar.bz2
 bin/ops
 rubygem/build
+tmpbuild

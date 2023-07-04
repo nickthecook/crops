@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.0.8 (gem 2.0.8.rc1)
+
+- fix bug in envdiff when ignored_keys option is set
+
 ## 2.0.7 (gem 2.0.7.rc1)
 
 - fix bug with split `custom` dependencies that only define `up` or `down` where `ops` would exit with an error

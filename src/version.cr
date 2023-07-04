@@ -6,7 +6,7 @@ class Version
   end
 
   def self.version : String
-    "2.0.7"
+    "2.0.8"
   end
 
   def self.min_version_met?(min_version) : Bool
