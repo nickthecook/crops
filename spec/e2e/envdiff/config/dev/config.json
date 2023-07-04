@@ -1,0 +1,8 @@
+{
+  "environment": {
+    "one": "ONE",
+    "two": "TWO",
+    "four": "FOUR",
+    "ignore_me": 0
+  }
+}

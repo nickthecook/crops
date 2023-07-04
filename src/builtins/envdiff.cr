@@ -125,6 +125,7 @@ module Builtins
 		private def ignored_keys : Array(String)
 			@ignored_keys ||= begin
 				option = Options.get("envdiff.ignored_keys")
+				option = YamlUtil.array_of_strings(option) if option
 
 				if option.nil?
 					[] of String

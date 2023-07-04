@@ -1,0 +1,5 @@
+options:
+  envdiff:
+    ignored_keys:
+      - ignore_me
+      - ignore_me_too
