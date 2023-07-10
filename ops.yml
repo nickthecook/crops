@@ -13,6 +13,9 @@ dependencies:
   apt:
     - less
     - libssh2-1-dev
+  dir:
+    - build/darwin_arm64
+    - build/darwin_x86_64
   custom:
     - shards install
     - bundle config --local path vendor/bundle
@@ -66,8 +69,8 @@ actions:
     test -d tmpbuild/$VERSION/bin/ || mkdir tmpbuild/$VERSION/bin/
     cp bin/ops tmpbuild/$VERSION/bin/
     cd tmpbuild
-    find $VERSION -name ops -print0 | gtar -cjvf $VERSION.tar.bz2 --exclude $VERSION/ops --null -T -
-    mv "$VERSION.tar.bz2" ..
+    find $VERSION -name ops -print0 | gtar -cjvf crops.tar.bz2 --exclude $VERSION/ops --null -T -
+    mv "crops.tar.bz2" ..
     cd ..
     rm -rf tmpbuild
   create-release: gh release create
