@@ -8,7 +8,8 @@
 
 ## 2.1.0 (gem 2.1.0.rc1)
 
-- allow using `--` to invoke builtins
+- when an action exists with the same name as a builtin, the action will now override the builtin
+- allow using `--` to invoke builtins, even when an overriding action is defined
 
 ## 2.0.8 (gem 2.0.8.rc1)
 
