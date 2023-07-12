@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.1.0 (gem 2.1.0.rc1)
+
+- allow using `--` to invoke builtins
+
 ## 2.0.8 (gem 2.0.8.rc1)
 
 - fix bug in envdiff when ignored_keys option is set
