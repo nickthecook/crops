@@ -23,6 +23,9 @@ module Builtins
   }
 
   def self.class_for(name : String) : Builtin.class | Nil
-    BUILTINS[name] if BUILTINS.keys.includes?(name)
+    return BUILTINS[name] if BUILTINS.keys.includes?(name)
+
+    name = name.lstrip("-")
+    return BUILTINS[name] if BUILTINS.keys.includes?(name)
   end
 end

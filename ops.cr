@@ -10,15 +10,16 @@ end
 usage if ARGV.empty?
 
 while ARGV.first =~ /^-/
-  opt = ARGV.shift
+  opt = ARGV.first
 
   case opt
   when "-f", "--file"
+    ARGV.shift
     usage if ARGV.empty?
 
     config_file = ARGV.shift
   else
-    usage
+    break
   end
 end
 

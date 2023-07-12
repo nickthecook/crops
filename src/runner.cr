@@ -34,16 +34,18 @@ class Runner
 
     do_before_all
 
+    l_action = @action
+    if l_action
+      raise ActionConfigError.new(l_action.config_errors.join("; ")) unless l_action.config_valid?
+
+      do_before_action
+      return run_action
+    end
+
     l_builtin = builtin
     return l_builtin.run if l_builtin
 
-    l_action = @action
-    raise UnknownActionError.new("Unknown action: #{@action_name}") if l_action.nil?
-    raise ActionConfigError.new(l_action.config_errors.join("; ")) unless l_action.config_valid?
-
-    do_before_action
-
-    run_action
+    raise UnknownActionError.new("Unknown action: #{@action_name}")
   end
 
   private def do_before_all
