@@ -20,12 +20,21 @@ module Builtins
     "init" => Init,
     "up" => Up,
     "version" => Version,
+    "h" => Help,
+    "v" => Version
   }
 
   def self.class_for(name : String) : Builtin.class | Nil
     return BUILTINS[name] if BUILTINS.keys.includes?(name)
 
-    name = name.lstrip("-")
-    return BUILTINS[name] if BUILTINS.keys.includes?(name)
+    if hyphenated?(name)
+      name = name.lstrip("-")
+
+      return BUILTINS[name] if BUILTINS.keys.includes?(name)
+    end
+  end
+
+  private def self.hyphenated?(name : String) : Bool
+    name.matches?(/^-[^-]$/) || name.matches?(/^--[^-].+$/)
   end
 end

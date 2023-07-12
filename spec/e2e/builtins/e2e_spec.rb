@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-RSpec.describe "no actions" do
+RSpec.describe "builtins" do
 	let(:commands) do
 		%w[version --version help --help]
 	end
@@ -11,11 +11,27 @@ RSpec.describe "no actions" do
 		expect(exit_codes).to all(eq(0))
 	end
 
-	context "when action name is prefixed with --" do
+	context "when action arg is prefixed with --" do
 		let(:commands) { ["--test", "--test-watch"] }
 
 		it "exits with unknown action error code" do
 			expect(exit_codes.first).to eq(65)
+		end
+	end
+
+	context "when action arg is prefixed with -" do
+		let(:commands) { %w[-h -v] }
+
+		it "succeeds" do
+			expect(exit_codes).to all(eq(0))
+		end
+
+		context "when action name is more than one character" do
+			let(:commands) { %w[-help -version] }
+
+			it "fails" do
+				expect(exit_codes).to all(eq(65))
+			end
 		end
 	end
 
