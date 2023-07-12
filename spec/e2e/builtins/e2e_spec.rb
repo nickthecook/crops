@@ -51,10 +51,10 @@ RSpec.describe "builtins" do
 			end
 		end
 
-		context "when an alias that occludes a builtin" do
+		context "when an alias occludes a builtin" do
 			let(:commands) { ["h"] }
 
-			it "run the action" do
+			it "runs the action" do
 				expect(outputs.first).to match(/HALP/)
 			end
 
