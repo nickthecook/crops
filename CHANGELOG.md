@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
+## 2.1.1 (gem 2.1.1.rc1)
+
+- limit to GNU-style short and long option args
+
 ## 2.1.0 (gem 2.1.0.rc1)
 
 - allow using `--` to invoke builtins
