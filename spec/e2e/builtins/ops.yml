@@ -6,6 +6,9 @@ actions:
     command: echo test-watch
     alias: tw
     aliases: [rw]
+  help:
+    command: echo HALP
+    alias: h
   test-e2e:
     command: echo test-e2e
     aliases:

@@ -50,5 +50,21 @@ RSpec.describe "builtins" do
 				expect(outputs.first).to match(/ops\.yml exists; not initializing\./)
 			end
 		end
+
+		context "when an alias that occludes a builtin" do
+			let(:commands) { ["h"] }
+
+			it "run the action" do
+				expect(outputs.first).to match(/HALP/)
+			end
+
+			context "when running the builtin with a -" do
+				let(:commands) { ["-h"] }
+
+				it "runs the builtin" do
+					expect(outputs.first).to match(/Builtins:/)
+				end
+			end
+		end
 	end
 end
