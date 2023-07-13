@@ -34,10 +34,9 @@ module Dependencies
 
 		private def generate_key
 			Output.debug("Generating SSH key with passphrase...")
-			passphrase_arg = passphrase.nil? || passphrase.empty? ? "" : "-N '#{passphrase}'"
 			execute(
-				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q #{passphrase_arg} -C '#{key_file_comment}'"
-			)
+				"ssh-keygen -b #{opt_key_size} -t #{opt_key_algo} -f #{priv_key_name} -q -N '#{passphrase}' -C '#{key_file_comment}'"
+				)
 		end
 
 		private def add_key
