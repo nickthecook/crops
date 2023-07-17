@@ -2,7 +2,7 @@
 
 > Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
 
-## 2.1.1 (gem 2.1.2.rc1)
+## 2.1.2 (gem 2.1.2.rc1)
 
 - don't prompt for passphrase on `ops up sshkey` when passphrase variable is not set
 - don't require ops.yml for `--help`, `h`, `-h`, `--version`, `v`, `-v`
