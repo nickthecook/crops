@@ -18,7 +18,14 @@ class Ops
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
   MISSING_OPS_YML_ERROR_EXIT_CODE = 72
   SKIP_VERSION_CHECK_FOR_ACTIONS = ["version", "help"]
-  CONFIG_OPTIONAL_FOR_ACTIONS = ["init", "version", "help", "env", "envdiff", "exec"]
+  CONFIG_OPTIONAL_FOR_ACTIONS = [
+    "init",
+    "version", "--version", "v", "-v",
+    "help", "--help", "h", "-h",
+    "env",
+    "envdiff",
+    "exec"
+  ]
 
   RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."
 

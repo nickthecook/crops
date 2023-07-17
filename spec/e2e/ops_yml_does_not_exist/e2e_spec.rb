@@ -10,7 +10,7 @@ RSpec.describe "no actions" do
 	end
 
 	let(:success_commands) do
-		%w[version init help]
+		%w[version --version v -v init help --help h -h]
 	end
 	let(:error_commands) do
 		%w[up down test]
