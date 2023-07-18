@@ -19,19 +19,28 @@ module Builtins
     "help" => Help,
     "init" => Init,
     "up" => Up,
-    "version" => Version,
-    "h" => Help,
-    "v" => Version
+    "version" => Version
+  }
+  ALIASES = {
+    "h" => "help",
+    "v" => "version"
   }
 
   def self.class_for(name : String) : Builtin.class | Nil
-    return BUILTINS[name] if BUILTINS.keys.includes?(name)
-
     if hyphenated?(name)
       name = name.lstrip("-")
-
-      return BUILTINS[name] if BUILTINS.keys.includes?(name)
     end
+
+    name = ALIASES[name] if ALIASES.keys.includes?(name)
+    return BUILTINS[name] if BUILTINS.keys.includes?(name)
+  end
+
+  def self.alias_for(name : String) : String | Nil
+    ALIASES.key_for(name) if ALIASES.values.includes?(name)
+  end
+
+  def self.builtins : Array(String)
+    BUILTINS.keys
   end
 
   private def self.hyphenated?(name : String) : Bool

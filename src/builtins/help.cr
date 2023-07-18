@@ -4,6 +4,8 @@ require "colorize"
 
 module Builtins
 	class Help < Builtin
+		@builtins : Array(String | Nil) | Nil
+
 		NAME_WIDTH = 30
 
 		def self.description
@@ -31,12 +33,19 @@ module Builtins
 		end
 
 		private def builtins
-			Builtins::BUILTINS.keys.map do |builtin|
+			@builtins ||= Builtins.builtins.map do |builtin|
 				builtin_class = Builtins.class_for(builtin)
 				next unless builtin_class
 
-				"%-#{NAME_WIDTH}s %s" % [builtin.colorize(:yellow), builtin_class.description]
+				"%-#{NAME_WIDTH}s %s" % [builtin_with_alias(builtin), builtin_class.description]
 			end
+		end
+
+		private def builtin_with_alias(name) : String
+			l_alias = Builtins.alias_for(name)
+			return "%s [%s]" % [name.colorize(:yellow), l_alias] if l_alias
+
+			name.colorize(:yellow).to_s
 		end
 
 		private def actions

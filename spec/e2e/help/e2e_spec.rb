@@ -15,4 +15,9 @@ RSpec.describe "help" do
 		expect(output).to match(/33minit\e/)
 		expect(output).to match(/33mexec\e/)
 	end
+
+	it "includes alias for help" do
+		expect(output).to match(/help.* \[h\]/)
+		expect(output).to match(/version.* \[v\]/)
+	end
 end
