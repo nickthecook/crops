@@ -1,6 +1,11 @@
 # crops changelog
 
-> Note: Darwin x86_64 binary is still at 2.0.0.rc20 while I figure out how to build that on my ARM Mac.
+> Note: Darwin x86_64 binary is 2.1.2
+
+## 2.1.3 (gem 2.1.3.rc1)
+
+- add aliases for Builtins, to clean up `help` output
+- update Darwin x86_64 binary to 2.1.2
 
 ## 2.1.2 (gem 2.1.2.rc1)
 
