@@ -1,0 +1,580 @@
+# yaml-language-server: $schema=https://json-schema.org/draft-07/schema
+$schema: https://json-schema.org/draft-07/schema
+$id: https://github.com/nickthecook/ops/blob/main/etc/ops.schema.json
+title: ops.yml
+description: Confirguration for Ops.
+markdownDescription: Confirguration for [Ops](https://github.com/nickthecook/ops).
+type: object
+properties:
+  min_version:
+    description: A valid semantic version. If an older version of `ops` (v0.12.0 or later) encounters this file, it will print a message and exit.
+    markdownDescription: |
+      A valid [semantic version](https://semver.org). If an older version of `ops` (_`v0.12.0` or later_) encounters this file, it will print a message like this and exit:
+
+      > ```
+      > ops.yml specifies minimum version of 0.12.2, but ops version is 0.12.0
+      > ```
+
+      _For more information, see the [Version Checking](https://github.com/nickthecook/ops/blob/main/docs/why.md#version-checking) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    $ref: "#/definitions/SemVer"
+  forwards:
+    description: |
+      Sometimes a project is complex enough to split up into multiple directories. In this case, you may have `ops.yml` files in several places, but still want to provide easy access to these actions from the top-level directory.
+
+      With this config, `ops app test` will have the same effect as running `ops test` from the `app` directory. `ops inf deploy` will be the same as `cd infrastructure && ops deploy`.
+
+      When a command is forwarded to another directory, no config, secrets, or environment variables are set based on the current directory's `ops.yml`, and no hooks are run from the current directory's `ops.yml`.
+
+      If you want access to the top-level directory's config or secrets from the subdirectory, link it in the subdirectory's `ops.yml`.
+    markdownDescription: |
+      Sometimes a project is complex enough to split up into multiple directories. In this case, you may have `ops.yml` files in several places, but still want to provide easy access to these actions from the top-level directory.
+
+      With this config, `ops app test` will have the same effect as running `ops test` from the `app` directory. `ops inf deploy` will be the same as `cd infrastructure && ops deploy`.
+
+      When a command is forwarded to another directory, no config, secrets, or environment variables are set based on the current directory's `ops.yml`, and no hooks are run from the current directory's `ops.yml`.
+
+      If you want access to the top-level directory's config or secrets from the subdirectory, link it in the subdirectory's `ops.yml`:
+
+      ```yaml
+      dependencies:
+        custom:
+          - ln -sf ../config config
+      ```
+
+      _For more information, see the [Forwards](https://github.com/nickthecook/ops/blob/main/docs/why.md#vforwards) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    type: object
+    patternProperties:
+      "^[\\w-]+$":
+        description: The path of the forwarded `ops.yml` file.
+        type: string
+        format: uri-reference
+    minProperties: 1
+  dependencies:
+    description: |
+      Dependencies listed in the `dependencies` section of `ops.yml` are satisfied when the `ops up` command is run. Some dependencies will be un-satisfied when you run `ops down`; e.g. services will be stopped, but packages won't be uninstalled.
+
+      This feature allows developers that are new to a project to get up and running without knowing anything about the app itself. Your `ops.yml` should allow a developer to `ops up && ops start` to run an application.
+    markdownDescription: |
+      Dependencies listed in the `dependencies` section of `ops.yml` are satisfied when the `ops up` command is run. Some dependencies will be un-satisfied when you run `ops down`; e.g. services will be stopped, but packages won't be uninstalled.
+
+      This feature allows developers that are new to a project to get up and running without knowing anything about the app itself. Your `ops.yml` should allow a developer to `ops up && ops start` to run an application.
+
+      _For more information, see the [Dependencies](https://github.com/nickthecook/ops/blob/main/docs/dependencies.md) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    type: object
+    properties:
+      apk:
+        description: |-
+          - Specifies that a particular package from `apk` is needed.
+          - Will only run if the `apk` command is in the `$PATH` (usually only on Alpine linux).
+        markdownDescription: |-
+          * Specifies that a particular package from `apk` is needed.
+          * Will only run if the `apk` command is in the `$PATH` (usually only on Alpine linux).
+        $ref: "#/definitions/PackageList"
+      apt:
+        description: |-
+          - Specifies that a particular package from `apt` is needed.
+          - Will only run if the `apt` executable is in the `$PATH`.
+          - Can specify a version with, e.g.: `curl/7.52.1-5+deb9u7`.
+          - Run `apt-cache policy curl` to get available versions.
+        markdownDescription: |-
+          * Specifies that a particular package from `apt` is needed.
+          * Will only run if the `apt` executable is in the `$PATH`.
+          * Can specify a version with, e.g.: `curl/7.52.1-5+deb9u7`.
+          * Run `apt-cache policy curl` to get available versions.
+        $ref: "#/definitions/PackageList"
+      brew:
+        description: |-
+          - Specifies that a particular `brew` package is needed.
+          - Will only run if you're on a Mac.
+        markdownDescription: |-
+          * Specifies that a particular `brew` package is needed.
+          * Will only run if you're on a Mac.
+        $ref: "#/definitions/PackageList"
+      dir:
+        description: This dependency will ensure the given directory is created when you run `ops up`. This is handy for directories your app needs, but which contain no checked-in files, since `git` won't save empty directories.
+        $ref: "#/definitions/PathList"
+      docker:
+        description: |
+          - Specifies that this repo includes a directory with the given name (e.g. `deps/mysql`) that includes a `docker-compose.yml` file.
+          - `ops` will change to the given directory and use `docker-compose` to start, stop, and check the status of this service as needed.
+        markdownDescription: |
+          * Specifies that this repo includes a directory with the given name (e.g. `deps/mysql`) that includes a `docker-compose.yml` file.
+          * `ops` will change to the given directory and use `docker-compose` to start, stop, and check the status of this service as needed.
+        $ref: "#/definitions/PathList"
+      gem:
+        description:  |
+          - Installs the gem with the given name.
+          - By default, runs `gem install ...`, but can be configured to use `sudo gem install` or `gem install --user-install` (see below).
+        markdownDescription: |
+          * Installs the gem with the given name.
+          * By default, runs `gem install ...`, but can be configured to use `sudo gem install` or `gem install --user-install` (_see below_).
+        $ref: "#/definitions/PackageList"
+        examples:
+          - - ejson
+      pip:
+        description: This dependency ensures that the given Python package is installed.
+        $ref: "#/definitions/PackageList"
+      snap:
+        description: ""
+        $ref: "#/definitions/PackageList"
+      custom:
+        description: |
+          - Runs the given command.
+          - Can't tell if the command needs to be run or not, so always runs it on `ops up`.
+          - Therefore, the command should be idempotent.
+          - It's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean.
+          - If a `custom` dependency is given as a hash, you can define separate `up` and `down` actions that are run when `ops up` or `ops down` are called, respectively.
+        markdownDescription: |
+          * Runs the given command.
+          * Can't tell if the command needs to be run or not, so always runs it on `ops up`.
+          * Therefore, the command should be idempotent.
+          * It's also a good idea to prevent it from printing output unless it encounters an error, to keep the ops output clean.
+          
+          #### `custom` dependencies with `up` and `down`
+
+          If a `custom` dependency is given as a hash, you can define separate `up` and `down` actions that are run when `ops up` or `ops down` are called, respectively.
+
+          ```yaml
+          dependencies:
+          	custom:
+          		- init file:
+          				up: touch file
+          				down: rm file
+          ```
+
+          You can also define only the `down` command, which will execute on `ops down`; nothing will be executed by the dependency on `ops up`.
+
+          > **NOTE:** The lines with `up` and `down` are indented past the beginning of the text `init file`. YAML considers `- ` in a list to be part of the indentation, and `up` and `down` must be _children_ of the name of the custom depdenceny, not siblings. Therefore, the following is **incorrect**:
+          >
+          > ```yaml
+          > dependencies:
+          > 	custom:
+          > 		- init file:
+          > 			up: touch file
+          > 			down: rm file
+          > ```
+          >
+          > as it results in a Hash like:
+          > 
+          > ```ruby
+          > {
+          > 	"init file" => nil,
+          > 	"up" => "touch file",
+          > 	"down" => "touch file"
+          > }
+          > ```
+        type: array
+        items:
+          description: ""
+          oneOf:
+            - type: boolean
+            - $ref: "#/definitions/NonEmptyString"
+            - description: ""
+              type: object
+              patternProperties:
+                ^\b.+\b$:
+                  description: ""
+                  type: object
+                  properties:
+                    up:
+                      description: ""
+                      $ref: "#/definitions/CustomUpDown"
+                    down:
+                      description: ""
+                      $ref: "#/definitions/CustomUpDown"
+                  minProperties: 1
+              minProperties: 1
+              maxProperties: 1
+        minItems: 1
+        examples:
+          - - bundle install --quiet
+            - init file:
+                up: touch file
+                down: rm file
+      sshkey:
+        description: |
+          This dependency will create an SSH key pair with key size 4096 and key algorithm `rsa` at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 3600 seconds (one hour).
+
+          The key comment, which is visible in the output of `ssh-add -l`, will be set to the name of the directory that contains `ops.yml`. For example, if the directory is named `heliograf`, you would see the following output:
+        markdownDescription: |
+          This dependency will create an SSH key pair with key size 4096 and key algorithm `rsa` at `keys/$environment/user@host` and `keys/$environment/user@host.pub`. It will also add it to your SSH agent, if `SSH_AUTH_SOCK` is set, with a lifetime of 3600 seconds (one hour).
+
+          The key comment, which is visible in the output of `ssh-add -l`, will be set to the name of the directory that contains `ops.yml`. For example, if the directory is named `heliograf`, you would see the following output:
+
+          ```shell
+          $ ssh-add -l
+          2048 SHA256:7n9WwisFkDtemOx8O/+D33myKpjOvrjx3PZcNb9y6/Y heliograf (RSA)
+          2048 SHA256:Z6oEPBIoBrHv/acYiBGBRYLe2sEONV17tDor3h5eNtc certitude (RSA)
+          ```
+
+          This output shows that one key from a project called `heliograf` and one key from a project called `certitude` have been loaded.
+        $ref: "#/definitions/PathList"
+        examples:
+          - - keys/$environment/user@host
+  hooks:
+    description: |
+      Sometimes you want to run a command before other commands. Some examples:
+
+      - You have a number of ops commands that let a developer run different test suites inside a container, and you want to make sure the container image is built beforehand.
+      - You have some configuration that needs to happen when the software execution environment changes (e.g. going from dev to staging).
+
+      In this case, you can use the "hooks feature.
+    markdownDescription: |
+      Sometimes you want to run a command before other commands. Some examples:
+
+      * You have a number of ops commands that let a developer run different test suites inside a container, and you want to make sure the container image is built beforehand.
+      * You have some configuration that needs to happen when the software execution environment changes (_e.g. going from `dev` to `staging`_).
+
+      In this case, you can use the `hooks` feature.
+
+      _For more information, see the [Hooks](https://github.com/nickthecook/ops/blob/main/docs/hooks.md) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    type: object
+    properties:
+      before:
+        description: |
+          A series of hooks that run before actions. They do not run before builtins like `up` or `exec`.
+
+          `before` hooks are always executed before secrets are loaded. If you would like a before hook to have access to secrets, create an action with `load_secrets: true` and call the action from a before hook.
+        markdownDescription: |
+          A series of hooks that run before actions. They do not run before builtins like `up` or `exec`.
+
+          `before` hooks are always executed before secrets are loaded. If you would like a before hook to have access to secrets, create an action with `load_secrets: true` and call the action from a before hook.
+        items:
+          description: A valid command to run.
+          $ref: "#/definitions/NonEmptyString"
+        minItems: 1
+    minProperties: 1
+  actions:
+    description: A collection of commands to run via `ops`. If the first argument to `ops` is not a `builtin`, `ops` will look for an action with that name.
+    markdownDescription: |
+      A collection of commands to run via `ops`. If the first argument to `ops` is not a `builtin`, `ops` will look for an action with that name.
+
+      _For more information, see the [Actions](https://github.com/nickthecook/ops/blob/main/docs/actions.md) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    type: object
+    patternProperties:
+      "^[\\w-]+$":
+        description: |
+          An `ops` command declaration. Here are some conventions to follow when naming your actions, so that you end up with common `ops` actions across your projects:
+
+          - `ops server` or `ops start` to start your app, if it's a server.
+          - `ops stop` to stop your app.
+          - `ops run` if it's a client, or a program that is expected to exit on its own.
+          - `ops test` to run your local tests.
+          - `ops test-watch` can be handy, using something like the `rerun` gem, to run tests every time a file changes.
+        markdownDescription: |
+          An `ops` command declaration. Here are some conventions to follow when naming your actions, so that you end up with common `ops` actions across your projects:
+
+          * `ops server` or `ops start` to start your app, if it's a server.
+          * `ops stop` to stop your app.
+          * `ops run` if it's a client, or a program that is expected to exit on its own.
+          * `ops test` to run your local tests.
+          * `ops test-watch` can be handy, using something like the `rerun` gem, to run tests every time a file changes.
+        oneOf:
+          - description: A simple command, or—though not recommended—a script, to run. Only use this method unless the command's intent is easy to decipher.
+            markdownDescription: A simple command, or—*though, not recommended*—a script, to run. Only use this method unless the command's intent is easy to decipher.
+            $ref: "#/definitions/CommandString"
+          - $ref: "#/definitions/CommandNoop"
+          - description: An advanced command configuration.
+            type: object
+            properties:
+              alias:
+                description: An action can have one alias. If the first argument to `ops` is not a builtin or an action name, `ops` will look for an alias that matches the argument.
+                markdownDescription: An action can have one alias. If the first argument to `ops` is not a builtin or an action name, `ops` will look for an alias that matches the argument.
+                type: string
+                pattern: ^[\w-]+$
+              command:
+                description: A command or script to run when the action is executed.
+                oneOf:
+                  - $ref: "#/definitions/CommandString"
+                  - $ref: "#/definitions/CommandNoop"
+              description:
+                description: A summary of the command's intent and its usage. When a user runs, `ops help`, the text here will display beside the command's name; otherwise, it will simply display the command script. It is best practice to describe your command.
+                markdownDescription: A summary of the command's intent and its usage. When a user runs, `ops help`, the text here will display beside the command's name; otherwise, it will simply display the command script. It is best practice to describe your command.
+                type: string
+                minLength: 1
+                default: DESCRIBE ME!
+              load_secrets:
+                $ref: "#/definitions/LoadSecrets"
+              shell_expansion:
+                description: By default, `ops` executes actions with shell expansion, which means variable references are expanded, file globbing is done, and quotes behave as one would expect. However, this can get in the way sometimes. For actions like this, one can disable shell expansion, losing variable and glob interpolation and other shell features but gaining some predictability.
+                markdownDescription: By default, `ops` executes actions with shell expansion, which means variable references are expanded, file globbing is done, and quotes behave as one would expect. However, this can get in the way sometimes. For actions like this, one can disable shell expansion, losing variable and glob interpolation and other shell features but gaining some predictability.
+                type: boolean
+                default: false
+              param_expansion:
+                description: Sometimes, a command implementation may call for variable interpetation. This is semi-achieved with `shell_expansion` by default; however, unless the command is a pass-through to a script, there's no way to interpret parameters as postional variables. Enter `param_expansion`. Setting this to `true` instructs `ops` to bind any aguements passed during execution to positional variables within the `command` script.
+                markdownDescription: Sometimes, a command implementation may call for variable interpetation. This is semi-achieved with `shell_expansion` by default; however, unless the command is a pass-through to a script, there's no way to interpret parameters as postional variables. Enter `param_expansion`. Setting this to `true` instructs `ops` to bind any aguements passed during execution to positional variables within the `command` script.
+                type: boolean
+                default: true
+              in_envs:
+                description: Limit possibly destructive actions to only being used in certain environments. If the action is excuted in an environment missing from this list, it will exit with an error.
+                $ref: "#/definitions/EnvList"
+              not_in_envs:
+                description: Prevent possibly destructive actions from being used in certain environments. If the action is excuted in an environment within this list, it will exit with an error.
+                $ref: "#/definitions/EnvList"
+              skip_in_envs:
+                description: Similar to `not_in_envs`, except it will not exit with an error if executed in any of the specified environments.
+                $ref: "#/definitions/EnvList"
+              skip_before_hooks:
+                description: |
+                  You may have some actions that don't need to run before hooks. For example, an action that removes container images to allow a developer to force a clean build from the latest source, or free up disk space.
+
+                  In this case, you can configure that action to skip the hooks.
+                type: boolean
+                default: false
+            unevaluatedProperties: false
+            required:
+              - command
+            default:
+              command: echo "hello, world"
+              description: "Describe your command here, or else..."
+            if: { required: ['shell_expansion'] }
+            then: { not: { required: ['param_expansion'] } }
+            else:
+              if: { required: ['param_expansion'] }
+              then: { not: { required: ['shell_expansion'] } }
+  options:
+    description: Options allow the user to change some aspects of `ops` behaviour.
+    markdownDescription: |
+      Options allow the user to change some aspects of `ops` behaviour.
+
+      _For more information, see the [Options](https://github.com/nickthecook/ops/blob/main/docs/options.md) documentation on [GitHub](https://github.com/nickthecook/ops)._
+    type: object
+    properties:
+      apt:
+        description: Affect the behaviour of `apt` dependencies.
+        markdownDescription: Affect the behaviour of `apt` dependencies.
+        type: object
+        $ref: "#/definitions/UseSudo"
+        unevaluatedProperties: false
+        default:
+          use_sudo: false
+      gem:
+        description: Affect the behaviour of `gem` dependencies.
+        markdownDescription: Affect the behaviour of `gem` dependencies.
+        type: object
+        allOf:
+          - properties:
+              user_install:
+                description: If `true`, causes `ops up` to run `gem install --user-install ejson`.
+                type: boolean
+                default: false
+          - $ref: "#/definitions/UseSudo"
+        unevaluatedProperties: false
+        default:
+          user_install: true
+          use_sudo: false
+      snap:
+        description: Affect the behaviour of `snap` dependencies.
+        markdownDescription: Affect the behaviour of `snap` dependencies.
+        type: object
+        allOf:
+          - properties:
+              install:
+                description: |
+                  Unlike `apt`, `brew`, or `apk`, `snap` may be present on any Linux system, and its presence alone probably shouldn't be taken as a sign that `ops` should install every snap listed in `dependencies`. Therefore, `ops` will never install snaps unless the `snap.install` option is `true`.
+
+                  For example, on Solus Linux, `snap` is necessary to install the `mosquitto` MQTT broker, but on Debian I would `apt install mosquitto-tools` instead. So both of these dependencies would be listed in the `ops.yml`. However, I may still have `snap` present; I just wouldn't want `ops` to install snaps unless I told it to, or it would install both the apt package and the snap.
+
+                  Managing these options via hard-coded strings in `ops.yml` isn't the best solution, however; this file is checked in, but whether or not to install snaps should be based on environment. In the future, `ops` will support using env vars to set any option, based on a scheme like `apt.use_sudo` == `$APT__USE_SUDO`.
+                markdownDescription: |
+                  Unlike `apt`, `brew`, or `apk`, `snap` may be present on any Linux system, and its presence alone probably shouldn't be taken as a sign that `ops` should install every snap listed in `dependencies`. Therefore, `ops` will never install snaps unless the `snap.install` option is `true`.
+
+                  For example, on Solus Linux, `snap` is necessary to install the `mosquitto` MQTT broker, but on Debian I would `apt install mosquitto-tools` instead. So both of these dependencies would be listed in the `ops.yml`. However, I may still have `snap` present; I just wouldn't want `ops` to install snaps unless I told it to, or it would install both the apt package and the snap.
+
+                  Managing these options via hard-coded strings in `ops.yml` isn't the best solution, however; this file is checked in, but whether or not to install snaps should be based on environment. In the future, `ops` will support using env vars to set any option, based on a scheme like `apt.use_sudo` == `$APT__USE_SUDO`.
+                type: boolean
+                default: false
+          - $ref: "#/definitions/UseSudo"
+        unevaluatedProperties: false
+        default:
+          install: true
+          use_sudo: false
+      pip:
+        description: Affect the behaviour of `pip` dependencies.
+        markdownDescription: Affect the behaviour of `pip` dependencies.
+        type: object
+        properties:
+          command:
+            description: The path to a `pip` binary, along any options you'd like to run when installing packages.
+            type: string
+            format: uri-reference
+        unevaluatedProperties: false
+        default:
+          command: pip3
+      envdiff:
+        description: Affect the behaviour of `ops envdiff`.
+        type: object
+        properties:
+          ignored_keys:
+            description: If there's a key you know should be in some environments and not in others, put it in the `envdiff.ignored_keys` option and `ops envdiff` won't mention it again.
+            markdownDescription: If there's a key you know should be in some environments and not in others, put it in the `envdiff.ignored_keys` option and `ops envdiff` won't mention it again.
+            type: array
+            items:
+              description: Any key within your `config.json/#/environment` and/or `secrets.ejson/#/environment`.
+              $ref: "#/definitions/NameString"
+              minItems: 1
+              uniqueItems: true
+        additionalProperties: false
+        default:
+          ignored_keys:
+      environment:
+        description: |
+          Statically or dynamically set global environment variables, with each key serving as a variable's name.
+
+          The values of these variables are not interpreted by the shell before being set, so variable references like `$environment` will appear literally in the value of the variable.
+        markdownDescription: |
+          Statically or dynamically set global environment variables, with each key serving as a variable's name.
+
+          > **NOTE:** _The values of these variables are not interpreted by the shell before being set, so variable references like `$environment` will appear literally in the value of the variable._
+        type: object
+        patternProperties:
+          '^\w+$':
+            description: 'Either a static value, or a command enclosed between `"\\`...\\`"`.'
+            markdownDescription: 'Either a static value, or a command enclosed between `` "`...`" ``.'
+            type: string
+        minProperties: 1
+      environment_aliases:
+        description: |
+          Different software systems use different environment variables to determine the software execution environment. E.g. Ruby on Rails uses `RAILS_ENV`. Thus, `ops` allows the user to specify which variables should also be set to the name of the software environment.
+
+          If any `environment_aliases` are specified in `ops.yml`, `ops` will not change the value of `$environment` unless it is listed as well.
+
+          (`ops` will always use `$environment` to detect the software execution environment; `environment_aliases` just makes `ops` set other variables to match it.)
+        markdownDescription: |
+          Different software systems use different environment variables to determine the software execution environment. E.g. Ruby on Rails uses `RAILS_ENV`. Thus, `ops` allows the user to specify which variables should also be set to the name of the software environment.
+
+          If any `environment_aliases` are specified in `ops.yml`, `ops` will not change the value of `$environment` unless it is listed as well.
+
+          > NOTE: _`ops` will always use `$environment` to detect the software execution environment; `environment_aliases` just makes `ops` set other variables to match it._
+        type: array
+        items:
+          description: The name of an environment variable.
+          $ref: "#/definitions/NameString"
+        minItems: 1
+        uniqueItems: true
+        examples:
+          - - RAILS_ENV
+            - RACK_ENV
+      exec:
+        description: Affect the behaviour of `ops exec`.
+        type: object
+        properties:
+          load_secrets:
+            $ref: "#/definitions/LoadSecrets"
+      sshkey:
+        description: Affect how SSH keys are generated.
+        type: object
+        properties:
+          add_keys:
+            description: If `false`, disables adding the SSH key to `ssh-agent`.
+            markdownDescription: If `false`, disables adding the SSH key to `ssh-agent`.
+            type: boolean
+            default: false
+          key_algo:
+            description: The algorithm to generate the SSH key with.
+            type: string
+            enum:
+              - dsa
+              - ecdsa
+              - ecdsa-sk
+              - ed25519
+              - ed25519-sk
+              - rsa
+            default: rsa
+            examples:
+              - ed25519
+          key_lifetime:
+            description: The duration, in seconds, at which the SSH key will be removed from `ssh-agent`.
+            type: integer
+            minimum: 0
+            default: 3600
+          key_size:
+            description: |
+              The size at which the SSH key will be generated.
+
+              _With the "ed25519" algorithm, `key_size` can still be specified, but will be ignored by `ssh-keygen`, since all keys for that algorithm are 256 bits._
+            markdownDescription: |
+              The size at which the SSH key will be generated.
+
+              > **NOTE:** _With the `ed25519` algorithm, `key_size` can still be specified, but will be ignored by `ssh-keygen`, since all keys for that algorithm are 256 bits._
+            type: integer
+            enum:
+              - 512
+              - 1024
+              - 2048
+              - 4096
+            minimum: 512
+            maximum: 4096
+            default: 4096
+          load_secrets:
+            $ref: "#/definitions/LoadSecrets"
+          passphrase_var:
+            description: The name of an environment variable containing the passphrase to generate the SSH key with.
+            type: string
+        additionalProperties: false
+        default:
+          load_secrets: true
+          passphrase_var: SSH_KEY_PASSPHRASE
+          key_size: 4096
+    additionalProperties: false
+minProperties: 1
+additionalProperties: false
+definitions:
+  NonEmptyString:
+    type: string
+    minLength: 1
+  CommandString:
+    $ref: "#/definitions/NonEmptyString"
+    default: echo "hello, world"
+    examples:
+      - terraform init
+      - docker-compose up
+  CommandNoop:
+    description: If `true`, executes the command as a `no-op` that exits `0`. If `false`, the `no-op` will always fail.
+    markdownDescription: If `true`, executes the command as a `no-op` that exits `0`. If `false`, the `no-op` will always fail.
+    type: boolean
+    default: true
+  CustomUpDown:
+    oneOf:
+      - $ref: "#/definitions/NonEmptyString"
+      - description: If `true`, simply passes execution with a `0` exit code. This, in effect, allows you to specify a custom command for `ops up` and a `no-op` for `ops down`—or vice versa. Setting `false` will count as a failed execution, so it's best to only use `true`. 
+        markdownDescription: If `true`, simply passes execution with a `0` exit code. This, in effect, allows you to specify a custom command for `ops up` and a `no-op` for `ops down`—or vice versa. Setting `false` will count as a failed execution, so it's best to only use `true`. 
+        type: boolean
+  LoadSecrets:
+    description: If `true`, items in `secrets.ejson` will be loaded before execution, allowing said items to be referenced in the configuration.
+    type: boolean
+    default: false
+  NameString:
+    type: string
+    pattern: ^[\w-]+$
+  EnvList:
+    type: array
+    items:
+      description: A list of environment names.
+      $ref: "#/definitions/NameString"
+    minItems: 1
+    uniqueItems: true
+  PackageList:
+    type: array
+    items:
+      description: A list of package names.
+      $ref: "#/definitions/NameString"
+    minItems: 1
+    uniqueItems: true
+  PathList:
+    type: array
+    items:
+      description: A list of paths.
+      type: string
+      format: uri-reference
+    minItems: 1
+    uniqueItems: true
+  SemVer:
+    type: string
+    pattern: ^\d+(?:\.\d+(?:\.\d+|)|)$
+  UseSudo:
+    properties:
+      use_sudo:
+        description: If `false`, causes `ops up` to install the dependency's packages without `sudo`.
+        type: boolean
+        default: true

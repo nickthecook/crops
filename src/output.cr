@@ -38,6 +38,8 @@ class Output
   end
 
   def self.notice(msg)
+    return if ENV.fetch("OPS_QUIET_OUTPUT", "false") == "true"
+
     warn(msg)
   end
 
@@ -62,7 +64,7 @@ class Output
   end
 
   def self.debug(msg)
-    return unless ENV.keys.includes?("OPS_DEBUG_OUTPUT") && ENV["OPS_DEBUG_OUTPUT"] == "true"
+    return unless ENV.fetch("OPS_DEBUG_OUTPUT", "false") == "true"
 
     @@err.puts(msg.colorize(:blue))
   end

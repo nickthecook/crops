@@ -94,7 +94,7 @@ class Runner
       return true
     end
 
-    Output.notice("Running '#{@action.to_s}' in environment '#{ENV["environment"]}'...")
+    Output.notice("Running #{@action.not_nil!.to_log} in environment '#{ENV["environment"]}'...")
     action.not_nil!.run
   end
 

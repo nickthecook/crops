@@ -40,7 +40,7 @@ RSpec.describe "forwards" do
 		end
 
 		it "prints usage" do
-			expect(outputs[2]).to match(/Usage: ops/)
+			expect(outputs[2]).to match(/[\e\[\dm]+Usage:[\e\[\dm]+ ops/)
 		end
 	end
 end

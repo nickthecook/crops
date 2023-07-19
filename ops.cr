@@ -3,11 +3,14 @@ require "colorize"
 require "ops"
 
 def usage
-  STDERR.puts "Usage: ops [-f <filename>] <action>".colorize(:red)
+  STDERR.puts Builtins::Help.usage.colorize(:red)
   exit(1)
 end
 
 usage if ARGV.empty?
+
+# Enforce `--quiet` to act on a per-call basis.
+ENV.delete("OPS_QUIET_OUTPUT")
 
 while ARGV.first =~ /^-/
   opt = ARGV.first
@@ -18,6 +21,9 @@ while ARGV.first =~ /^-/
     usage if ARGV.empty?
 
     config_file = ARGV.shift
+  when "-q", "--quiet"
+    ARGV.shift
+    ENV["OPS_QUIET_OUTPUT"] = "true"
   else
     break
   end
