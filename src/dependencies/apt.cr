@@ -33,10 +33,11 @@ module Dependencies
 		end
 
 		private def sudo_string : String
-			return "" if ENV["USER"] == "root" || `whoami` == "root"
-      return "" if Options.get("apt.use_sudo") == false
-
+			return "" if ENV.keys.includes?("USER") && ENV["USER"] == "root"
+			return "" if `whoami` == "root"
+			return "" if Options.get("apt.use_sudo") == false
+			
 			"sudo "
-		end
+		  end
 	end
 end

@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=./etc/ops.schema.yaml
 min_version: 2.0.0
 dependencies:
   brew:
@@ -20,7 +21,7 @@ dependencies:
     - shards install
     - bundle config --local path vendor/bundle
     - bundle
-    - ln -s `ops platform`/ops build/
+    - ln -sf `ops platform`/ops build/
     - true
     - echo "Initializing the cloud..."
 forwards:
@@ -77,3 +78,4 @@ actions:
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
+    CRYSTAL_PATH: "`crystal env CRYSTAL_PATH`:./src"
