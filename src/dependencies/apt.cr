@@ -38,6 +38,6 @@ module Dependencies
 			return "" if Options.get("apt.use_sudo") == false
 			
 			"sudo "
-		  end
+		end
 	end
 end
