@@ -77,4 +77,4 @@ actions:
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
-    CRYSTAL_PATH: "`crystal env CRYSTAL_PATH`:./src"
+    CRYSTAL_PATH: "./src:`crystal env CRYSTAL_PATH`"
