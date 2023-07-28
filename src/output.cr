@@ -3,6 +3,7 @@ require "colorize"
 class Output
   @@out = STDOUT
   @@err = STDERR
+  @@quiet = ENV.fetch("OPS_QUIET_OUTPUT", "false") == "true"
 
   STATUS_WIDTH = "50"
 
@@ -38,7 +39,7 @@ class Output
   end
 
   def self.notice(msg)
-    return if ENV.fetch("OPS_QUIET_OUTPUT", "false") == "true"
+    return if @@quiet
 
     warn(msg)
   end
@@ -67,5 +68,9 @@ class Output
     return unless ENV.fetch("OPS_DEBUG_OUTPUT", "false") == "true"
 
     @@err.puts(msg.colorize(:blue))
+  end
+
+  def self.quiet=(val : Bool)
+    @@quiet = val
   end
 end

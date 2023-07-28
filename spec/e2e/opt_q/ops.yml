@@ -1,2 +1,9 @@
 actions:
   jenkins: echo "Hello, Leeeeeroy"
+  nested: ops jenkins
+  nested_q: ops -q jenkins
+  nested_env: OPS_QUIET_OUTPUT="true" ops nested_q
+  inverse_env: OPS_QUIET_OUTPUT="false" ops nested_q
+options:
+  environment:
+    PATH: "../../../bin:${PATH}"

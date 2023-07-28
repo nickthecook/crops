@@ -9,9 +9,6 @@ end
 
 usage if ARGV.empty?
 
-# Enforce `--quiet` to act on a per-call basis.
-ENV.delete("OPS_QUIET_OUTPUT")
-
 while ARGV.first =~ /^-/
   opt = ARGV.first
 
@@ -23,7 +20,7 @@ while ARGV.first =~ /^-/
     config_file = ARGV.shift
   when "-q", "--quiet"
     ARGV.shift
-    ENV["OPS_QUIET_OUTPUT"] = "true"
+    Output.quiet = true unless ENV.has_key?("OPS_QUIET_OUTPUT")
   else
     break
   end
