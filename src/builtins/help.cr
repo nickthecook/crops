@@ -10,8 +10,19 @@ module Builtins
 			"displays available builtins, actions, and forwards"
 		end
 
-		def self.usage : String
-			"#{"Usage:".colorize(:white)} ops [-f <FILENAME>] [-q] [<FORWARD>] <ACTION> [...]"
+		def self.usage(render : Symbol | Nil = nil) : String
+			header = "Usage:"
+			content = "ops [-f <FILENAME>] [-q] [<FORWARD>] <ACTION> [...]"
+			template = "%s %s"
+
+			case render
+			when :error
+				template = template.colorize(:red).to_s
+			else
+				header = header.colorize(:white)
+			end
+
+			template % [header, content]
 		end
 
 		def run : Bool

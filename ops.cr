@@ -3,7 +3,7 @@ require "colorize"
 require "ops"
 
 def usage
-  STDERR.puts Builtins::Help.usage.colorize(:red)
+  STDERR.puts Builtins::Help.usage(:error)
   exit(1)
 end
 
