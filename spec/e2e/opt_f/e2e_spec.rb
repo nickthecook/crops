@@ -40,7 +40,7 @@ RSpec.describe "forwards" do
 		end
 
 		it "prints usage" do
-			expect(outputs[2]).to match(/Usage: ops/)
+			expect(outputs[2]).to match(/\e\[31mUsage: ops/)
 		end
 	end
 end

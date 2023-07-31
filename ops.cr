@@ -3,7 +3,7 @@ require "colorize"
 require "ops"
 
 def usage
-  STDERR.puts "Usage: ops [-f <filename>] <action>".colorize(:red)
+  STDERR.puts Builtins::Help.usage(:error)
   exit(1)
 end
 
@@ -18,6 +18,9 @@ while ARGV.first =~ /^-/
     usage if ARGV.empty?
 
     config_file = ARGV.shift
+  when "-q", "--quiet"
+    ARGV.shift
+    Output.quiet = true unless ENV.has_key?("OPS_QUIET_OUTPUT")
   else
     break
   end
