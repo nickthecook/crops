@@ -21,7 +21,7 @@ shared_context "ops e2e" do
 		untracked_files.each { |file| `rm -f #{file}` }
 	end
 
-	def ops(cmd, output_file = "ops.out")
+	def ops(cmd, output_file = "ops.out", **opts)
 		path = "../bin/ops"
 		5.times do
 			break path if File.executable?(path)
@@ -29,16 +29,21 @@ shared_context "ops e2e" do
 			path = "../#{path}"
 		end
 
-		output, status = Open3.capture2e(ops_env_vars, "#{path} #{cmd}")
+		output, status = Open3.capture2e(ops_env_vars, "#{path} #{cmd}", **opts)
 
 		File.write(output_file, output)
 
 		[output, output_file, status.exitstatus]
 	end
 
+	let!(:ops_args) do
+		commands.map do |cmd|
+			cmd.is_a?(Array) ? cmd : [cmd, {}]
+		end
+	end
 	let!(:results) do
-		commands.map do |command|
-			ops(command)
+		ops_args.map do |command, opts|
+			ops(command, **opts)
 		end
 	end
 	let(:exit_codes) { results.map { |result| result[EXIT_CODE_IDX] } }

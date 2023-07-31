@@ -1,4 +1,5 @@
 require "yaml_util"
+require "interpreter"
 
 class Action
   class ActionConfigError < RuntimeError; end
@@ -32,7 +33,10 @@ class Action
   end
 
   def run
-    if perform_shell_expansion?
+    if perform_param_expansion?
+      Output.debug("PARAM EXPANDING")
+      interpreter.exec(@args)
+    elsif perform_shell_expansion?
       Output.debug("SHELL EXPANDING")
       Process.exec(command: to_s, shell: true)
     else
@@ -41,7 +45,20 @@ class Action
   end
 
   def to_s
-    "#{command} #{@args.join(' ')}".strip
+    @to_s ||= begin
+      args = Process.quote(@args)
+      if perform_param_expansion?
+        interpreter.to_pretty args
+      else
+        "#{command} #{args}".strip
+      end
+    end
+  end
+
+  def to_log : String
+    return "`#{to_s}`" unless perform_param_expansion?
+
+    "{\n#{to_s}\n}"
   end
 
   def alias : String | Nil
@@ -75,6 +92,10 @@ class Action
     end
   rescue KeyError
     nil
+  end
+
+  def interpreter : Interpreter
+    @interpreter ||= Interpreter.new(command.to_s)
   end
 
   def description
@@ -124,6 +145,10 @@ class Action
     command.split(" ").reject(&:nil?) | @args
   end
 
+  private def multiline : Bool
+    @multiline ||= (command.not_nil!.split("\n").size > 1).as(Bool)
+  end
+
   private def not_in_envs : Array(String)
     return [] of String unless @config.keys.includes?("not_in_envs")
 
@@ -136,7 +161,7 @@ class Action
     YamlUtil.array_of_strings(@config["in_envs"])
   end
 
-  private def skip_in_envs
+  private def skip_in_envs : Array(String)
     return [] of String unless @config.keys.includes?("skip_in_envs")
 
     YamlUtil.array_of_strings(@config["skip_in_envs"])
@@ -146,5 +171,9 @@ class Action
     return true unless @config.keys.includes?("shell_expansion")
 
     @config["shell_expansion"].as_bool
+  end
+
+  private def perform_param_expansion? : Bool
+    @config.fetch("param_expansion", YAML.parse("false")).as_bool.as(Bool)
   end
 end

@@ -27,7 +27,7 @@ RSpec.describe "forwards" do
 	end
 
 	it "expands args by default" do
-		expect(outputs[2]).to match(/3\n$/)
+		expect(outputs[2]).to match(/2\n$/)
 	end
 
 	it "preserves arg count when disabled in config" do
@@ -35,7 +35,7 @@ RSpec.describe "forwards" do
 	end
 
 	it "concatenates args in config with args on command-line" do
-		expect(outputs[4]).to match(/4\n$/)
+		expect(outputs[4]).to match(/3\n$/)
 	end
 
 	it "concatenates args and preserves count" do
