@@ -2,6 +2,11 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.2.0 (gem 2.2.0.rc1)
+
+- add `--quiet`/`-q` command-line option to silence the "Running ... in environment ..." output when `ops` runs an action (from @LeShaunJ)
+- prettify help output (from @LeShaunJ)
+
 ## 2.1.3 (gem 2.1.3.rc1)
 
 - add aliases for Builtins, to clean up `help` output
