@@ -51,8 +51,8 @@ struct Interpreter
   @options : Array(String) = [] of String
   @code : String = ""
 
-  def initialize(content : String)
-    match = /(\A#!.+\n|)([\S\s]*)\Z/.match(content).as(Regex::MatchData)
+  def initialize(script : String)
+    match = /(\A#!.+\n|)([\S\s]*)\Z/.match(script).as(Regex::MatchData)
     shebang = Process.parse_arguments(match[1])
     shebang << self.class.shell unless shebang.any?
 
