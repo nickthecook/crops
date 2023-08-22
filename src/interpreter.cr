@@ -1,5 +1,7 @@
 
 struct Interpreter
+  ENV_SPLIT = "-S"
+
   @@shell : String | Nil
 
   protected def self.shell : String
@@ -7,7 +9,7 @@ struct Interpreter
       @@shell ||= begin
         Process.find_executable(ENV.fetch("RUBYSHELL", "dash")).as(String)
       rescue TypeCastError
-        Process.find_executable(ENV.fetch("RUBYSHELL", "sh")).as(String)
+        Process.find_executable("sh").as(String)
       end
     {% else %}
       @@shell ||= Process.find_executable(ENV.fetch("RUBYSHELL", "sh")).as(String)
@@ -43,53 +45,56 @@ struct Interpreter
 
   #######################################################################################
 
-  getter :name, :options, :script
+  getter :name, :options, :code
 
   @name : String = shell
   @options : Array(String) = [] of String
-  @script : String = ""
+  @code : String = ""
 
   def initialize(content : String)
     match = /(\A#!.+\n|)([\S\s]*)\Z/.match(content).as(Regex::MatchData)
     shebang = Process.parse_arguments(match[1])
     shebang << self.class.shell unless shebang.any?
 
-    self.name = shebang
-    @script = match[2]
+    self.parse(shebang)
+    @code = match[2]
   end
 
   def exec(args : Array(String))
     exit 0 if noop?
 
-    self.class.pipe(script) do |path|
+    self.class.pipe(code) do |path|
       Process.exec(name, [*options, path, *args])
     end
   end
 
   def noop?
-    script.empty?
+    code.empty?
   end
 
   def to_pretty(args : String = "")
-    env_s = needs_env_split? ? "-S" : ""
     opts = Process.quote(options)
-    shebang = [name, env_s, opts].reject(&.empty?).join(" ")
-    content = "<(\ncat <<'EOF'\n#{script.strip}\nEOF\n)"
+    interpreter_call = [name, opts].reject(&.empty?).join(" ")
+    standard_input = "<(\ncat <<'EOF'\n#{code.strip}\nEOF\n)"
 
-    [shebang, content, args].reject(&.empty?).join(" ")
+    [interpreter_call, standard_input, args].reject(&.empty?).join(" ")
   end
 
-  private def name=(shebang : Array(String))
+  private def parse(shebang : Array(String)) : Void
     @name = Process.find_executable(shebang[0].gsub(/^#!/, "")).as(String)
 
     @options = begin
       return [] of String unless shebang.size > 1
 
       shebang[1..]
-    end.as(Array(String))
+    end
+
+    Output.warn("`-S ...` is recommended when multiple parameters are given to `#!#{name}`") if needs_env_split?
   end
 
+  # Included to avoid confusion over how shebangs truly work when using `env` as the interpreter.
+  # See: https://man7.org/linux/man-pages/man1/env.1.html#OPTIONS
   private def needs_env_split?
-    File.basename(name) == "env" && options.size > 1
+    File.basename(name) == "env" && options.size > 1 && options[0] != "-S"
   end
 end

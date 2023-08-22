@@ -9,6 +9,8 @@ RSpec.describe "forwards" do
 			["shebang_bash one two three \"four five\"", { stdin_data: "goodbye, world\n" }],
 			["shebang_python world earth", { stdin_data: "goodbye, world" }],
 			["shebang_ruby world earth", { stdin_data: "goodbye, world" }],
+			"empty",
+			"shebang_only",
 		]
 	end
 
@@ -38,7 +40,19 @@ RSpec.describe "forwards" do
 		expect(outputs[4]).to match(/\nhello, \+world>> earth\+\ngoodbye, world\n$/)
 	end
 
+	it "recommends using `-S` with multi-parameter `#!/usr/bin/env` shebangs when enabled in config" do
+		expect(outputs[4]).to match(/`-S ...` is recommended\b/)
+	end
+
 	it "interprets ruby shebang and prints stdin when enabled in config" do
 		expect(outputs[5]).to match(/\nhello, \+world>> earth\+\ngoodbye, world\n$/)
+	end
+
+	it "interprets empty script as `sh` and exits 0 when enabled in config" do
+		expect(exit_codes[6]).to eq(0)
+	end
+
+	it "interprets lone shebang and exits 0 when enabled in config" do
+		expect(exit_codes[7]).to eq(0)
 	end
 end

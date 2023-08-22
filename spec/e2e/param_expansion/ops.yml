@@ -21,7 +21,7 @@ actions:
     param_expansion: true
   shebang_python:
     command: |-
-      #!/usr/bin/env python3
+      #!/usr/bin/env python3 -W ignore
       import sys, select
       print(f"hello, +{'>> '.join(sys.argv[1:])}+")
       if select.select([sys.stdin, ], [], [], 0.0)[0]:
@@ -35,4 +35,11 @@ actions:
       if STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
         puts STDIN.read
       end
+    param_expansion: true
+  empty:
+    command: ""
+    param_expansion: true
+  shebang_only:
+    command: |-
+      #!/usr/bin/env python3
     param_expansion: true

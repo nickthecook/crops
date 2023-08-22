@@ -174,6 +174,6 @@ class Action
   end
 
   private def perform_param_expansion? : Bool
-    @config.fetch("param_expansion", YAML.parse("false")).as_bool.as(Bool)
+    @config.fetch("param_expansion", YAML.parse("false")).as_bool
   end
 end
