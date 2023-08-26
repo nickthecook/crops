@@ -80,7 +80,7 @@ struct Interpreter
     [interpreter_call, standard_input, args].reject(&.empty?).join(" ")
   end
 
-  private def parse(shebang : Array(String)) : Void
+  private def parse(shebang : Array(String)) : Nil
     @name = Process.find_executable(shebang[0].gsub(/^#!/, "")).as(String)
 
     @options = begin
