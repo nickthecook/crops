@@ -2,6 +2,13 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.3.0 (gem 2.3.0.rc1)
+
+- don't swallow quotes when executing actions in a shell (LeShaunJ)
+- process shebangs in action bodies to allow actions to be written for any interpreter (LeShaunJ)
+- switch to `dash` for internal shell by default (LeShaunJ)
+- support positional arg interpolation (LeShaunJ)
+
 ## 2.2.0 (gem 2.2.0.rc1)
 
 - add `--quiet`/`-q` command-line option to silence the "Running ... in environment ..." output when `ops` runs an action (from @LeShaunJ)

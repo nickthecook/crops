@@ -2,11 +2,11 @@ require "semantic_version"
 
 class Version
   def self.name_and_version
-    "crops-#{version}"
+    "crops-#{version}.rc1"
   end
 
   def self.version : String
-    "2.2.0"
+    "2.3.0"
   end
 
   def self.min_version_met?(min_version) : Bool
