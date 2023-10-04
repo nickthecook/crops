@@ -70,7 +70,8 @@ actions:
     cp bin/ops tmpbuild/crops/bin/
     cd tmpbuild
     find crops -name ops -print0 | gtar -cjvf crops.tar.bz2 --exclude crops/ops --null -T -
-    mv "crops.tar.bz2" ..
+    find crops -name ops -print0 | gtar -czvf crops.tar.gz --exclude crops/ops --null -T -
+    mv crops.tar.* ..
     cd ..
     rm -rf tmpbuild
   create-release: gh release create
