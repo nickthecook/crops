@@ -1,0 +1,45 @@
+hooks:
+  before:
+    - echo app before hook
+actions:
+  expansion:
+    command: |-
+      echo "First: ${1}";
+      echo "Second: ${2}";
+      echo "Third: ${3}";
+    param_expansion: true
+  numargs:
+    command: echo "$#"
+    param_expansion: true
+  shebang_bash:
+    command: |-
+      #!/usr/bin/env bash
+      echo "First: ${1}";
+      echo "Second: ${2}";
+      printf 'Other: %s\n' "${@:3}";
+      [ -t 0 ] || cat -;
+    param_expansion: true
+  shebang_python:
+    command: |-
+      #!/usr/bin/env python3 -W ignore
+      import sys, select
+      print(f"hello, +{'>> '.join(sys.argv[1:])}+")
+      if select.select([sys.stdin, ], [], [], 0.0)[0]:
+        print(sys.stdin.read().strip())
+    param_expansion: true
+  shebang_ruby:
+    command: |-
+      #!/usr/bin/env ruby
+      require 'fcntl'
+      puts "hello, +#{ARGV.join('>> ')}+"
+      if STDIN.fcntl(Fcntl::F_GETFL, 0) == 0
+        puts STDIN.read
+      end
+    param_expansion: true
+  empty:
+    command: ""
+    param_expansion: true
+  shebang_only:
+    command: |-
+      #!/usr/bin/env python3
+    param_expansion: true
