@@ -2,7 +2,7 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
-## 2.3.0 (gem 2.3.0.rc1)
+## 2.3.0 (gem 2.3.0.rc3)
 
 - don't swallow quotes when executing actions in a shell (LeShaunJ)
 - process shebangs in action bodies to allow actions to be written for any interpreter (LeShaunJ)
