@@ -7,6 +7,7 @@
   - src/version.cr
   - CHANGELOG.md
 - commit as `release 2.x.y`
+- push
 - Run `ops build-all`
 - Run `ops create-release`
 - update the forumula in `homebrew-crops`
