@@ -16,4 +16,4 @@
   - run `ops sum` to get the checksum, and put it in the formula
   - `brew reinstall ops` to test
   - commit and push the formula
-- release the gem with `ops gem push`
+- release the gem with `ops gem build` and `ops gem push`
