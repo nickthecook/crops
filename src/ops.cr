@@ -17,6 +17,7 @@ class Ops
   ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
   MISSING_OPS_YML_ERROR_EXIT_CODE = 72
+  ACTION_NOT_SPECIFIED = 73
   SKIP_VERSION_CHECK_FOR_ACTIONS = ["version", "help"]
   CONFIG_OPTIONAL_FOR_ACTIONS = [
     "init",
@@ -41,6 +42,11 @@ class Ops
   end
 
   def initialize(argv, config_file = nil)
+    if argv.empty?
+      Output.error("No action given.")
+      return exit ACTION_NOT_SPECIFIED
+    end
+
     @action_name = argv[0]
     @args = argv[1..-1]
     @config_file = config_file || found_config_file || "ops.yml"

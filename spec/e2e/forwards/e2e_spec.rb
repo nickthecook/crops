@@ -40,4 +40,16 @@ RSpec.describe "forwards" do
 	it "does not set env vars from top-level options" do
 		expect(outputs[5]).not_to match(/top-level option/)
 	end
+
+	context "when no action is given" do
+		let(:commands) { ["app"] }
+
+		it "returns an error" do
+			expect(exit_codes).to all eq(73)
+		end
+
+		it "outputs an error message" do
+			expect(outputs[0]).to match(/No action given./)
+		end
+	end
 end
