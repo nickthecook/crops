@@ -10,6 +10,7 @@
 - push
 - Run `ops build-all`
 - Run `ops create-release`
+- upload `crops.tar.gz` and `crops.tar.bz2` to release
 - update the forumula in `homebrew-crops`
   - change version in URL to match tag from new release
   - run `ops sum` to get the checksum, and put it in the formula
