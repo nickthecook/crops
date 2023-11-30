@@ -45,7 +45,7 @@ module Dependencies
 			@executor = l_executor = decryptor.executor
 			return unless l_executor.success?
 			Output.debug("Adding decrypted SSH key...")
-			execute("ssh-add -q - <<~EOF\n#{decryptor.plaintext_key}\nEOF &>/dev/null")
+			execute("ssh-add -q -t #{opt_key_lifetime} - <<~EOF\n#{decryptor.plaintext_key}\nEOF &>/dev/null")
 		end
 
 		private def should_add_key?
