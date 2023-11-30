@@ -45,11 +45,12 @@ RSpec.describe "forwards" do
 		let(:commands) { ["app"] }
 
 		it "returns an error" do
-			expect(exit_codes).to all eq(73)
+			expect(exit_codes).to all eq(64)
 		end
 
 		it "outputs an error message" do
 			expect(outputs[0]).to match(/No action given./)
+			expect(outputs[0]).to match(/Usage: ops <action> \[...\]/)
 		end
 	end
 end

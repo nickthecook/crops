@@ -17,7 +17,6 @@ class Ops
   ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
   MISSING_OPS_YML_ERROR_EXIT_CODE = 72
-  ACTION_NOT_SPECIFIED = 73
   SKIP_VERSION_CHECK_FOR_ACTIONS = ["version", "help"]
   CONFIG_OPTIONAL_FOR_ACTIONS = [
     "init",
@@ -41,10 +40,11 @@ class Ops
     Dir.current.split("/").last
   end
 
-  def initialize(argv, config_file = nil)
+  def initialize(argv : Array(String), config_file : String | Nil = nil)
     if argv.empty?
       Output.error("No action given.")
-      return exit ACTION_NOT_SPECIFIED
+      Output.error("Usage: ops <action> [...]")
+      return exit INVALID_SYNTAX_EXIT_CODE
     end
 
     @action_name = argv[0]
@@ -59,8 +59,7 @@ class Ops
   # better to have all the rescues in one place
   def run
     Output.debug("$environment == '#{Environment.environment}'.")
-    # "return" is here to allow specs to stub "exit" without executing everything after it
-    return exit(INVALID_SYNTAX_EXIT_CODE) unless syntax_valid?
+    # "return" is here to allow specs to stub "exit" and not execute everything after it
     return exit(MIN_VERSION_NOT_MET_EXIT_CODE) unless min_version_met?
 
     runner.run
@@ -88,14 +87,6 @@ class Ops
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
   # rubocop:enable Metrics/MethodLength
-
-  private def syntax_valid?
-    return true unless @action_name.nil?
-
-    Output.error("Usage: ops <action>")
-    Output.out(RECOMMEND_HELP_TEXT)
-    false
-  end
 
   private def min_version_met?
     return true unless min_version
