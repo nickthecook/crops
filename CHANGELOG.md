@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.3.1 (gem 2.3.1.rc1)
+
+- fix setting key lifetime when adding SSH keys to agent
+
 ## 2.3.0 (gem 2.3.0.rc3)
 
 - don't swallow quotes when executing actions in a shell (LeShaunJ)
@@ -18,7 +22,7 @@
 
 - add aliases for Builtins, to clean up `help` output
 - update Darwin x86_64 binary to 2.1.2
-
+=
 ## 2.1.2 (gem 2.1.2.rc1)
 
 - don't prompt for passphrase on `ops up sshkey` when passphrase variable is not set
