@@ -26,6 +26,9 @@ spec/e2e/dependencies/custom/custom*
 ops_team-*.gem
 build/crops-*
 /crops-*.tar.bz2
+/crops-*.tar.gz
+/crops.tar.gz
+/crops/**/*
 /2\..\...tar.bz2
 bin/ops
 rubygem/build
