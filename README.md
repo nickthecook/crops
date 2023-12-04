@@ -116,6 +116,82 @@ The following things are different between `crops` and `ops`:
 ## Things that are different from `ops` but will be fixed
 
 - "did you mean...?" suggestions
-- ~~`ops init` does not work, because it can't find templates~~ fixed
-- ~~the user is prompted for the SSH key passphrase if the key requires one, in `ops up sshkey`~~ fixed
-- ~~can't handle split custom deps with separate `up` and `down` commands~~ fixed
+
+## Options
+
+`ops` supports options to change various behaviours:
+
+- `snap.install`
+  - if `true`, `ops` will install snaps listed under `dependencies`
+  - default: `true`
+- `snap.use_sudo`
+  - if `true`, `ops` will use `sudo` to run `snap` commands
+  - default: `true`
+- `gem.use_sudo`
+  - if `true`, `ops` will use `sudo` to run `gem install` commands
+  - default: false
+- `gem.user_install`
+  - if `true`, `ops` will pass the `--user-install` option to `gem install` commands
+  - default: false
+- `pip.command`
+  - `ops` will use the value as the command to invoke `pip`
+  - default: `python3 -m pip`
+- `sshkey.key_size`
+  - `ops` will create private SSH keys with this size
+  - default: `4096`
+- `sshkey.key_algo`
+  - `ops` will use this value as the SSH key algorithm
+  - default: `rsa`
+- `sshkey.passphrase_var`
+  - `ops` will use this value as the name of the environment variable to read the SSH key passphrase from
+  - default: `SSH_KEY_PASSPHRASE`
+- `sshkey.add_keys`
+  - if `false`, `ops` will not attempt to add SSH keys it loads to the SSH agent
+  - default: `true`
+- `sshkey.key_lifetime`
+  - `ops` will set the key lifetime of SSH keys it adds to the agent to this number of seconds
+  - default: `3600` (1 hour)
+- `sshkey.key_file_comment`
+  - `ops` will use this value as the key comment when adding SSH keys to the SSH agent
+  - this comment is visible in `ssh-add -l`, allowing you to identify which keys are loaded
+  - default: `<user>@<hostname -s>`
+- `apt.use_sudo`
+  - if `true`, `ops` will use `sudo` to run `apt` commands when not root
+  - default: `true`
+- `exec.load_secrets`
+  - if `true`, `ops` will load secrets before running an `ops exec` command
+  - default: `false`
+- `init.template_dir`
+  - `ops init` will look in this directory for `ops.yml` templates
+  - default: `$HOME/.ops_templates`
+- `envdiff.ignored_keys`
+  - `ops envdiff` will omit these keys when showing the diff between two environments' configs
+  - default: empty
+- `up.fail_on_error`
+  - if `true`, `ops up` will exit with an error if it fails to meet any dependency
+  - default: `false`
+- `config.path`
+  - `ops` will look at for a JSON config file at this path
+  - default: `config/$environment/config.json`
+- `secrets.path`
+  - `ops` will look at for an EJSON secrets file at this path
+  - default: `config/$environment/secrets.json`
+- `environment_aliases`
+  - `ops` will duplicate the `$environment` variable to other variables
+  - intended for use with languages/frameworks that use a different env var to set the environment
+
+Options can be specified in `ops.yml` under the top-level `options:` second, or as environment variables. E.g., setting `exec.load_secrets` via `ops.yml`:
+
+```yaml
+options:
+  exec:
+    load_secrets: true
+```
+
+And via ENV var:
+
+```shell
+OPS__EXEC__LOAD_SECRETS=true ops exec ...
+```
+
+
