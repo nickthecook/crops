@@ -17,6 +17,11 @@ module Dependencies
 		def meet
 			Secrets.load
 
+			if name.empty?
+				Output.error "You must specify a name for the sshkey"
+				return false
+			end
+
 			Output.warn("\nNo passphrase set for SSH key '#{priv_key_name}'") if passphrase.nil? || passphrase.empty?
 
 			FileUtils.mkdir_p(dir_name) unless File.directory?(dir_name)
