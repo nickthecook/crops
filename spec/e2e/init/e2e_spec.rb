@@ -10,11 +10,11 @@ RSpec.describe "init" do
 	end
 
 	let(:ops_yml) { File.read("ops.yml") }
+	let(:exit_code) { result[EXIT_CODE_IDX] }
+	let(:output) { result[OUTPUT_IDX] }
 
 	shared_examples "inits ops.yml" do |ops_args|
 		let!(:result) { ops(ops_args) }
-		let(:exit_code) { result[EXIT_CODE_IDX] }
-		let(:output) { result[OUTPUT_IDX] }
 
 		it "succeeds" do
 			expect(result[EXIT_CODE_IDX]).to eq(0)
@@ -22,6 +22,16 @@ RSpec.describe "init" do
 
 		it "outputs valid YAML" do
 			expect { YAML.safe_load(ops_yml) }.not_to raise_exception
+		end
+	end
+
+	shared_examples "says file already exists" do
+		it "exits with 1" do
+			expect(exit_code).to eq(1)
+		end
+
+		it "prints an error" do
+			expect(output).to match(/File 'ops.yml' exists; not initializing/)
 		end
 	end
 
@@ -67,8 +77,6 @@ RSpec.describe "init" do
 
 	context "when template cannot be found" do
 		let!(:result) { ops("init custom") }
-		let(:exit_code) { result[EXIT_CODE_IDX] }
-		let(:output) { result[OUTPUT_IDX] }
 
 		it "exits with non-zero" do
 			expect(exit_code).to eq(1)
@@ -77,5 +85,17 @@ RSpec.describe "init" do
 		it "prints an error" do
 			expect(output).to match(/Could not find template for 'custom'/)
 		end
+	end
+
+	context "when ops.yml already exists" do
+		let!(:result) { `touch ops.yml` && ops("init") }
+
+		include_examples "says file already exists"
+	end
+
+	context "when ops.yaml already exists" do
+		let!(:result) { `touch ops.yaml` && ops("init") }
+
+		include_examples "says file already exists"
 	end
 end

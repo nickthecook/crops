@@ -3,7 +3,8 @@ require "builtins/helpers/templates"
 
 module Builtins
   class Init < Builtin
-    OPS_YML = "ops.yml"
+    CONFIG_FILES = ["ops.yml", "ops.yaml"]
+    OPS_YML = CONFIG_FILES.first
     OPS_YML_TEMPLATE = File.join(template_dir, "%<template_name>s.template.yml")
     DEFAULT_TEMPLATE_NAME = "ops"
 
@@ -13,8 +14,8 @@ module Builtins
 
     def run
       Output.debug("Template dir: #{template_dir}")
-      if File.exists?(OPS_YML)
-        Output.error("File '#{OPS_YML} exists; not initializing.")
+      if CONFIG_FILES.any? { |file| File.exists? file }
+        Output.error("File '#{OPS_YML}' exists; not initializing.")
 
         return false
       end
