@@ -55,8 +55,6 @@ class Ops
     check_for_config_file
   end
 
-  # rubocop:disable Metrics/MethodLength
-  # better to have all the rescues in one place
   def run
     Output.debug("$environment == '#{Environment.environment}'.")
     # "return" is here to allow specs to stub "exit" and not execute everything after it
@@ -86,7 +84,6 @@ class Ops
     e.backtrace.each { |call| Output.error("  from #{call}") }
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
   end
-  # rubocop:enable Metrics/MethodLength
 
   private def min_version_met?
     return true unless min_version
@@ -101,9 +98,7 @@ class Ops
   end
 
   def min_version
-    ops_yml.config["min_version"]
-  rescue KeyError
-    nil
+    ops_yml.config.fetch("min_version", nil)
   end
 
   private def runner
