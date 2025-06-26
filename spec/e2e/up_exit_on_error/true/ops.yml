@@ -1,0 +1,8 @@
+dependencies:
+  custom:
+    - true
+    - false
+    - echo "nope"
+options:
+  up:
+    exit_on_error: true

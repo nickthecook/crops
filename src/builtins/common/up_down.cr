@@ -3,6 +3,8 @@ require "builtins/helpers/dependency_handler"
 
 module Builtins
 	module Common
+		class FailedDependencyError < RuntimeError; end
+
 		class UpDown < Builtin
 			def self.description
 				"attempts to meet dependencies listed in ops.yml"
@@ -22,19 +24,27 @@ module Builtins
 				deps_to_meet.each do |dependency|
 					Output.status("[#{dependency.type}] #{dependency.name}")
 
-					meet_dependency(dependency)
+					result = meet_dependency(dependency)
+
+					if !result && exit_on_error?
+						raise FailedDependencyError.new("Failed to meet #{dependency.type} dependency '#{dependency.name}'")
+					end
 				end
 			end
 
-			private def meet_dependency(dependency)
+			private def meet_dependency(dependency) : Bool
 				handle_dependency(dependency) if !dependency.met? || dependency.always_act?
 
 				if dependency.success?
 					Output.okay
+
+					true
 				else
 					Output.failed
 					Output.error("Error meeting #{dependency.type} dependency '#{dependency.name}':")
 					Output.out(dependency.output)
+
+					false
 				end
 			end
 
@@ -54,6 +64,10 @@ module Builtins
 
 			private def fail_on_error?
 				Options.get("up.fail_on_error") || false
+			end
+
+			private def exit_on_error?
+				Options.get("up.exit_on_error") || false
 			end
 
 			private def handle_dependency(dependency : Dependencies::Dependency)

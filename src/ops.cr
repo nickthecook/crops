@@ -17,6 +17,7 @@ class Ops
   ACTION_NOT_ALLOWED_IN_ENV_EXIT_CODE = 70
   ERROR_LOADING_OPS_YML_EXIT_CODE = 71
   MISSING_OPS_YML_ERROR_EXIT_CODE = 72
+  DEPENDENCY_FAILED_EXIT_CODE = 73
   SKIP_VERSION_CHECK_FOR_ACTIONS = ["version", "help"]
   CONFIG_OPTIONAL_FOR_ACTIONS = [
     "init",
@@ -81,6 +82,9 @@ class Ops
   rescue e : OpsYml::OpsYmlError
     Output.error("Error loading #{@config_file}: #{e}")
     exit(ERROR_LOADING_OPS_YML_EXIT_CODE)
+  rescue e : Builtins::Common::FailedDependencyError
+    Output.error("Dependency failed for builtin '#{@action_name}': #{e}")
+    exit(DEPENDENCY_FAILED_EXIT_CODE)
   rescue e : YamlUtil::YamlError
     Output.error("Error loading #{@config_file}: #{e}")
     e.backtrace.each { |call| Output.error("  from #{call}") }

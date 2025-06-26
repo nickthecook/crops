@@ -170,6 +170,9 @@ The following things are different between `crops` and `ops`:
 - `up.fail_on_error`
   - if `true`, `ops up` will exit with an error if it fails to meet any dependency
   - default: `false`
+- `up.exit_on_error`
+  - if `true`, `ops up` will exit immediately if it fails to meet any dependency, instead of trying to satisfy the remaining dependencies
+  - default: `false`
 - `config.path`
   - `ops` will look at for a JSON config file at this path
   - default: `config/$environment/config.json`
