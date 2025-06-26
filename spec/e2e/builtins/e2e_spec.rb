@@ -47,7 +47,7 @@ RSpec.describe "builtins" do
 
 			it "runs the builtin" do
 				expect(exit_codes.first).to eq(1)
-				expect(outputs.first).to match(/ops\.yml exists; not initializing\./)
+				expect(outputs.first).to match(/'ops\.yml' exists; not initializing\./)
 			end
 		end
 

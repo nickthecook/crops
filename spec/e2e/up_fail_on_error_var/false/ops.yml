@@ -1,0 +1,8 @@
+dependencies:
+  custom:
+    - true
+    - false
+    - true
+options:
+  environment:
+    OPS__UP__FAIL_ON_ERROR: false

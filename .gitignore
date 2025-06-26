@@ -34,3 +34,4 @@ bin/ops
 rubygem/build
 tmpbuild
 crops.tar.bz2
+.rspec_status

@@ -1,0 +1,8 @@
+dependencies:
+  custom:
+    - true
+    - false
+    - echo nope
+options:
+  environment:
+    OPS__UP__EXIT_ON_ERROR: true

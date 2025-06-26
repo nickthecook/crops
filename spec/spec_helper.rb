@@ -7,6 +7,8 @@ ENV['EJSON_KEYDIR'] = "./spec/ejson_keys"
 ENV.delete("SSH_KEY_PASSPHRASE")
 
 RSpec.configure do |config|
+	config.example_status_persistence_file_path = ".rspec_status"
+
 	config.expect_with :rspec do |expectations|
 		expectations.include_chain_clauses_in_custom_matcher_descriptions = true
 	end

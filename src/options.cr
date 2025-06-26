@@ -22,6 +22,13 @@ class Options
     value.as_s? if value
   end
 
+  def self.get_b(path) : Bool | Nil
+    value = get(path)
+    return false if value == false || value.nil?
+
+    true
+  end
+  
   def self.set(options : YAML::Any | Nil)
     @@options = options
   end

@@ -63,11 +63,11 @@ module Builtins
 			end
 
 			private def fail_on_error?
-				Options.get("up.fail_on_error") || false
+				Options.get_b("up.fail_on_error")
 			end
 
 			private def exit_on_error?
-				Options.get("up.exit_on_error") || false
+				Options.get_b("up.exit_on_error")
 			end
 
 			private def handle_dependency(dependency : Dependencies::Dependency)
