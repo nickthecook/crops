@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.3.4 (gem 2.3.4.rc1)
+
+- fix issue where env var option "false" is interpreted as "true"
+
 ## 2.3.3 (gem 2.3.3.rc1)
 
 - add exit_on_error
