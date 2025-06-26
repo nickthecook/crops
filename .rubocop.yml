@@ -1,6 +1,8 @@
 AllCops:
   TargetRubyVersion: 2.5
   NewCops: enable
+  Exclude:
+    - rubygem
 Layout/IndentationStyle:
   Enabled: false
 Layout/IndentationWidth:

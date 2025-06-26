@@ -4,6 +4,8 @@ source "https://rubygems.org"
 
 # gem "rails"
 
+gem "base64"
+
 group :test do
 	gem "fuubar"
 	gem "rspec"
@@ -14,5 +16,9 @@ group :development do
 	gem "pry"
 	gem "pry-byebug"
 	gem "rerun"
+
+	gem "racc"
 	gem "rubocop"
+
+	gem "ruby-lsp"
 end

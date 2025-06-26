@@ -3,8 +3,6 @@ dependencies:
   brew:
     - gnu-tar
     - gh
-  sshkey:
-    - test
   gem:
     - rerun
     - bundle
@@ -21,8 +19,7 @@ dependencies:
     - bundle config --local path vendor/bundle
     - bundle
     - ln -sf `ops platform`/ops build/
-    - true
-    - echo "Initializing the cloud..."
+    - shards install
 forwards:
   ftw: dirsftw
   gem: rubygem
@@ -32,7 +29,9 @@ actions:
   run-watch:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops run
     alias: rw
-  test: crystal spec
+  test:
+    command: crystal spec
+    alias: t
   test-watch:
     command: rerun --no-notify -qb -p 'src/**/*.{cr,yml,json}' -- ops test
     alias: tw
@@ -42,7 +41,7 @@ actions:
   test-e2e-watch:
     command: rerun --no-notify -qbx -p '**/*.{cr,rb,yml,json}' -- ops e2e
     alias: ew
-  lint: rubocop --autocorrect
+  lint: bundle exec rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _
   build-debug:
     shards build
@@ -78,4 +77,4 @@ actions:
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
-    CRYSTAL_PATH: "./src:`crystal env CRYSTAL_PATH`"
+    CRYSTAL_PATH: "./src:./lib:`crystal env CRYSTAL_PATH`"
