@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.3.3 (gem 2.3.3.rc1)
+
+- add exit_on_error
+
 ## 2.3.2 (gem 2.3.2.rc1)
 
 - fix crash when forward was given no args
