@@ -117,6 +117,20 @@ The following things are different between `crops` and `ops`:
 
 - "did you mean...?" suggestions
 
+## Builtins
+
+`ops` provides several built-in commands that you can use without defining them in `ops.yml`:
+
+- `countdown <seconds>`: Like `sleep`, but displays time remaining in terminal
+- `down [dependency...]`: Unmeets dependencies listed in `ops.yml` (opposite of `up`). Optionally specify which dependencies to unmeet
+- `env`: Prints the current environment (e.g. 'dev', 'production', 'staging')
+- `envdiff <env1> <env2>`: Compares keys present in config and secrets between different environments
+- `exec <command>`: Executes the given command in the `ops` environment, with environment variables set
+- `help` (alias: `h`): Displays available builtins, actions, and forwards
+- `init [template]`: Creates an `ops.yml` file from a template
+- `up [dependency...]`: Attempts to meet dependencies listed in `ops.yml`. Optionally specify which dependencies to meet
+- `version` (alias: `v`): Prints the version of `ops` that is running
+
 ## Options
 
 `ops` supports options to change various behaviours:
