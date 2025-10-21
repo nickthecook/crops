@@ -96,7 +96,7 @@ options:
 This allows you to:
 - Define base configuration in `config.json`
 - Store secrets in `secrets.ejson`
-- Override or add additional environment variables in `ops.yml` that are shared across all developers
+- Override or add additional environment variables in `ops.yml` that are shared across all environments
 
 ## Installation
 
