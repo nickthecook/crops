@@ -74,6 +74,30 @@ For an [EJSON](https://github.com/Shopify/ejson) file, `ops` will first decrypt 
 
 This allows you to check in most of your secrets safely, and transparently load them when running your code.
 
+### Loading Order
+
+When `ops` runs an action, environment variables are loaded from multiple sources in the following order:
+
+1. **Config** (`config/$environment/config.json`) - loaded first
+2. **Secrets** (`config/$environment/secrets.ejson` or `.json`) - loaded second (only if the action has `load_secrets: true`)
+3. **Options.environment** (from `ops.yml`) - loaded last
+
+Since each source sets environment variables directly, **later sources override earlier ones**. This means variables defined in `options.environment` in your `ops.yml` will have the highest priority.
+
+Example `ops.yml` using `options.environment`:
+
+```yaml
+options:
+  environment:
+    DATABASE_URL: postgres://localhost/myapp
+    API_KEY: $SECRET_API_KEY  # Can reference variables from config/secrets
+```
+
+This allows you to:
+- Define base configuration in `config.json`
+- Store secrets in `secrets.ejson`
+- Override or add additional environment variables in `ops.yml` that are shared across all environments
+
 ## Installation
 
 #### Via gem
