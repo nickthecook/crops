@@ -1,6 +1,7 @@
 require "builtins/builtin"
 require "builtins/countdown"
 require "builtins/down"
+require "builtins/encrypt"
 require "builtins/env"
 require "builtins/envdiff"
 require "builtins/exec"
@@ -13,6 +14,7 @@ module Builtins
   BUILTINS = {
     "countdown" => Countdown,
     "down" => Down,
+    "encrypt" => Encrypt,
     "env" => Env,
     "envdiff" => Envdiff,
     "exec" => Exec,
@@ -22,6 +24,7 @@ module Builtins
     "version" => Version
   }
   ALIASES = {
+    "enc" => "encrypt",
     "h" => "help",
     "v" => "version"
   }
