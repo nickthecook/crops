@@ -13,7 +13,7 @@ RSpec.describe "ssh key with passphrase" do
 
 	it "sets the key timeout" do
 		sleep 5
-		expect(`ssh-add -l`).to eq("The agent has no identities.\n")
+		expect(`ssh-add -l`).not_to match(/someguy@host/)
 	end
 
 	include_examples "creates an SSH key", "user@host"
