@@ -58,7 +58,7 @@ The following dependency types are supported:
 
 ## Config and Secrets
 
-`ops` will try to load `config/$environment/config.json` and `config/$environment/secrets.ejson` when you run it. If these files aren't present, no problem.
+`ops` will try to load `config/$environment/config.yml` (or `.yaml`, or `.json`) and `config/$environment/secrets.ejson` when you run it. If these files aren't present, no problem.
 
 > `$environment` is a variable `ops` uses to detect which environment it's running in. `ops` assumes the environment is `dev` by default, and you can `export environment=staging`, for example, to change the current environment.
 
@@ -78,7 +78,7 @@ This allows you to check in most of your secrets safely, and transparently load 
 
 When `ops` runs an action, environment variables are loaded from multiple sources in the following order:
 
-1. **Config** (`config/$environment/config.json`) - loaded first
+1. **Config** (`config/$environment/config.yml`, `.yaml`, or `.json`) - loaded first
 2. **Secrets** (`config/$environment/secrets.ejson` or `.json`) - loaded second (only if the action has `load_secrets: true`)
 3. **Options.environment** (from `ops.yml`) - loaded last
 
@@ -212,8 +212,8 @@ The following things are different between `crops` and `ops`:
   - if `true`, `ops up` will exit immediately if it fails to meet any dependency, instead of trying to satisfy the remaining dependencies
   - default: `false`
 - `config.path`
-  - `ops` will look at for a JSON config file at this path
-  - default: `config/$environment/config.json`
+  - `ops` will look for a config file at this path (supports JSON or YAML)
+  - default: `config/$environment/config.yml`, `config/$environment/config.yaml`, or `config/$environment/config.json` (first found)
 - `secrets.path`
   - `ops` will look at for an EJSON secrets file at this path
   - default: `config/$environment/secrets.json`

@@ -11,7 +11,7 @@ module Builtins
 
 			(0...sleep_seconds).each do |i|
 				Output.print("\r      \r#{sleep_seconds - i}")
-				sleep(1)
+				sleep(Time::Span.new(seconds: 1))
 			end
 			Output.out("\rCountdown complete after #{sleep_seconds}s.")
 

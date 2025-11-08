@@ -14,12 +14,12 @@ dependencies:
   dir:
     - build/darwin_arm64
     - build/darwin_x86_64
+    - build/linux_x86_64
   custom:
     - shards install
     - bundle config --local path vendor/bundle
     - bundle
     - ln -sf `ops platform`/ops build/
-    - shards install
 forwards:
   ftw: dirsftw
   gem: rubygem
@@ -43,8 +43,7 @@ actions:
     alias: ew
   lint: bundle exec rubocop --autocorrect
   platform: uname -sm | tr A-Z a-z | tr ' ' _
-  build-debug:
-    shards build
+  build-debug: shards build
   build: |-
     shards build --release || exit 1
     output_file="build/`ops platform`/ops"

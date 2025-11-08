@@ -2,6 +2,11 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.3.5.rc1
+
+- expand `$environment` in `config.path` (allows use of per-environment YAML config, like `config/production/config.yml`)
+- add `config.yml` and `config.yaml` to default config load paths; these supersede `config.json`
+
 ## 2.3.4 (gem 2.3.4.rc1)
 
 - fix issue where env var option "false" is interpreted as "true"
