@@ -67,8 +67,8 @@ actions:
     test -d tmpbuild/crops/bin/ || mkdir tmpbuild/crops/bin/
     cp bin/ops tmpbuild/crops/bin/
     cd tmpbuild
-    find crops -name ops -print0 | gtar -cjvf crops.tar.bz2 --exclude crops/ops --null -T -
-    find crops -name ops -print0 | gtar -czvf crops.tar.gz --exclude crops/ops --null -T -
+    find crops -name ops -print0 | tar -cjvf crops.tar.bz2 --exclude crops/ops --null -T -
+    find crops -name ops -print0 | tar -czvf crops.tar.gz --exclude crops/ops --null -T -
     mv crops.tar.* ..
     cd ..
     rm -rf tmpbuild
