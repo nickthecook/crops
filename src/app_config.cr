@@ -19,6 +19,13 @@ class AppConfig
   end
 
   def self.config_path_for(env)
+    # Check for YAML files first, then fall back to JSON for backward compatibility
+    ["config.yml", "config.yaml", "config.json"].each do |filename|
+      path = "config/#{env}/#{filename}"
+      return path if File.exists?(expand_path(path))
+    end
+
+    # Default to config.json if no file exists (maintains existing behavior)
     "config/#{env}/config.json"
   end
 
@@ -27,7 +34,11 @@ class AppConfig
   end
 
   private def self.expand_path(path)
-    `echo #{path}`.chomp
+    # Replace $environment with actual environment value before shell expansion
+    # This is needed because AppConfig.load runs before environment.set_variables
+    path_str = path.to_s
+    path_with_env = path_str.gsub("$environment", Environment.environment)
+    `echo #{path_with_env}`.chomp
   end
 
   def initialize(@filename : String)
