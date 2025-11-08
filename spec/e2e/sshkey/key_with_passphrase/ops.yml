@@ -6,3 +6,4 @@ options:
     SSH_KEY_PASSPHRASE: "12345"
   sshkey:
     key_lifetime: 1
+    key_file_comment: someguy@host
