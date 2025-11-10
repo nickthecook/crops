@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
 	s.name = 'ops_team'
-	s.version = '2.3.5-rc1'
+	s.version = '2.4.0-rc1'
 	s.authors = [
 		'nickthecook@gmail.com'
 	]
@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
 		'build/darwin_arm64/ops'
 	]
 	s.executables = ['ops']
-	s.add_runtime_dependency 'ejson', '~> 1.2', '>= 1.2.1'
+	s.add_dependency 'ejson', '~> 1.2', '>= 1.2.1'
 	s.license = 'GPL-3.0-only'
 	s.required_ruby_version = '> 2.5'
+	s.metadata['rubygems_mfa_required'] = 'true'
 end
