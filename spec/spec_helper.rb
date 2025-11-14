@@ -35,7 +35,7 @@ RSpec.configure do |config|
 	end
 
 	config.after(:suite) do
-		`ssh-add -D`
+		`ssh-add -D &>/dev/null`
 	end
 end
 

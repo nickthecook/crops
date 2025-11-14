@@ -235,4 +235,74 @@ And via ENV var:
 OPS__EXEC__LOAD_SECRETS=true ops exec ...
 ```
 
+## Development
+
+### E2E Testing
+
+This project uses RSpec for end-to-end testing of the Crystal-compiled `ops` binary. The e2e tests actually invoke `ops` and observe its effects on files and output, rather than unit testing the code.
+
+#### Test Structure
+
+Tests are located under `spec/e2e/`, with 41 test directories. Each test directory contains:
+
+- `e2e_spec.rb` - the actual test file
+- `ops.yml` - optional ops config for that specific test
+- `ops.out` - generated output file (git-ignored)
+- Additional files depending on what's being tested (SSH keys, config files, etc.)
+
+#### Helper System
+
+**`spec/spec_helper.rb`** (spec/spec_helper.rb:25-35):
+- Changes to each test's directory before running via `Dir.chdir`
+- Calls `remove_untracked_files` before each test to clean up
+- Cleans SSH keys after suite: `ssh-add -D`
+
+**`spec/e2e/e2e_spec_helper.rb`** provides the `"ops e2e"` shared context:
+- `ops(cmd)` method that:
+  - Walks up directories to find `bin/ops`
+  - Runs ops with `Open3.capture2e` to capture combined output
+  - Writes output to `ops.out`
+  - Returns `[output, output_file, exit_status]`
+- Lazy-evaluated helpers: `results`, `exit_code`, `output`, `exit_codes`, `outputs`
+- `remove_untracked_files` - removes untracked files except .rb, .yml, .json
+
+#### Writing an E2E Test
+
+Basic pattern:
+
+```ruby
+RSpec.describe "my feature" do
+  let(:commands) { ["help"] }  # Commands to run
+
+  include_context "ops e2e"
+
+  it "succeeds" do
+    expect(exit_code).to eq(0)
+  end
+
+  it "outputs expected text" do
+    expect(output).to match(/some text/)
+  end
+end
+```
+
+For multiple commands:
+
+```ruby
+let(:commands) { ["version", "--version", "help"] }
+
+it "all succeed" do
+  expect(exit_codes).to all(eq(0))
+end
+```
+
+#### Test Examples
+
+- **spec/e2e/help/** - Simple stdout assertion test
+- **spec/e2e/builtins/** - Multi-command test with nested contexts
+- **spec/e2e/sshkey/key_with_passphrase/** - Tests file generation and system state (SSH agent)
+- **spec/e2e/envdiff/** - Tests complex output parsing across multiple lines
+
+Each test runs in isolation in its own directory with its own `ops.yml`, and can assert on exit codes, stdout/stderr, file states, or system state.
+
 
