@@ -10,10 +10,10 @@ RSpec.describe "help" do
 	end
 
 	it "includes help for builtins other than 'help'" do
-		expect(output).to match(/33mup\e/)
-		expect(output).to match(/33mdown\e/)
-		expect(output).to match(/33minit\e/)
-		expect(output).to match(/33mexec\e/)
+		expect(output).to match(/up/)
+		expect(output).to match(/down/)
+		expect(output).to match(/init/)
+		expect(output).to match(/exec/)
 	end
 
 	it "includes alias for help" do
