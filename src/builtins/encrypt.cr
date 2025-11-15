@@ -7,12 +7,15 @@ module Builtins
 		def run
 			secrets_path = Secrets.app_config_path
 
-			if secrets_path.nil? || secrets_path.empty?
-				Output.error("No secrets file configured")
+			status, stdout, stderr = Command.capture3("ejson encrypt #{secrets_path}")
+
+			if status != 0
+			  Output.error("Error encrypting '#{secrets_path}': #{stderr}")
 				return false
 			end
 
-			Process.exec("ejson e #{secrets_path}", shell: true)
+			Output.out(stdout)
+			true
 		end
 	end
 end

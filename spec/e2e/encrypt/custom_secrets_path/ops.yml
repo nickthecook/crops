@@ -1,6 +1,5 @@
 actions:
-  test:
-    command: echo "test action"
+  test: echo "test action"
 options:
   secrets:
     path: custom_secrets.ejson
