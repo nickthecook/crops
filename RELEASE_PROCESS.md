@@ -9,6 +9,7 @@
 - commit as `release 2.x.y`
 - push
 - Run `ops build-all`
+- Maybe copy the binary from the other platform to the appropriate subdir of `build/`
 - Run `ops create-release`
 - upload `crops.tar.gz` and `crops.tar.bz2` to release
 - update the forumula in `homebrew-crops`
