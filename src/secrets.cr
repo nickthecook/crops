@@ -40,10 +40,10 @@ class Secrets < AppConfig
 
   private def ejson_contents
     @ejson_contents ||= begin
-      _status, stdout, stderr = Command.capture3("ejson decrypt #{@filename}")
+      status, stdout, stderr = Command.capture3("ejson decrypt #{@filename}")
 
-      # TODO: err is only nil in testing, but I can't figure out why the stubbing isn't working
-      raise ParsingError.new("#{@filename}: #{stderr}") unless stderr.nil? || stderr.empty?
+      # ejson _should_ exit with non-zero if there was an error
+      raise ParsingError.new("#{@filename}: 'ejson' exited with #{status}: #{stderr}") unless status.zero?
 
       stdout
     end
