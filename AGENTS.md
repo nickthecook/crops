@@ -108,7 +108,29 @@ The tool provides several built-in commands that can be used without defining th
 - `up [dependency...]`: Attempts to meet dependencies listed in `ops.yml`. Optionally specify which dependencies to meet
 - `version` (alias: `v`): Prints the version of `ops` that is running
 
-## Notes
+## Environment
 
-- `crops` does not support the `background` and `background-log` builtins, performance profiling, or the `sshkey.passphrase` option
-- The default template directory for `ops init` is `$HOME/.ops_templates`
+`ops` has the concept of an environment, for example "dev" or "staging". `ops` assumes you will have separate config and secrets for each environment.
+
+The environment determines what config files "ops" loads and how it behaves. For example, if running in the "staging" environment, `ops` will, by default, load `config/staging/config.json` and `config/staging/secrets.ejson`. If in "production", `ops` would load the same two files from the `config/production` directory.
+
+`ops` detects the environment from the `$environment` variable:
+
+```shell
+$ environment=production ops run
+```
+
+This sets the ENV var just for one command.
+
+```shell
+$ export environment=production
+$ ops run
+```
+
+This is equivalent, but further `ops` commands run in that shell session will be executed in the `production` environment.
+
+## Testing
+
+Testing is handled by RSpec, which actually runs the compiled `ops` binary in subdirectories of `spec/e2e` with `ops.yml` files set up specifically for certain test scenarios.
+
+Each feature of `ops` should get its own directory under `spec/e2e`. Run `ops e2e` to run all these specs, or `ops e2e spec/e2e/spec_dir_name` to run only tests under a specific directory.
