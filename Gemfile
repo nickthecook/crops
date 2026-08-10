@@ -13,6 +13,7 @@ group :development do
 	gem "irb"
 	gem "pry"
 	gem "pry-byebug"
+	gem "readline"
 	gem "rerun"
 
 	gem "racc"

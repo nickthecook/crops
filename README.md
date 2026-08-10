@@ -124,6 +124,27 @@ brew install ops
 
 There are tarballs of binaries in the [Releases](https://github.com/nickthecook/crops/releases) for this project. Just extract one, copy the binary for your platform into your `$PATH`, and run `ops version` to make sure it worked.
 
+## Tab completion
+
+> If you've installed with `brew`, completion may already be set up.
+
+To set up tab completion:
+
+1. run `ops completion <shell>`, e.g. `ops completion zsh` to make sure the completion script is available
+  - you should see a function definition for `__ops_completion` in the output
+  - `bash`, `zsh`, and `fish` are supported
+2. follow your shell's process for installing a new compdef script, e.g. for `zsh`:
+  - `mkdir ~/.zfunc` if you don't already have a completions directory
+  - add the following to your `.zshrc`:
+
+```
+fpath=(~/.zfunc $fpath)
+autoload -Uz compinit
+compinit
+```
+
+  - `source ~/.zshrc`
+
 ## Differences between `crops` and `ops`
 
 `crops` does not support:
@@ -154,6 +175,7 @@ The following things are different between `crops` and `ops`:
 - `init [template]`: Creates an `ops.yml` file from a template
 - `up [dependency...]`: Attempts to meet dependencies listed in `ops.yml`. Optionally specify which dependencies to meet
 - `version` (alias: `v`): Prints the version of `ops` that is running
+- `completion <shell>`: Prints the tab completion script for the given shell
 
 ## Options
 
@@ -234,5 +256,3 @@ And via ENV var:
 ```shell
 OPS__EXEC__LOAD_SECRETS=true ops exec ...
 ```
-
-
