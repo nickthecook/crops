@@ -30,11 +30,12 @@ module Builtins
       prev_tokens = prev.split
 
       active_ops_yml = resolve_ops_yml(prev_tokens)
+      actions_and_aliases = get_actions_and_aliases(active_ops_yml)
 
       # Check if past all ops subcommands
       # Early return without outputting to stdout tells the shell to provide default file completions
       prev_tokens.each do |token|
-        if active_ops_yml.actions.has_key?(token) || BUILTINS.has_key?(token)
+        if actions_and_aliases.includes?(token) || BUILTINS.has_key?(token)
           return true
         end
       end
@@ -109,6 +110,12 @@ module Builtins
       end
 
       nil
+    end
+
+    private def get_actions_and_aliases(ops_yml)
+      action_list = ActionList.new(ops_yml.actions, [] of String)
+
+      action_list.names() + action_list.aliases()
     end
 
     private def completion_scripts
