@@ -29,31 +29,15 @@ module Builtins
 
       prev_tokens = prev.split
 
+      # returning false tells shell to not provide default file completions
       active_ops_yml = resolve_ops_yml(prev_tokens) || return false
       actions_and_aliases = get_actions_and_aliases(active_ops_yml)
 
       # Check if past all ops subcommands
-      # Early return without outputting to stdout tells the shell to provide default file completions
-      prev_tokens.each do |token|
-        if actions_and_aliases.includes?(token) || BUILTINS.has_key?(token)
-          return true
-        end
-      end
+      # Early successful return without outputting to stdout tells the shell to provide default file completions
+      return true if prev_tokens.any? {|token| actions_and_aliases.includes?(token) || BUILTINS.has_key?(token) }
 
-      suggestions = [] of String
-
-      BUILTINS.each_key do |c|
-        suggestions << c
-      end
-
-      active_ops_yml.forwards.each_key do |c|
-        suggestions << c
-      end
-
-      active_ops_yml.actions.each_key do |c|
-        suggestions << c
-      end
-
+      suggestions = BUILTINS.keys + active_ops_yml.forwards.keys + active_ops_yml.actions.keys
       suggestions
         .select { |c| curr.empty? || c.starts_with?(curr) }
         .sort
@@ -91,10 +75,8 @@ module Builtins
         absolute_forward_dir = File.expand_path(forward_dir, root_dir)
 
         ops_file = resolve_ops_file(absolute_forward_dir)
-
-        unless ops_file
-          return current_yml
-        end
+        
+        return current_yml unless ops_file
 
         current_yml = OpsYml.new(ops_file)
       end
