@@ -11,7 +11,7 @@ module Builtins
         prev="${COMP_WORDS[*]:0:COMP_CWORD}"
 
         local suggestions
-        suggestions=$(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null)
+        suggestions=$(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null) || return
 
         COMPREPLY=()
 
@@ -40,7 +40,7 @@ module Builtins
         done
 
         local suggestions
-        suggestions=$(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null)
+        suggestions=$(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null) || return
 
         local -a compadd_args
 
@@ -60,7 +60,7 @@ module Builtins
         set -l curr (commandline -ct)
         set -l prev (commandline -cx)
 
-        set -l suggestions $(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null)
+        set -l suggestions $(ops completion -- "curr=$curr" "prev=$prev" 2>/dev/null); or return
 
         if test (count $suggestions) -eq 0
           __fish_complete_path "$curr"
