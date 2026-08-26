@@ -7,6 +7,6 @@ options:
     path: config.json
   secrets:
     path: secrets.json
+  environment_file: ops.env
   environment:
-    ENV_CONFIG_VAR: $CONFIG_VAR
-    ENV_SECRETS_VAR: $SECRETS_VAR
+    ENV_OPS_YML_VAR: "from ops.yml"

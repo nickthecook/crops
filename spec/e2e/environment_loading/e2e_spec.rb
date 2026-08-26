@@ -16,4 +16,12 @@ RSpec.describe "environment_loading" do
 	it "sets environment variables based on variables loaded from secrets" do
 		expect(output).to match(/ENV_SECRETS_VAR=from secrets/)
 	end
+
+	it "sets environment variables based on variables loaded from ops.env" do
+		expect(output).to match(/ENV_OPS_ENV_VAR=from ops.env/)
+	end
+
+	it "sets environment variables based on variables loaded from ops.yml" do
+		expect(output).to match(/ENV_OPS_YML_VAR=from ops.yml/)
+	end
 end

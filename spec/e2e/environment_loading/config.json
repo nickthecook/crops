@@ -1,5 +1,8 @@
 {
 	"environment": {
-		"CONFIG_VAR": "from config"
+		"ENV_CONFIG_VAR": "from config",
+		"ENV_SECRETS_VAR": "from config",
+		"ENV_OPS_ENV_VAR": "from config",
+		"ENV_OPS_YML_VAR": "from config"
 	}
 }

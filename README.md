@@ -80,7 +80,8 @@ When `ops` runs an action, environment variables are loaded from multiple source
 
 1. **Config** (`config/$environment/config.yml`, `.yaml`, or `.json`) - loaded first
 2. **Secrets** (`config/$environment/secrets.ejson` or `.json`) - loaded second (only if the action has `load_secrets: true`)
-3. **Options.environment** (from `ops.yml`) - loaded last
+3. **Options.environment_file** (from `ops.yml`) - loaded third
+4. **Options.environment** (from `ops.yml`) - loaded last
 
 Since each source sets environment variables directly, **later sources override earlier ones**. This means variables defined in `options.environment` in your `ops.yml` will have the highest priority.
 
@@ -221,6 +222,10 @@ The following things are different between `crops` and `ops`:
 - `environment_aliases`
   - `ops` will duplicate the `$environment` variable to other variables
   - intended for use with languages/frameworks that use a different env var to set the environment
+- `environment_file`
+  - a dotenv format file of additional environment variables
+  - higher priority than **Config** and **Secrets**, but lower priority than `options.environment`
+  - intended for integration with environments that support the dotenv format file, for example [GitLab CI/CD](https://docs.gitlab.com/ci/variables/dotenv_variables)
 
 Options can be specified in `ops.yml` under the top-level `options:` second, or as environment variables. E.g., setting `exec.load_secrets` via `ops.yml`:
 
