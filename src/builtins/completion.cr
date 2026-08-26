@@ -6,6 +6,12 @@ module Builtins
 			"prints the tab completion script for the given shell"
 		end
 
+    def initialize(args : Array(String), ops_yml : OpsYml)
+      @args = args
+      @ops_yml = ops_yml
+      @actions_and_aliases_cache = {} of OpsYml => Array(String)
+    end
+
     def run
       first = @args[0]?
       rest = @args[1..-1]? || [] of String
@@ -101,9 +107,12 @@ module Builtins
     end
 
     private def get_actions_and_aliases(ops_yml)
-      action_list = ActionList.new(ops_yml.actions, [] of String)
+      @actions_and_aliases_cache.put_if_absent(ops_yml) do |_|
+        action_list = ActionList.new(ops_yml.actions, [] of String)
+        action_list.names + action_list.aliases
+      end
 
-      action_list.names() + action_list.aliases()
+      @actions_and_aliases_cache[ops_yml]
     end
 
     private def completion_scripts
