@@ -25,7 +25,8 @@ class Ops
     "help", "--help", "h", "-h",
     "env",
     "envdiff",
-    "exec"
+    "exec",
+    "completion"
   ]
 
   RECOMMEND_HELP_TEXT = "Run 'ops help' for a list of builtins and actions."

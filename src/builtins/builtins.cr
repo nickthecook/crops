@@ -8,6 +8,7 @@ require "builtins/help"
 require "builtins/init"
 require "builtins/up"
 require "builtins/version"
+require "builtins/completion"
 
 module Builtins
   BUILTINS = {
@@ -19,7 +20,8 @@ module Builtins
     "help" => Help,
     "init" => Init,
     "up" => Up,
-    "version" => Version
+    "version" => Version,
+    "completion" => Completion
   }
   ALIASES = {
     "h" => "help",

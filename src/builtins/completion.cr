@@ -1,0 +1,122 @@
+require "builtins/helpers/completion_scripts"
+
+module Builtins
+  class Completion < Builtin
+		def self.description
+			"prints the tab completion script for the given shell"
+		end
+
+    def initialize(args : Array(String), ops_yml : OpsYml)
+      @args = args
+      @ops_yml = ops_yml
+      @actions_and_aliases_cache = {} of OpsYml => Array(String)
+    end
+
+    def run
+      first = @args[0]?
+      rest = @args[1..-1]? || [] of String
+
+      # "--" is used for completions, if first arg isn't "--", it is the shell name
+      unless first == "--"
+        script = completion_scripts[first]?
+
+        unless script
+          STDERR.puts "No completion script available for shell: #{first}"
+          return false
+        end
+
+        puts script
+        return true
+      end
+
+      parsed = parse_args(rest)
+      curr = parsed["curr"]? || ""
+      prev = parsed["prev"]? || ""
+
+      prev_tokens = prev.split
+
+      # returning false tells shell to not provide default file completions
+      resolved = resolve_ops_yml(prev_tokens) || return false
+      active_ops_yml, actions_and_aliases = resolved
+
+      # Check if past all ops subcommands
+      # Early successful return without outputting to stdout tells the shell to provide default file completions
+      return true if prev_tokens.any? {|token| actions_and_aliases.includes?(token) || BUILTINS.has_key?(token) }
+
+      suggestions = BUILTINS.keys + active_ops_yml.forwards.keys + active_ops_yml.actions.keys
+      suggestions
+        .select { |c| curr.empty? || c.starts_with?(curr) }
+        .sort
+        .each { |c| puts c }
+
+      true
+    end
+
+    private def parse_args(args : Array(String))
+      result = {} of String => String
+
+      args.each do |arg|
+        if index = arg.index('=')
+          result[arg[0...index]] = arg[(index + 1)..-1]
+        end
+      end
+
+      result
+    end
+
+    private def resolve_ops_yml(prev_tokens : Array(String))
+      current_yml = @ops_yml
+
+      # Skip command name (ops)
+      prev_tokens.skip(1).each do |token|
+        forward_dir = current_yml.forwards[token]?
+        unless forward_dir
+          actions_and_aliases = get_actions_and_aliases(current_yml)
+
+          if BUILTINS.has_key?(token) || actions_and_aliases.includes?(token)
+            return current_yml, actions_and_aliases
+          end
+
+          return nil
+        end
+
+        root_dir = File.dirname(current_yml.absolute_path)
+        absolute_forward_dir = File.expand_path(forward_dir, root_dir)
+
+        ops_file = resolve_ops_file(absolute_forward_dir)
+        
+        return current_yml, get_actions_and_aliases(current_yml) unless ops_file
+
+        current_yml = OpsYml.new(ops_file)
+      end
+
+      {current_yml, get_actions_and_aliases(current_yml)}
+    end
+
+    private def resolve_ops_file(dir : String)
+      yml_path = File.join(dir, "ops.yml")
+      yaml_path = File.join(dir, "ops.yaml")
+
+      if File.exists?(yml_path)
+        return yml_path
+      elsif File.exists?(yaml_path)
+        return yaml_path
+      end
+
+      nil
+    end
+
+    private def get_actions_and_aliases(ops_yml)
+      @actions_and_aliases_cache.put_if_absent(ops_yml) do |_|
+        action_list = ActionList.new(ops_yml.actions, [] of String)
+        action_list.names + action_list.aliases
+      end
+
+      @actions_and_aliases_cache[ops_yml]
+    end
+
+    private def completion_scripts
+      Builtins::Helpers::CompletionScripts::COMPLETION_SCRIPTS
+    end
+  end
+end

@@ -2,6 +2,10 @@
 
 > Note: Darwin x86_64 binary is 2.1.2
 
+## 2.5.0
+
+- add tab completion and shell integration scripts for bash, zsh, and fish
+
 ## 2.4.1
 
 - check ejson status code and not stderr presence, to check if ejson failed

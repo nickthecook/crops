@@ -154,6 +154,7 @@ The following things are different between `crops` and `ops`:
 - `init [template]`: Creates an `ops.yml` file from a template
 - `up [dependency...]`: Attempts to meet dependencies listed in `ops.yml`. Optionally specify which dependencies to meet
 - `version` (alias: `v`): Prints the version of `ops` that is running
+- `completion <shell>`: Prints the tab completion script for the given shell
 
 ## Options
 
