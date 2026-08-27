@@ -126,7 +126,10 @@ There are tarballs of binaries in the [Releases](https://github.com/nickthecook/
 
 ## Tab completion
 
-> If you've installed with `brew`, completion may already be set up.
+> If you've installed with `brew`, completion may be set up automatically, if you:
+>
+> - `brew upgrade nickthecook/crops/ops`
+> - `source ~/.zshr   # or whatever your shell's rc file is`
 
 To set up tab completion:
 
