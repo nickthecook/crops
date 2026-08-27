@@ -10,8 +10,10 @@
 - push
 - Run `ops build-all`
 - Maybe copy the binary from the other platform to the appropriate subdir of `build/`
-- Run `ops create-release`
+- go to [the repo](https://github.com/nickthecook/crops/releases) in a browser
+- create a new draft release
 - upload `crops.tar.gz` and `crops.tar.bz2` to release
+- publish the release
 - update the forumula in `homebrew-crops`
   - change version in URL to match tag from new release
   - run `ops sum` to get the checksum, and put it in the formula

@@ -72,7 +72,6 @@ actions:
     mv crops.tar.* ..
     cd ..
     rm -rf tmpbuild
-  create-release: gh release create
 options:
   environment:
     INSTALL_DIR: "$HOME/bin/"
